@@ -25,37 +25,10 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app, tlsCAFile=certifi.where())
 
 
-# Route to check connection to MongoDB
 @app.route("/")
-def connect_check():
-    try:
-        # Ping MongoDB to check connection
-        mongo.db.command("ping")  
-        return "Connection to MongoDB established successfully!"
-    except Exception as e:
-        return f"Error connecting to MongoDB: {str(e)}"
+def index():
+    return render_template('index.html')
 
-# Route to get user information
-@app.route("/users")    
-def get_users():
-    try:
-        users = mongo.db.users.find()
-        user_list = []
-        for user in users:
-            user_list.append({
-                "id": str(user["_id"]),
-                "name": user["name"],
-                "email": user["email"],
-                "phone": user["phone"],
-                "role": user["role"],
-                "age": user["age"],
-                "gender": user["gender"],
-                "specialization": user["specialization"],
-                "experience_years": user["experience_years"]
-            })
-        return {"users": user_list}, 200
-    except Exception as e:
-        return f"Error retrieving users: {str(e)}", 500
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
