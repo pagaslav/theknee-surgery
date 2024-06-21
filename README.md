@@ -1,3 +1,121 @@
+# The Knee surgery README
+
+![Responsive Mockup]()
+
+View the live site [here]()
+
+## Introduction
+
+## Project Goals
+
+## User Stories
+
+### First Time Visitor Goals:
+
+1. As a first-time visitor, I want to quickly understand what **The Knee surgery** is all about so I can...
+2. As a first-time visitor, I'm looking for...
+3. As a first-time visitor, I hope to find...
+
+### Returning Visitor Goals:
+
+1. As a returning visitor, I wish to see...
+2. As a returning visitor, I'm interested in...
+3. As a returning visitor, I want to be able to quickly access my...
+
+### Frequent Visitor Goals:
+
+1. As a frequent user, I want to check for any new features...
+2. As a frequent user, I'm interested in seeing if there are any new...
+3. As a frequent user, I look forward to finding out if there have been updates or improvements to the site that might...
+
+## User Experience (UX) &
+User Interface (UI)
+
+### Wireframes
+
+
+- Home Page
+    
+    ![Home Page]()
+...
+- Map of website
+    
+    ![Map of website]()
+
+### Colour Scheme
+#### Color Palette
+#### Color Psychology and Usage
+#### Visual Harmony and Accessibility
+
+### Typography
+#### Logo Font
+#### Slogan Font
+#### Quote Font
+#### Button and Body Text Font
+#### Description Font on ... Page
+
+### The Knee surgery Logo
+
+## Features
+
+### Navigation
+#### Navbar
+##### Desktop View:
+##### Responsive Design:
+##### Mobile View:
+
+### Footer
+##### Desktop View:
+##### Responsive Design:
+##### Mobile View:
+
+### Home Page
+#### Quote Feature:
+#### Main Interactive Buttons:
+
+### Learn Page
+#### Navigation Controls:
+#### Content Layout:
+
+## Technologies Used
+
+## Testing
+
+### Responsiveness
+### Validator testing
+#### HTML
+#### CSS
+#### JavaScript
+### LightHouse report
+### Compatibility
+### Bugs
+
+**app.py**
+**SSL Certificate Verification Failed When Connecting to MongoDB:** Encountered an SSL certificate verification error (SSL: CERTIFICATE_VERIFY_FAILED) when trying to connect to MongoDB.
+![Bug 1, code](static/documentation/bugs/1/bug-1.jpg)
+![Bug 1, Error Message](static/documentation/bugs/1/bug-1.1.jpg)
+**Solution:** Resolved the issue by adding the certifi library (import certifi) and modifying the PyMongo initialization line to specify the tlsCAFile parameter. **Code Changes:** 
+![Bug 1, Code Changes](static/documentation/bugs/1/bug-1.2.jpg)
+**Result:**
+![Bug 1, Result](static/documentation/bugs/1/bug-1.3.jpg)
+
+### Unsolved Bugs
+### Mistakes
+
+## Deployment
+### Deployment to GitHub Pages
+### Deployment to Heroku
+### Local Deployment
+
+## Credits
+### Content
+
+## Acknowledgments
+
+## Future Improvements
+
+
+----------
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 Welcome USER_NAME,
@@ -121,11 +239,3 @@ Yes, you can. Since no personally identifiable information is being captured, we
 pkill uptime.sh
 rm .vscode/uptime.sh
 ```
-
-**Anything more?**
-
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
-
----
-
-Happy coding!
