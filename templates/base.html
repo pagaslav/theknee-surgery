@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    {% block head_content %}
     <!-- Meta tags for character set and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,30 +32,50 @@
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
     <!-- Title -->
-    <title>{{ title }}</title>
+    <title>{% block title %}Default Title{% endblock %}</title>
+    {% endblock %}
 </head>
 
 <body>
 
     <!-- Header section -->
     <header>
-
+        {% block nav_content %}
         <!-- Main navigation section -->
         <nav>
-        </nav>
-
+            <div class="nav-wrapper">
+              <a href="#!" class="brand-logo">Logo</a>
+              <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <ul class="right hide-on-med-and-down">
+                <li><a href="sass.html">Sass</a></li>
+                <li><a href="badges.html">Components</a></li>
+                <li><a href="collapsible.html">Javascript</a></li>
+                <li><a href="mobile.html">Mobile</a></li>
+              </ul>
+            </div>
+          </nav>
+        
+          <ul class="sidenav" id="mobile-demo">
+            <li><a href="sass.html">Sass</a></li>
+            <li><a href="badges.html">Components</a></li>
+            <li><a href="collapsible.html">Javascript</a></li>
+            <li><a href="mobile.html">Mobile</a></li>
+          </ul>
+          {% endblock %}
     </header>
 
-    <!-- Main part of index page -->
     <main>
-       
+    {% block content %}
+    {% endblock %}
     </main>
 
     <!-- Footer section -->
     <footer>
-
+        {% block footer_content %}
+        {% endblock %}
     </footer>
 
+    {% block scripts %}
     <!--Script for icons "Font Awesome"-->
     <script src="https://kit.fontawesome.com/d63b433288.js" crossorigin="anonymous"></script>
     
@@ -67,6 +88,7 @@
 
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% endblock %}
 
 </body>
 
