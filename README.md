@@ -29,31 +29,32 @@ View the live site [here]()
 3. As a frequent user, I look forward to finding out if there have been updates or improvements to the site that might...
 
 ## User Experience (UX) &
+
 User Interface (UI)
 
 ### Wireframes
 
-
 - Home Page
-    
-    ![Home Page]()
-...
+  ![Home Page]()
+  ...
 - Map of website
-    
-    ![Map of website]()
+  ![Map of website]()
 
 ### Colour Scheme
 
 #### Color Palette
+
 The chosen color palette for The Knee Surgery is designed to evoke a sense of calmness and natural balance. The colors are as follows:
-- **Primary Color**: `#4caf50` (Green)
+
+- **Primary Color**: `#6d9e72` (Green)
 - **Secondary Color**: `#c8e6c9` (Light Green)
 - **Accent Color**: `#ffffff` (White)
 - **Complementary Color**: `#ffb74d` (Soft Orange)
 - **Neutral Color**: `#9e9e9e` (Grey)
 
 #### Color Psychology and Usage
-- **Green (`#4caf50`)**: This color represents health, growth, and tranquility. It is the primary color and will be used for main elements and headings to convey a sense of wellbeing and balance.
+
+- **Green (`#6d9e72`)**: This color represents health, growth, and tranquility. It is the primary color and will be used for main elements and headings to convey a sense of wellbeing and balance.
 - **Light Green (`#c8e6c9`)**: Soft and calming, this color is ideal for background sections. It creates a serene and refreshing atmosphere, making the website more welcoming.
 - **White (`#ffffff`)**: Symbolizing purity and simplicity, white will be used for text and borders to ensure clarity and readability.
 - **Soft Orange (`#ffb74d`)**: Adding a touch of warmth and friendliness, soft orange will be used for call-to-action buttons, drawing attention without being too aggressive.
@@ -62,16 +63,22 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 ![Colour Palette](static/documentation/color-palette.jpg)
 
 #### Visual Harmony and Accessibility
+
 - **Contrast and Readability**: Ensure there is sufficient contrast between the primary color (Green) and the accent color (White) for text and important elements to maintain readability.
 - **Balance**: Use soft orange sparingly to highlight key actions without overwhelming the natural and calm aesthetic of the site.
 - **Consistency**: Maintain a consistent use of colors throughout the website to create a harmonious visual experience that supports the site’s calming and professional atmosphere.
 - **Accessibility**: Consider accessibility guidelines, ensuring that all text is readable by maintaining an appropriate contrast ratio and using color combinations that are friendly for users with color vision deficiencies. This includes testing the color palette with accessibility tools to verify compliance with WCAG standards.
 
 ### Typography
+
 #### Logo Font
+
 #### Slogan Font
+
 #### Quote Font
+
 #### Button and Body Text Font
+
 #### Description Font on ... Page
 
 ### The Knee surgery Logo
@@ -79,22 +86,33 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 ## Features
 
 ### Navigation
+
 #### Navbar
+
 ##### Desktop View:
+
 ##### Responsive Design:
+
 ##### Mobile View:
 
 ### Footer
+
 ##### Desktop View:
+
 ##### Responsive Design:
+
 ##### Mobile View:
 
 ### Home Page
+
 #### Quote Feature:
+
 #### Main Interactive Buttons:
 
 ### Learn Page
+
 #### Navigation Controls:
+
 #### Content Layout:
 
 ## Technologies Used
@@ -102,40 +120,52 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 ## Testing
 
 ### Responsiveness
+
 ### Validator testing
+
 #### HTML
+
 #### CSS
+
 #### JavaScript
+
 ### LightHouse report
+
 ### Compatibility
+
 ### Bugs
 
 **app.py**
 **SSL Certificate Verification Failed When Connecting to MongoDB:** Encountered an SSL certificate verification error (SSL: CERTIFICATE_VERIFY_FAILED) when trying to connect to MongoDB.
 ![Bug 1, code](static/documentation/bugs/1/bug-1.jpg)
 ![Bug 1, Error Message](static/documentation/bugs/1/bug-1-1.jpg)
-**Solution:** Resolved the issue by adding the certifi library (import certifi) and modifying the PyMongo initialization line to specify the tlsCAFile parameter. **Code Changes:** 
+**Solution:** Resolved the issue by adding the certifi library (import certifi) and modifying the PyMongo initialization line to specify the tlsCAFile parameter. **Code Changes:**
 ![Bug 1, Code Changes](static/documentation/bugs/1/bug-1-2.jpg)
 **Result:**
 ![Bug 1, Result](static/documentation/bugs/1/bug-1-3.jpg)
 
 ### Unsolved Bugs
+
 ### Mistakes
 
 ## Deployment
+
 ### Deployment to GitHub Pages
+
 ### Deployment to Heroku
+
 ### Local Deployment
 
 ## Credits
+
 ### Content
 
 ## Acknowledgments
 
 ## Future Improvements
 
+---
 
-----------
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 Welcome USER_NAME,
@@ -164,8 +194,8 @@ By Default, Gitpod gives you superuser security privileges. Therefore, you do no
 
 To log into the Heroku toolbelt CLI:
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
+1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
+2. Scroll down to the _API Key_ and click _Reveal_
 3. Copy the key
 4. In Gitpod, from the terminal, run `heroku_config`
 5. Paste in your API key when asked
@@ -185,7 +215,7 @@ You can now use the `heroku` CLI program - try running `heroku apps` to confirm 
   - replace all `<angle-bracket>` keys with your own data
 - enter password _(will not echo **\*\*\*\*** on screen)_
 
-------
+---
 
 ## Release History
 
@@ -229,7 +259,7 @@ We continually tweak and adjust this template to help give you the best experien
 
 **December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
 
-------
+---
 
 ## FAQ about the uptime script
 
