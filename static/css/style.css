@@ -81,46 +81,13 @@ nav ul.right li a:hover {
 }
 
 .social-icons a:hover {
-  color: #ffb74d; /* Цвет при наведении */
+  color: #ffb74d;
 }
 
 .social-icons .fab {
   font-size: 1.5em;
   vertical-align: middle;
 }
-
-/* .page-footer {
-  background-color: #6d9e72;
-}
-
-.page-footer .container a {
-  color: #ffff;
-}
-
-.page-footer .container a:hover {
-  color: #ffb74d;
-}
-
-.social-icons a {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.social-icons ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.social-icons .fab {
-  font-size: 1.7em;
-  margin: 5px;
-  height: 100%;
-} */
 
 @media (max-width: 600px) {
   .brand-logo i {
