@@ -1,0 +1,139 @@
+/* General styles */
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Luckiest+Guy&family=Schoolbell&family=Zilla+Slab+Highlight:wght@400;700&display=swap");
+
+/* Reset default margin, padding, and border for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Navbar */
+nav {
+  background-color: #6d9e72;
+}
+
+.nav-text-shadow {
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Complementary Color */
+nav ul.right li a:hover {
+  color: #ffb74d;
+}
+
+/* Logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  height: 100%;
+}
+
+/* Footer */
+.page-footer {
+  background-color: #6d9e72;
+}
+
+.page-footer .container a {
+  color: #ffffff;
+}
+
+.page-footer .container a:hover {
+  color: #ffb74d;
+}
+
+.brand-logo-text {
+  font-size: 18px;
+}
+
+.social-icons {
+  text-align: center;
+}
+
+.social-icons ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.social-icons li {
+  margin: 5px 0;
+}
+
+.social-icons a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.4em;
+}
+
+.social-icons a:hover {
+  color: #ffb74d; /* Цвет при наведении */
+}
+
+.social-icons .fab {
+  font-size: 1.5em;
+  vertical-align: middle;
+}
+
+/* .page-footer {
+  background-color: #6d9e72;
+}
+
+.page-footer .container a {
+  color: #ffff;
+}
+
+.page-footer .container a:hover {
+  color: #ffb74d;
+}
+
+.social-icons a {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-icons ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-icons .fab {
+  font-size: 1.7em;
+  margin: 5px;
+  height: 100%;
+} */
+
+@media (max-width: 600px) {
+  .brand-logo i {
+    display: none;
+  }
+
+  .brand-logo-text {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 315px) {
+  .brand-logo-text {
+    font-size: 15px;
+  }
+}
