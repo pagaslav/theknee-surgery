@@ -89,6 +89,30 @@ nav ul.right li a:hover {
   vertical-align: middle;
 }
 
+/* Media queries for responsive design */
+@media (max-width: 993px) {
+  .page-footer .container .row {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .page-footer .col {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
+  }
+
+  .social-icons ul {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .social-icons li {
+    margin: 0 10px;
+  }
+}
+
 @media (max-width: 600px) {
   .brand-logo i {
     display: none;
