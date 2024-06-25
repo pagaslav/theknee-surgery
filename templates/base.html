@@ -2,86 +2,135 @@
 <html lang="en">
 
 <head>
-    {% block head_content %}
-    <!-- Meta tags for character set and responsive design -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block head_content %}
+  <!-- Meta tags for character set and responsive design -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Metadata for SEO -->
-    <meta name="description"
-        content="Learn about knee surgery and joint treatments. Find comprehensive information for patients and doctors!">
-    <meta name="keywords" content="knee surgery, joint treatment, orthopedic, patient care, medical records, doctor appointments">
-    <meta name="author" content="Artem Bryzh">
-    <meta name="robots" content="index, follow">
+  <!-- Metadata for SEO -->
+  <meta name="description"
+    content="Learn about knee surgery and joint treatments. Find comprehensive information for patients and doctors!">
+  <meta name="keywords"
+    content="knee surgery, joint treatment, orthopedic, patient care, medical records, doctor appointments">
+  <meta name="author" content="Artem Bryzh">
+  <meta name="robots" content="index, follow">
 
-    <!-- Open Graph Metadata for Social Media -->
-    <meta property="og:title" content="The Knee Surgery - Comprehensive Knee and Joint Treatment Information">
-    <meta property="og:description"
-        content="Discover everything you need to know about knee surgery and joint treatment.">
+  <!-- Open Graph Metadata for Social Media -->
+  <meta property="og:title" content="The Knee Surgery - Comprehensive Knee and Joint Treatment Information">
+  <meta property="og:description"
+    content="Discover everything you need to know about knee surgery and joint treatment.">
 
-    <!-- Compiled and minified Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Compiled and minified Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#343a40">
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#343a40">
 
-    <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+  <!-- Favicon -->
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
-    <!-- Title -->
-    <title>{% block title %}Default Title{% endblock %}</title>
-    {% endblock %}
+  <!-- Title -->
+  <title>{% block title %}Default Title{% endblock %}</title>
+  {% endblock %}
 </head>
 
 <body>
 
-    <!-- Header section -->
-    <header>
-        {% block nav_content %}
-        <!-- Main navigation section -->
-        <nav>
-            <div class="nav-wrapper">
-              <a href="#!" class="brand-logo">Logo</a>
-              <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-              <ul class="right hide-on-med-and-down">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="badges.html">Components</a></li>
-                <li><a href="collapsible.html">Javascript</a></li>
-                <li><a href="mobile.html">Mobile</a></li>
-              </ul>
-            </div>
-          </nav>
-        
-          <ul class="sidenav" id="mobile-demo">
-            <li><a href="sass.html">Sass</a></li>
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">Javascript</a></li>
-            <li><a href="mobile.html">Mobile</a></li>
-          </ul>
-          {% endblock %}
-    </header>
+  <!-- Header section -->
+  <header>
+    {% block nav_content %}
+    <!-- Main navigation section -->
+    <nav class="nav-text-shadow">
+      <div class="nav-wrapper">
+        <a href="{{ url_for('index') }}" class="brand-logo">
+          <i class="fa-solid fa-hospital"></i><span class="">The Knee Surgery</span>
+        </a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#">Log In</a></li>
+          <li><a href="#">About us</a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Main navigation section -->
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="#">Log In</a></li>
+      <li><a href="#">About us</a></li>
+    </ul>
+    {% endblock %}
+  </header>
 
-    <main>
+  <main>
     {% block content %}
     {% endblock %}
-    </main>
 
     <!-- Footer section -->
-    <footer>
-        {% block footer_content %}
-        {% endblock %}
+    <footer class="page-footer">
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Visit us at:</h5>
+            <p class="white-text text-lighten-4">123 Main Street<br>Cardiff<br>CF10 2FY</p>
+            <a href="{{ url_for('index') }}" class="">
+              <i class="fa-solid fa-hospital"></i><span class="brand-logo-text"> The Knee Surgery</span>
+            </a>
+            <h5>Contact us at:</h5>
+            <p><a href="mailto:theknee.surgery@gmail.com" aria-label="Send an email to theknee.surgery@gmail.com">theknee.surgery@gmail.com</a></p>
+          </div>
+          <div class="col l4 offset-l2 s12 social-icons">
+            <h5 class="white-text">You can follow us:</h5>
+            <ul>
+              <li>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                  aria-label="Visit our Instagram page">
+                  <i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                  aria-label="Visit our Facebook page">
+                  <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                  aria-label="Visit our Twitter page">
+                  <i class="fab fa-twitter-square" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                  aria-label="Visit our YouTube channel">
+                  <i class="fab fa-youtube" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer-copyright">
+        <p class="container">
+        © 2024 <a href="https://www.linkedin.com/in/artem-bryzh-43109a176/" target="_blank"
+        rel="noopener noreferrer" aria-label="Artem Bryzh LinkedIn Profile">Artem Bryzh</a>.  All
+        rights reserved.
+        </p>
+      </div>
     </footer>
+    {% block footer_content %}
+    {% endblock %}
 
     {% block scripts %}
     <!--Script for icons "Font Awesome"-->
     <script src="https://kit.fontawesome.com/d63b433288.js" crossorigin="anonymous"></script>
-    
+
     <!-- jQuery library, version 3.7.1 -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- Compiled and minified Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -89,7 +138,6 @@
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% endblock %}
-
 </body>
 
 </html>
