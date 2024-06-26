@@ -43,10 +43,14 @@
   <header>
     {% block nav_content %}
     <!-- Main navigation section -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg bg-success navbar-dark">
+
+      <!-- Brand logo -->
       <a class="navbar-brand" href="{{ url_for('index') }}">
-        <i class="fa-solid fa-hospital"></i><span class="ml-2">The Knee Surgery</span>
+        <i class="fa-solid fa-hospital"></i><h1 id="logo" class="ml-2">The Knee Surgery</h1>
       </a>
+
+      <!-- Navigation toggler button -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -54,14 +58,15 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Log In</a>
+            <a class="nav-link text-white" href="#">Log In</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">About us</a>
+            <a class="nav-link text-white" href="#">About us</a>
           </li>
         </ul>
       </div>
     </nav>
+
     {% endblock %}
   </header>
 
@@ -70,60 +75,7 @@
     {% endblock %}
 
     <!-- Footer section -->
-    <footer class="footer bg-dark text-white mt-5">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h5>Visit us at:</h5>
-            <p>123 Main Street<br>Cardiff<br>CF10 2FY</p>
-            <a href="{{ url_for('index') }}">
-              <i class="fa-solid fa-hospital"></i><span class="ml-2">The Knee Surgery</span>
-            </a>
-            <h5>Contact us at:</h5>
-            <p><a href="mailto:theknee.surgery@gmail.com" class="text-white" aria-label="Send an email to theknee.surgery@gmail.com">theknee.surgery@gmail.com</a></p>
-          </div>
-          <div class="col-md-6 text-center social-icons">
-            <h5>You can follow us:</h5>
-            <ul class="list-unstyled d-flex justify-content-center">
-              <li class="mx-2">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
-                  aria-label="Visit our Instagram page" class="text-white">
-                  <i class="fab fa-instagram" aria-hidden="true"></i>
-                </a>
-              </li>
-              <li class="mx-2">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
-                  aria-label="Visit our Facebook page" class="text-white">
-                  <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                </a>
-              </li>
-              <li class="mx-2">
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                  aria-label="Visit our Twitter page" class="text-white">
-                  <i class="fab fa-twitter-square" aria-hidden="true"></i>
-                </a>
-              </li>
-              <li class="mx-2">
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
-                  aria-label="Visit our YouTube channel" class="text-white">
-                  <i class="fab fa-youtube" aria-hidden="true"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    
-      <div class="bg-secondary text-center py-3">
-        <div class="container">
-          <p class="mb-0">
-            © 2024 <a href="https://www.linkedin.com/in/artem-bryzh-43109a176/" target="_blank"
-              rel="noopener noreferrer" aria-label="Artem Bryzh LinkedIn Profile" class="text-white">Artem Bryzh</a>. All
-            rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
+ 
     {% block footer_content %}
     {% endblock %}
 
@@ -135,8 +87,11 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    <!-- Compiled and minified Materialize JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Popper.js, required for Bootstrap's JavaScript plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq7g4a2KUZU7tCJ7zqOq6EYzV1B5H6a5R/1c1+P6UksL3Q" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgMb5dsNN0P6YbJ5g0MUtxh3ON+LcCE2w5FgqOnDHEbRZPYfR4X" crossorigin="anonymous"></script>
 
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
