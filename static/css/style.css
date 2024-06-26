@@ -24,12 +24,19 @@ main {
   flex: 1 0 auto;
 }
 
+.custom-icon {
+  font-size: 1.5rem;
+}
+
 /* Navbar */
+.custom-navbar {
+  padding-left: 30px;
+  padding-right: 30px;
+}
 /* Logo */
 .navbar-brand {
   display: flex;
   align-items: center;
-  margin-left: 10px;
   height: 100%;
 }
 
@@ -37,10 +44,7 @@ main {
   font-size: 1.8em;
   font-family: "Playfair Display", serif;
   text-decoration: none;
-}
-
-.logo-setup:hover {
-  color: #ffb74d !important;
+  margin-left: 10px;
 }
 
 .navbar-brand:hover,
