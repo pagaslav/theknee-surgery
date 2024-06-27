@@ -46,7 +46,7 @@ User Interface (UI)
 
 The chosen color palette for The Knee Surgery is designed to evoke a sense of calmness and natural balance. The colors are as follows:
 
-- **Primary Color**: `#6d9e72` (Green)
+- **Primary Color**: `#198754` or Bootstrap bg-success (Green)
 - **Secondary Color**: `#c8e6c9` (Light Green)
 - **Accent Color**: `#ffffff` (White)
 - **Complementary Color**: `#ffb74d` (Soft Orange)
@@ -54,7 +54,7 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 
 #### Color Psychology and Usage
 
-- **Green (`#6d9e72`)**: This color represents health, growth, and tranquility. It is the primary color and will be used for main elements and headings to convey a sense of wellbeing and balance.
+- **Green (`#198754` or Bootstrap bg-success)**: This color represents health, growth, and tranquility. It is the primary color and will be used for main elements and headings to convey a sense of wellbeing and balance.
 - **Light Green (`#c8e6c9`)**: Soft and calming, this color is ideal for background sections. It creates a serene and refreshing atmosphere, making the website more welcoming.
 - **White (`#ffffff`)**: Symbolizing purity and simplicity, white will be used for text and borders to ensure clarity and readability.
 - **Soft Orange (`#ffb74d`)**: Adding a touch of warmth and friendliness, soft orange will be used for call-to-action buttons, drawing attention without being too aggressive.
