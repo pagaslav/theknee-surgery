@@ -24,8 +24,10 @@ main {
   flex: 1 0 auto;
 }
 
-.custom-icon {
-  font-size: 1.5rem;
+.custom-icon-nav,
+.custom-icon-footer {
+  font-size: 1.5em;
+  text
 }
 
 /* Navbar */
@@ -41,7 +43,7 @@ main {
 }
 
 .logo-setup {
-  font-size: 1.8em;
+  font-size: 1.6em;
   font-family: "Playfair Display", serif;
   text-decoration: none;
   margin-left: 10px;
@@ -97,20 +99,15 @@ main {
 }
 
 /* Media queries for responsive design */
-@media (max-width: 993px) {
-  .page-footer .container .row {
-    text-align: center;
-    justify-content: center;
-  }
+@media (max-width: 992px) {
 
-  .page-footer .col {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0 auto;
+  .col-lg-4 h4 {
+    margin-top: 10px;
+
   }
 
   .social-icons ul {
+    margin-top: 10px;
     flex-direction: row;
     justify-content: center;
   }
@@ -121,8 +118,8 @@ main {
 }
 
 @media (max-width: 600px) {
-  .brand-logo i {
-    display: none;
+  .custom-icon-nav {
+    display: none !important;
   }
 
   .brand-logo-text {
@@ -130,8 +127,14 @@ main {
   }
 }
 
-@media (max-width: 315px) {
-  .brand-logo-text {
-    font-size: 15px;
+@media (max-width: 415px) {
+  .custom-brand-top {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 355px) {
+  .custom-brand-top {
+    font-size: 1.2em;
   }
 }
