@@ -91,14 +91,35 @@ main {
 }
 
 /* Index Page */
-.index-box-1,
-.index-box-2 {
-  margin-top: 50px;
-  padding: 10;
+
+/* Login Page */
+
+.form-signin {
+  max-width: 650px;
+  padding: 30px;
+  margin: auto;
   text-align: center;
 }
 
+.checkbox {
+  font-weight: 400;
+}
+
+.form-floating:focus-within {
+  z-index: 2;
+}
+
+.btn-primary {
+  background-color: #198754;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #ffb74d;
+}
+
 /* Media queries for responsive design */
+/* Medium devices (tablets, 768px and up) */
 @media (max-width: 992px) {
 
   .col-lg-4 h4 {
@@ -117,6 +138,7 @@ main {
   }
 }
 
+/* Small devices (landscape phones, less than 600px) */
 @media (max-width: 600px) {
   .custom-icon-nav {
     display: none !important;
@@ -127,12 +149,14 @@ main {
   }
 }
 
+/* Extra small devices (phones, less than 415px) */
 @media (max-width: 415px) {
   .custom-brand-top {
     font-size: 1.3em;
   }
 }
 
+/* Extra extra small devices (small phones, less than 355px) */
 @media (max-width: 355px) {
   .custom-brand-top {
     font-size: 1.2em;
