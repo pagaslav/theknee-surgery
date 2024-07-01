@@ -91,7 +91,12 @@ main {
 }
 
 /* Index Page */
-
+.carousel-inner img {
+  width: 100%;
+  height: auto;
+  max-height: 68vh; 
+  object-fit: cover;
+}
 /* Login Page */
 
 .form-signin {
