@@ -11,47 +11,45 @@ from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
     import env
 
-
 # Creating Flask application instance
 app = Flask(__name__)
-
 
 # Configuration for MongoDB connection using environment variables
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
 
-
 # Initializing PyMongo with Flask application instance with certifi
 mongo = PyMongo(app, tlsCAFile=certifi.where())
 
-
 @app.route("/")
 def index():
+    # Render the main index page
     return render_template('index.html')
-
-
-from flask import jsonify
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
+        # Get form data
         name = request.form.get("name")
         gender = request.form.get("gender")
         age = request.form.get("age")
         phone = request.form.get("phone")
-        email = request.form.get("email")
+        email = request.form.get("email").lower()  # Convert email to lower case
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
-
-        # Check if user already exists
+        
+        # Check if the email already exists
         existing_user = mongo.db.users.find_one({"email": email})
         if existing_user:
             flash("Email already exists. Please use a different email.")
             return redirect(url_for("signup"))
-        
+
+        # Check if passwords match
         if password == confirm_password:
+            # Hash the password
             hashed_password = generate_password_hash(password)
+            # Create a new user record
             new_user = {
                 "name": name,
                 "gender": gender,
@@ -60,42 +58,63 @@ def signup():
                 "email": email,
                 "password": hashed_password
             }
+            # Insert the new user into the database
             mongo.db.users.insert_one(new_user)
-            flash("Registration successful! Please check your email to verify your account.")
-            # Code to send email notification can be added here
+            flash("Registration successful!")
             return redirect(url_for("login"))
         else:
             flash("Passwords do not match. Please try again.")
             return redirect(url_for("signup"))
 
+    # Render the signup template
     return render_template("signup.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        existing_user = mongo.db.users.find_one(
-            {"username": request.form.get("username").lower()})
+        # Get form data
+        email = request.form.get("email").lower()  # Convert email to lower case
+        password = request.form.get("password")
+        
+        # Find the user by email
+        existing_user = mongo.db.users.find_one({"email": email})
 
         if existing_user:
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
-                session["user"] = request.form.get("username").lower()
-                flash("Welcome, {}".format(
-                    request.form.get("username")))
-                return redirect(url_for(
-                    "profile", username=session["user"]))
+            # Check if the password matches
+            if check_password_hash(existing_user["password"], password):
+                session["user"] = email
+                flash("Welcome, {}".format(existing_user["name"]))
+                return redirect(url_for("profile", username=email))
             else:
-                flash("Incorrect Username and/or Password")
+                flash("Incorrect Email and/or Password")
                 return redirect(url_for("login"))
 
         else:
-            flash("Incorrect Username and/or Password")
+            flash("Incorrect Email and/or Password")
             return redirect(url_for("login"))
 
+    # Render the login template
     return render_template("login.html")
 
+@app.route("/profile/<username>")
+def profile(username):
+    # Find the user by email
+    user = mongo.db.users.find_one({"email": username})
+    if user:
+        # Get user's medical records
+        medical_records = list(mongo.db.medical_records.find({"patient_id": user["_id"]}))
+        
+        # Get user's appointments
+        appointments = list(mongo.db.appointments.find({"patient_id": user["_id"]}))
+        
+        # Render the profile template with user data
+        return render_template("profile.html", user=user, medical_records=medical_records, appointments=appointments)
+    else:
+        flash("User not found")
+        return redirect(url_for("index"))
 
 if __name__ == "__main__":
+    # Run the Flask application
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
             debug=True)
