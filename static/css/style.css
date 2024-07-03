@@ -184,8 +184,9 @@ footer {
 } */
 
 /* Login Page */
-.form-signin {
-  max-width: 650px;
+.form-sign {
+  width: 100%;
+  max-width: 600px;
   padding: 30px;
   margin: auto;
   text-align: center;
