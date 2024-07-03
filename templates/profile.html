@@ -1,0 +1,65 @@
+{% extends "base.html" %} {% block title %}Profile{% endblock %} {% block
+content %}
+<main class="container">
+  <h2 class="mt-5">Profile</h2>
+
+  <!-- User Information -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3>User Information</h3>
+    </div>
+    <div class="card-body">
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Gender:</strong> {{ user.gender }}</p>
+      <p><strong>Age:</strong> {{ user.age }}</p>
+      <p><strong>Phone:</strong> {{ user.phone }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+  </div>
+
+  <!-- Medical Records -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3>Medical Records</h3>
+    </div>
+    <div class="card-body">
+      {% if medical_records %}
+      <ul class="list-group">
+        {% for record in medical_records %}
+        <li class="list-group-item">
+          <p><strong>Description:</strong> {{ record.description }}</p>
+          <p><strong>Treatment:</strong> {{ record.treatment }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No medical records found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Appointments -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3>Appointments</h3>
+    </div>
+    <div class="card-body">
+      {% if appointments %}
+      <ul class="list-group">
+        {% for appointment in appointments %}
+        <li class="list-group-item">
+          <p><strong>Date:</strong> {{ appointment.date }}</p>
+          <p><strong>Time:</strong> {{ appointment.time }}</p>
+          <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+          <p><strong>Status:</strong> {{ appointment.status }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No appointments found.</p>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
+endblock %}
