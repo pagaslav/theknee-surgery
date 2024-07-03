@@ -2,7 +2,7 @@
 endblock %} {% block content %}
 
 <!-- Bootstrap Login Form -->
-<main class="form-signin">
+<main class="form-sign">
   <form method="POST" action="{{ url_for('login') }}">
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %}
