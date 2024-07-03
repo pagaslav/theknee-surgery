@@ -43,6 +43,12 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
+
+        # Check if user already exists
+        existing_user = mongo.db.users.find_one({"email": email})
+        if existing_user:
+            flash("Email already exists. Please use a different email.")
+            return redirect(url_for("signup"))
         
         if password == confirm_password:
             hashed_password = generate_password_hash(password)
