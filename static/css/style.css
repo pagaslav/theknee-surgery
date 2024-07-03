@@ -52,6 +52,14 @@ img {
   align-items: baseline;
 }
 
+.nav-link {
+  color: white !important; /* Default color for all nav links */
+}
+
+.nav-link.active {
+  color: #ffb74d !important; /* Highlight color */
+}
+
 .logo-setup {
   font-size: 1.7em;
   font-family: "Bebas Neue", serif;
