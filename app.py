@@ -96,6 +96,15 @@ def login():
     # Render the login template
     return render_template("login.html")
 
+
+@app.route("/logout")
+def logout():
+    # Remove user from session
+    session.pop("user", None)
+    flash("You have been logged out.")
+    return redirect(url_for("index"))
+
+
 @app.route("/profile/<username>")
 def profile(username):
     # Find the user by email
@@ -110,8 +119,10 @@ def profile(username):
         # Render the profile template with user data
         return render_template("profile.html", user=user, medical_records=medical_records, appointments=appointments)
     else:
+        # This case should not occur if login logic is correct, but it's a good safety measure
         flash("User not found")
         return redirect(url_for("index"))
+    
 
 if __name__ == "__main__":
     # Run the Flask application
