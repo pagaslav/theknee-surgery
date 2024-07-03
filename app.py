@@ -30,6 +30,40 @@ mongo = PyMongo(app, tlsCAFile=certifi.where())
 def index():
     return render_template('index.html')
 
+
+from flask import jsonify
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        name = request.form.get("name")
+        gender = request.form.get("gender")
+        age = request.form.get("age")
+        phone = request.form.get("phone")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+        
+        if password == confirm_password:
+            hashed_password = generate_password_hash(password)
+            new_user = {
+                "name": name,
+                "gender": gender,
+                "age": age,
+                "phone": phone,
+                "email": email,
+                "password": hashed_password
+            }
+            mongo.db.users.insert_one(new_user)
+            flash("Registration successful! Please check your email to verify your account.")
+            # Code to send email notification can be added here
+            return redirect(url_for("login"))
+        else:
+            flash("Passwords do not match. Please try again.")
+            return redirect(url_for("signup"))
+
+    return render_template("signup.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
