@@ -3,17 +3,14 @@ endblock %} {% block content %}
 
 <!-- Main part of index page -->
 <main class="mt-3">
-  <!-- Section: Hot Oven Bread Selection -->
+
   <section>
-    <!-- Subsection: Golden Crunch Experience. Hot Deal: Currently Discounted and Popular Item -->
     <div class="text-center h1">
       <h2 class="welcome-title">Welcome to The Knee Surgery</h2>
       <p class="welcome-subtitle">Your Health – Our Priority</p>
     </div>
     <div class="welcome-flex">
-      <div class="flex-txt-baguett welcome-text">
-        <!-- <h2 class="welcome-title">Welcome to The Knee Surgery</h2>
-        <p class="welcome-subtitle">Your Health – Our Priority</p> -->
+      <div class="welcome-text">
         <p>
           Our team of dedicated professionals is here to provide you with the
           highest standard of care, using the latest techniques and technologies
@@ -43,7 +40,7 @@ endblock %} {% block content %}
         </div>
       </div>
       <div class="welcome-image">
-        <figure class="image-container">
+        <figure class="">
           <img
             src="{{ url_for('static', filename='images/index/doctor-knee.webp') }}"
             class="img-fluid"
@@ -53,6 +50,70 @@ endblock %} {% block content %}
       </div>
     </div>
   </section>
+  <section>
+    <div class="text-center h1">
+      <h2 class="welcome-title">Our Clinic Services</h2>
+    </div>
+      <!-- <p id="services-subtitle-1" class="services-subtitle">For a complete list of services, visit our “Our Services” section. </p>
+      <p class="services-subtitle">Here are the essential treatments we provide.</p> -->
+    
+      <!-- Bootstrap Grid cards -->
+  <div class="row row-cols-1 row-cols-md-2 g-4 cards">
+    <div class="col">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/index/desktop/x-ray-1920-1050.jpg') }}" class="card-img-top" alt="Initial Consultation and Diagnosis">
+        <div class="card-body">
+          <h5 class="card-title">Initial Consultation and Diagnosis</h5>
+          <p class="card-text">Our initial consultation and diagnostic services are designed to thoroughly assess your knee condition. Our specialists successfully use advanced imaging techniques such as X-rays, MRIs, and CT scans to provide accurate diagnoses. We take the time to understand your symptoms and medical history to develop a personalized treatment plan. Trust us to identify the root cause of your knee issues and recommend the best course of action.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/index/desktop/x-ray-1920-1050.jpg') }}" class="card-img-top" alt="Arthroscopic Surgery">
+        <div class="card-body">
+          <h5 class="card-title">Arthroscopic Surgery</h5>
+          <p class="card-text">Arthroscopic surgery is a minimally invasive procedure that allows our surgeons to diagnose and treat knee joint issues. Using small incisions and specialized instruments, we can address problems such as meniscus tears and ligament injuries. This technique offers quicker recovery times and less postoperative pain compared to traditional surgery. Our experienced surgeons are dedicated to providing you with the best possible outcomes.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/index/desktop/x-ray-1920-1050.jpg') }}" class="card-img-top" alt="Knee Replacement">
+        <div class="card-body">
+          <h5 class="card-title">Knee Replacement</h5>
+          <p class="card-text">Knee replacement surgery, also known as arthroplasty, is a highly effective procedure for relieving pain and restoring function in damaged knees. Our surgeons use state-of-the-art implants to replace the damaged joint surfaces. This surgery is typically recommended for patients with severe arthritis or significant knee injuries. With proper rehabilitation, you can expect to regain mobility and improve your quality of life.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/index/desktop/x-ray-1920-1050.jpg') }}" class="card-img-top" alt="Ligament Reconstruction">
+        <div class="card-body">
+          <h5 class="card-title">Ligament Reconstruction</h5>
+          <p class="card-text">Ligament reconstruction surgery is crucial for patients with torn ACL or PCL ligaments. Our skilled surgeons use grafts to reconstruct the damaged ligaments, ensuring stability and strength in the knee joint. This procedure is often performed arthroscopically, resulting in less scarring and faster recovery. Post-surgery, our rehabilitation programs help you regain strength and prevent future injuries.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/index/desktop/x-ray-1920-1050.jpg') }}" class="card-img-top" alt="Physical Therapy and Rehabilitation">
+        <div class="card-body">
+          <h5 class="card-title">Physical Therapy and Rehabilitation</h5>
+          <p class="card-text">Physical therapy and rehabilitation are essential components of knee treatment. Our therapists design personalized exercise programs to improve strength, flexibility, and function. We use a combination of manual therapy, therapeutic exercises, and modalities to aid recovery. Regular physical therapy sessions can help you achieve optimal results and prevent future knee problems.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/index/desktop/x-ray-1920-1050.jpg') }}" class="card-img-top" alt="Injection Procedures">
+        <div class="card-body">
+          <h5 class="card-title">Injection Procedures</h5>
+          <p class="card-text">Injection procedures such as hyaluronic acid, PRP, and corticosteroids offer non-surgical options for managing knee pain. Hyaluronic acid injections provide lubrication and cushioning in the joint. PRP injections use your own blood to promote healing and reduce inflammation. Corticosteroid injections are effective for reducing pain and swelling. These treatments can delay or even prevent the need for surgery.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 <!-- Carousel -->
 <!-- <div
