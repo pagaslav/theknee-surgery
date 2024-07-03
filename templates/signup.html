@@ -1,0 +1,120 @@
+{% extends "base.html" %} {% block title %}The Knee Surgery | Sign Up Page{%
+endblock %} {% block content %}
+
+<!-- Bootstrap Sign Up Form -->
+<main class="form-signin">
+  <form method="POST" action="{{ url_for('signup') }}">
+    <h2 class="h3 mb-3 fw-normal">Create Your Account</h2>
+
+    <!-- Name input field with floating label -->
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control"
+        id="floatingName"
+        name="name"
+        placeholder="Full Name"
+        required
+      />
+      <label for="floatingName">Full Name</label>
+    </div>
+
+    <!-- Gender input field with floating label -->
+    <div class="form-floating mb-3">
+      <select class="form-control" id="floatingGender" name="gender" required>
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <label for="floatingGender">Gender</label>
+    </div>
+
+    <!-- Age input field with floating label -->
+    <div class="form-floating mb-3">
+      <input
+        type="number"
+        class="form-control"
+        id="floatingAge"
+        name="age"
+        placeholder="Age"
+        required
+      />
+      <label for="floatingAge">Age</label>
+    </div>
+
+    <!-- Phone input field with floating label -->
+    <div class="form-floating mb-3">
+      <input
+        type="tel"
+        class="form-control"
+        id="floatingPhone"
+        name="phone"
+        placeholder="07990563212"
+        pattern="[0-9]{10,11}"
+        required
+      />
+      <label for="floatingPhone">Phone Number</label>
+    </div>
+
+    <!-- Email input field with floating label -->
+    <div class="form-floating mb-3">
+      <input
+        type="email"
+        class="form-control"
+        id="floatingEmail"
+        name="email"
+        placeholder="name@example.com"
+        required
+      />
+      <label for="floatingEmail">Email address</label>
+    </div>
+
+    <!-- Password input field with floating label -->
+    <div class="form-floating mb-3">
+      <input
+        type="password"
+        class="form-control"
+        id="floatingPassword"
+        name="password"
+        placeholder="Password"
+        required
+      />
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <!-- Confirm Password input field with floating label -->
+    <div class="form-floating mb-3">
+      <input
+        type="password"
+        class="form-control"
+        id="floatingConfirmPassword"
+        name="confirm_password"
+        placeholder="Confirm Password"
+        required
+      />
+      <label for="floatingConfirmPassword">Confirm Password</label>
+    </div>
+
+    <!-- Terms and conditions checkbox -->
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" name="terms" value="agree" required /> I agree to
+        the
+        <a href="#">terms and conditions</a>
+      </label>
+    </div>
+
+    <!-- Sign up button -->
+    <button
+      class="w-50 btn btn-lg btn-primary"
+      type="submit"
+      aria-label="Sign Up Button"
+    >
+      Sign Up
+    </button>
+  </form>
+</main>
+
+{% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
+endblock %}
