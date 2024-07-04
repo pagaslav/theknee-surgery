@@ -42,7 +42,7 @@ def signup():
         # Check if the email already exists
         existing_user = mongo.db.users.find_one({"email": email})
         if existing_user:
-            flash("Email already exists. Please use a different email.")
+            flash("Email already exists. Please use a different email.", "danger")
             return redirect(url_for("signup"))
 
         # Check if passwords match
@@ -60,10 +60,14 @@ def signup():
             }
             # Insert the new user into the database
             mongo.db.users.insert_one(new_user)
-            flash("Registration successful!")
-            return redirect(url_for("login"))
+            flash("Registration successful!", "success")
+
+            # Log the user in by adding their email to the session
+            session["user"] = email
+
+            return redirect(url_for("profile", username=email))
         else:
-            flash("Passwords do not match. Please try again.")
+            flash("Passwords do not match. Please try again.", "danger")
             return redirect(url_for("signup"))
 
     # Render the signup template
@@ -83,27 +87,25 @@ def login():
             # Check if the password matches
             if check_password_hash(existing_user["password"], password):
                 session["user"] = email
-                flash("Welcome, {}".format(existing_user["name"]))
+                flash("Welcome, {}".format(existing_user["name"]), "success")
                 return redirect(url_for("profile", username=email))
             else:
-                flash("Incorrect Email and/or Password")
+                flash("Incorrect Email and/or Password", 'danger')
                 return redirect(url_for("login"))
 
         else:
-            flash("Incorrect Email and/or Password")
+            flash("Incorrect Email and/or Password", 'danger')
             return redirect(url_for("login"))
 
     # Render the login template
     return render_template("login.html")
 
-
 @app.route("/logout")
 def logout():
     # Remove user from session
     session.pop("user", None)
-    flash("You have been logged out.")
+    flash("You have been logged out.", 'info')
     return redirect(url_for("index"))
-
 
 @app.route("/profile/<username>")
 def profile(username):
@@ -120,9 +122,8 @@ def profile(username):
         return render_template("profile.html", user=user, medical_records=medical_records, appointments=appointments)
     else:
         # This case should not occur if login logic is correct, but it's a good safety measure
-        flash("User not found")
+        flash("User not found", "danger")
         return redirect(url_for("index"))
-    
 
 if __name__ == "__main__":
     # Run the Flask application
