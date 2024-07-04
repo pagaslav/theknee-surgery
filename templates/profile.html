@@ -1,6 +1,13 @@
 {% extends "base.html" %} {% block title %}Profile{% endblock %} {% block
 content %}
 <main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }} mt-3">
+    <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+
   <h2 class="mt-5">Profile</h2>
 
   <!-- User Information -->
