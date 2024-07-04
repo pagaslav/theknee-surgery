@@ -161,7 +161,7 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-danger"
               data-bs-dismiss="modal"
             >
               Cancel
@@ -306,6 +306,17 @@
     ></script>
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <!-- Inline script for logout modal -->
+    <script>
+      $(document).ready(function () {
+        // Attach a click event handler to the confirmLogout button
+        $("#confirmLogout").click(function () {
+          // Redirect the user to the logout URL
+          window.location.href = "{{ url_for('logout') }}"
+        })
+      })
+    </script>
     {% block scripts %} {% endblock %}
   </body>
 </html>
