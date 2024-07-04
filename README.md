@@ -135,7 +135,8 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 
 ### Bugs
 
-**app.py**
+#### SSL
+
 **SSL Certificate Verification Failed When Connecting to MongoDB:** Encountered an SSL certificate verification error (SSL: CERTIFICATE_VERIFY_FAILED) when trying to connect to MongoDB.
 ![Bug 1, code](static/documentation/bugs/1/bug-1.jpg)
 ![Bug 1, Error Message](static/documentation/bugs/1/bug-1-1.jpg)
@@ -143,6 +144,36 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 ![Bug 1, Code Changes](static/documentation/bugs/1/bug-1-2.jpg)
 **Result:**
 ![Bug 1, Result](static/documentation/bugs/1/bug-1-3.jpg)
+
+#### Logout Issue
+
+**Problem:**
+When a user clicks the "Log Out" link and confirms the logout, the user is redirected to the homepage, but the navigation menu still shows the logged-in state (i.e., it still shows "Profile" and "Log Out" instead of "Log In" and "Sign Up"). Additionally, the user can still access the profile page.
+**Steps to Reproduce:**
+
+1.  Log in to your account.
+2.  Click the "Log Out" link.
+3.  Confirm the logout.
+    **Cause:**
+    The issue was caused by the JavaScript code for the logout not being correctly executed within the context of the Flask application, leading to the user session not being properly terminated on the server side. This issue is specific to how Jinja templates are rendered and how JavaScript interacts with the Flask backend.
+    Initially, the JavaScript code for the logout was included in a custom JavaScript file. This caused the problem as described because the Jinja templating was not correctly interacting with the external JavaScript file. Once the code was moved directly into the `base.html` template, everything worked as expected.
+    **Solution:**
+4.  Ensure the JavaScript code is included at the right place in the `base.html` template to properly interact with the Flask backend:
+
+        ```html
+        <!-- Inline script for logout modal -->
+        <script>
+          $(document).ready(function () {
+            // Attach a click event handler to the confirmLogout button
+            $("#confirmLogout").click(function () {
+              // Redirect the user to the logout URL
+              window.location.href = "{{ url_for('logout') }}"
+            })
+          })
+        </script>
+        ```
+
+    After implementing the above solution, the logout functionality works as expected, with the user being properly logged out and the navigation menu updating correctly to reflect the logged-out state.
 
 ### Unsolved Bugs
 
