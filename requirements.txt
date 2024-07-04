@@ -6,7 +6,7 @@ click==8.1.7
 dnspython==2.6.1
 Flask==3.0.3
 Flask-PyMongo==2.3.0
-Flask-Session
+fpdf==1.7.2
 google-auth==2.29.0
 google-auth-oauthlib==1.2.0
 gspread==6.1.0
@@ -24,3 +24,4 @@ rsa==4.9
 StrEnum==0.4.15
 urllib3==2.2.1
 Werkzeug==3.0.3
+msgspec==0.18.6
