@@ -7,7 +7,6 @@ from bson.objectid import ObjectId
 import certifi
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
-from flask_session import Session
 
 # Checking if env.py file exists for environment variables
 if os.path.exists("env.py"):
@@ -26,9 +25,7 @@ mongo = PyMongo(app, tlsCAFile=certifi.where())
 
 # Session configuration
 app.config["SESSION_PERMANENT"] = False  # Session is not permanent by default
-app.config["SESSION_TYPE"] = "filesystem"  # Use the filesystem to store session data
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
-Session(app)
 
 @app.route("/")
 def index():
@@ -122,9 +119,6 @@ def logout():
     session.pop("user", None)
     flash("You have been logged out.", 'info')
     response = redirect(url_for("index"))
-
-    # Remove cookie
-    response.set_cookie("user_email", "", expires=0)
 
     # Prevent caching of this response
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
