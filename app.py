@@ -105,7 +105,17 @@ def logout():
     # Remove user from session
     session.pop("user", None)
     flash("You have been logged out.", 'info')
-    return redirect(url_for("index"))
+    response = redirect(url_for("index"))
+
+    # Prevent caching of this response
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+
+    # For HTTP/1.0 backward compatibility
+    response.headers['Pragma'] = 'no-cache'
+
+    # Expire the content immediately
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route("/profile/<username>")
 def profile(username):
