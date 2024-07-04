@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block title %}Our Doctors{% endblock %} {% block
+content %}
+<main class="container">
+  <h2 class="mt-5">Meet Our Doctors</h2>
+  <div class="row g-4 mt-3">
+    <div class="col-12">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="{{ url_for('static', filename='images/doctors/doctor1.jpg') }}"
+              class="img-fluid rounded-start"
+              alt="Doctor 1"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Dr. John Doe</h5>
+              <p class="card-text">Orthopedic Surgeon</p>
+              <p class="card-text">
+                Dr. John Doe is a leading orthopedic surgeon with over 20 years
+                of experience. He specializes in knee and joint surgeries,
+                providing top-notch care to all his patients.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="{{ url_for('static', filename='images/doctors/doctor2.jpg') }}"
+              class="img-fluid rounded-start"
+              alt="Doctor 2"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Dr. Jane Smith</h5>
+              <p class="card-text">Rheumatologist</p>
+              <p class="card-text">
+                Dr. Jane Smith is a renowned rheumatologist with a passion for
+                helping patients manage chronic pain and autoimmune diseases.
+                She is dedicated to improving the quality of life for her
+                patients.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="{{ url_for('static', filename='images/doctors/doctor3.jpg') }}"
+              class="img-fluid rounded-start"
+              alt="Doctor 3"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Dr. Emily Johnson</h5>
+              <p class="card-text">Physical Therapist</p>
+              <p class="card-text">
+                Dr. Emily Johnson is an experienced physical therapist
+                specializing in rehabilitation and recovery. She works closely
+                with patients to develop personalized treatment plans for
+                optimal outcomes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
+endblock %}
