@@ -130,6 +130,11 @@ def logout():
     response.headers['Expires'] = '0'
     return response
 
+
+@app.route("/doctors")
+def doctors():
+    return render_template("doctors.html")
+
 @app.route("/profile/<username>")
 def profile(username):
     # Find the user by email
