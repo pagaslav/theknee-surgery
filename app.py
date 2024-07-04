@@ -6,6 +6,8 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import certifi
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import timedelta
+from flask_session import Session
 
 # Checking if env.py file exists for environment variables
 if os.path.exists("env.py"):
@@ -21,6 +23,12 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 # Initializing PyMongo with Flask application instance with certifi
 mongo = PyMongo(app, tlsCAFile=certifi.where())
+
+# Session configuration
+app.config["SESSION_PERMANENT"] = False  # Session is not permanent by default
+app.config["SESSION_TYPE"] = "filesystem"  # Use the filesystem to store session data
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+Session(app)
 
 @app.route("/")
 def index():
@@ -79,6 +87,7 @@ def login():
         # Get form data
         email = request.form.get("email").lower()  # Convert email to lower case
         password = request.form.get("password")
+        remember = request.form.get("remember")
         
         # Find the user by email
         existing_user = mongo.db.users.find_one({"email": email})
@@ -88,6 +97,12 @@ def login():
             if check_password_hash(existing_user["password"], password):
                 session["user"] = email
                 flash("Welcome, {}".format(existing_user["name"]), "success")
+
+                # Set session to be permanent if remember me is checked
+                if remember:
+                    session.permanent = True  # This sets the session to use the permanent lifetime
+                    app.permanent_session_lifetime = timedelta(days=30)  # Set session lifetime to 30 days
+
                 return redirect(url_for("profile", username=email))
             else:
                 flash("Incorrect Email and/or Password", 'danger')
@@ -96,9 +111,10 @@ def login():
         else:
             flash("Incorrect Email and/or Password", 'danger')
             return redirect(url_for("login"))
-
+    
     # Render the login template
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():
@@ -106,6 +122,9 @@ def logout():
     session.pop("user", None)
     flash("You have been logged out.", 'info')
     response = redirect(url_for("index"))
+
+    # Remove cookie
+    response.set_cookie("user_email", "", expires=0)
 
     # Prevent caching of this response
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
