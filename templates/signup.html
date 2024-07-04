@@ -6,7 +6,7 @@ endblock %} {% block content %}
   <form method="POST" action="{{ url_for('signup') }}">
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %}
-    <div class="alert alert-{{ category }}"><h3 class="h3 mb-3 fw-normal text-danger">{{ message }}</h2></div>
+    <div class=""><h3 class="h3 mb-3 fw-normal alert alert-{{ category }}">{{ message }}</h2></div>
     {% endfor %} {% endif %} {% endwith %}
     <h2 class="h2 mb-3 fw-normal">Create Your Account</h2>
     

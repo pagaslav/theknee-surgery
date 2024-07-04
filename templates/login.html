@@ -7,7 +7,7 @@ endblock %} {% block content %}
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %}
     <div class="alert alert-{{ category }}">
-      <h2 class="h2 mb-3 fw-normal text-danger">{{ message }}</h2>
+      <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
     </div>
     {% endfor %} {% else %}
     <h2 class="h2 mb-3 fw-normal">Login to Your Account</h2>
