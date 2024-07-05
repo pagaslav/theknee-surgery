@@ -218,11 +218,6 @@ footer {
 }
 
 /* Media queries for responsive design */
-@media (min-width: 2200px) {
-  img {
-    max-width: none !important; /* Remove max-width for larger screens */
-  }
-}
 
 @media screen and (max-width: 1400px) {
   .welcome-title {
