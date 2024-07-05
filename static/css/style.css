@@ -217,6 +217,41 @@ footer {
   background-color: #ffb74d;
 }
 
+/* Sign Up Page */
+/* Password requirements */
+#password-requirements p {
+  font-size: 0.9em;
+  color: gray;
+  display: inline;
+}
+
+.neutral .fa-check,
+.neutral {
+  color: gray;
+}
+
+.invalid .fa-check,
+.invalid {
+  color: red;
+}
+
+.valid .fa-check,
+.valid {
+  color: green;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+#floatingPassword,
+#floatingConfirmPassword {
+  padding-right: 2.5rem;
+}
 /* Media queries for responsive design */
 
 @media screen and (max-width: 1400px) {
