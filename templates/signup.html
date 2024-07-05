@@ -75,7 +75,7 @@ endblock %} {% block content %}
     </div>
 
     <!-- Password input field with floating label -->
-    <div class="form-floating mb-3">
+    <div class="form-floating">
       <input
         type="password"
         class="form-control"
@@ -83,8 +83,19 @@ endblock %} {% block content %}
         name="password"
         placeholder="Password"
         required
+        onkeyup="validatePassword()"
       />
       <label for="floatingPassword">Password</label>
+      <span class="password-toggle" onclick="togglePasswordVisibility('floatingPassword', 'password-icon')">
+        <i id="password-icon" class="fa-regular fa-eye"></i>
+      </span>
+    </div>
+
+    <!-- Password requirements -->
+    <div id="password-requirements" class="mb-3">
+      <p id="length" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>At least 8 characters</p>
+      <p id="uppercase" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>An uppercase letter</p>
+      <p id="number" class="neutral"><i class="fa-solid fa-check me-1"></i>At least one number</p>
     </div>
 
     <!-- Confirm Password input field with floating label -->
@@ -98,7 +109,10 @@ endblock %} {% block content %}
         required
       />
       <label for="floatingConfirmPassword">Confirm Password</label>
-    </div>
+      <span class="password-toggle" onclick="togglePasswordVisibility('floatingConfirmPassword', 'confirm-password-icon')">
+        <i id="confirm-password-icon" class="fa-regular fa-eye"></i>
+      </span>
+</div>
 
     <!-- Terms and conditions checkbox -->
     <div class="checkbox mb-3">
