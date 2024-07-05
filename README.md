@@ -191,6 +191,33 @@ When a user clicks the "Log Out" link and confirms the logout, the user is redir
 
 ### Content
 
+#### Terms and Conditions
+
+The Terms and Conditions for this project were sourced from [TermsFeed](https://www.termsfeed.com/), a platform that provides templates and generators for legal documents. These terms were adapted to fit the specific needs of The Knee Surgery website, ensuring that they are relevant to the services provided and the target audience. This addition helps make the project more realistic and professional by outlining the legal guidelines and user responsibilities clearly.
+
+#### Privacy Policy
+
+The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.com/), ensuring comprehensive coverage of all necessary legal aspects related to user data and privacy. This policy was customized to align with the operations and data handling practices of The Knee Surgery website. Including a Privacy Policy enhances the authenticity of the project, demonstrating a commitment to user privacy and data protection, which is crucial for any real-world website.
+
+### Images
+
+#### Index page
+
+1. Doctor Illustrator Design, [License.](documentation/licenses/photos/image-1-license-certificate.txt)
+2. Physiotherapist check X ray, [License.](documentation/licenses/photos/image-2-license-certificate.txt)
+3. Hands operating a patient, [License.](documentation/licenses/photos/image-3-license-certificate.txt)
+4. Knee joint model , [License.](documentation/licenses/photos/image-4-license-certificate.txt)
+5. Ligament Reconstruction image was generated using AI from [ChatGPT](https://www.openai.com/chatgpt)
+6. Bandaging woman's injured knee, [License.](documentation/licenses/photos/image-6-license-certificate.txt)
+7. Injection between eyebrow, [License.](documentation/licenses/photos/image-7-license-certificate.txt)
+
+#### Our Doctors page
+
+1. Dr. John Doe photo, [License.](documentation/licenses/photos/image-8-license-certificate.txt)
+2. Dr. Jane Smith photo, [License.](documentation/licenses/photos/image-9-license-certificate.txt)
+3. Dr. Emily Johnson photo, [License.](documentation/licenses/photos/image-10-license-certificate.txt)
+4. Dr. Michael Brown photo, [License.](documentation/licenses/photos/image-11-license-certificate.txt)
+
 ## Acknowledgments
 
 ## Future Improvements
