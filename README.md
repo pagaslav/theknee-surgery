@@ -140,17 +140,14 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 **SSL Certificate Verification Failed When Connecting to MongoDB:** Encountered an SSL certificate verification error (SSL: CERTIFICATE_VERIFY_FAILED) when trying to connect to MongoDB.
 
 ![Bug 1, code](static/documentation/bugs/1/bug-1.jpg)
-<br>
 ![Bug 1, Error Message](static/documentation/bugs/1/bug-1-1.jpg)
-<br>
+
 **Solution:** Resolved the issue by adding the certifi library (import certifi) and modifying the PyMongo initialization line to specify the tlsCAFile parameter.
-<br>
+
 **Code Changes and Result:**
 
 ![Bug 1, Code Changes](static/documentation/bugs/1/bug-1-2.jpg)
-<br>
 ![Bug 1, Result](static/documentation/bugs/1/bug-1-3.jpg)
-<br>
 
 #### Logout Issue
 
