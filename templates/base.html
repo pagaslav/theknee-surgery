@@ -132,7 +132,11 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About us</a>
+              <a
+                class="nav-link {% if request.endpoint == 'about' %}active{% endif %}"
+                href="{{ url_for('about') }}"
+                >About us</a
+              >
             </li>
           </ul>
         </div>
