@@ -218,6 +218,13 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 3. Dr. Emily Johnson photo, [License.](documentation/licenses/photos/image-10-license-certificate.txt)
 4. Dr. Michael Brown photo, [License.](documentation/licenses/photos/image-11-license-certificate.txt)
 
+#### About Us page
+
+1. Hospital reception counter, [License.](documentation/licenses/photos/image-12-license-certificate.txt)
+2. Busy Hospital Corridor, [License.](documentation/licenses/photos/image-13-license-certificate.txt)
+3. Modern operating theatre, [License.](documentation/licenses/photos/image-14-license-certificate.txt)
+4. A room of an hospital, [License.](documentation/licenses/photos/image-15-license-certificate.txt)
+
 ## Acknowledgments
 
 ## Future Improvements
