@@ -135,6 +135,12 @@ def logout():
 def doctors():
     return render_template("doctors.html")
 
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
 @app.route("/profile/<username>")
 def profile(username):
     # Find the user by email
