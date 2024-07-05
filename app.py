@@ -136,6 +136,11 @@ def doctors():
     return render_template("doctors.html")
 
 
+@app.route("/policy")
+def policy():
+    return render_template("policy.html")
+
+
 @app.route("/about")
 def about():
     return render_template("about.html")
