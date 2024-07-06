@@ -213,7 +213,7 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 4. Knee joint model , [License.](documentation/licenses/photos/image-4-license-certificate.txt)
 5. Ligament Reconstruction image was generated using AI from [ChatGPT](https://www.openai.com/chatgpt)
 6. Bandaging woman's injured knee, [License.](documentation/licenses/photos/image-6-license-certificate.txt)
-7. Injection between eyebrow, [License.](documentation/licenses/photos/image-7-license-certificate.txt)
+7. Injection Procedures, [License.](documentation/licenses/photos/image-7-license-certificate.txt)
 
 #### Our Doctors page
 
