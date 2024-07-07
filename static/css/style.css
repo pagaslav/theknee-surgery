@@ -192,6 +192,11 @@ footer {
   text-align: center;
   margin: auto;
 } */
+.carousel-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 40px;
+}
 
 /* .carousel-inner img {
   width: 100%;
