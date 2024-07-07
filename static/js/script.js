@@ -24,6 +24,21 @@ $(document).ready(function () {
     }
   })
 
+  // Show or hide the button
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+      $("#back-to-top").fadeIn()
+    } else {
+      $("#back-to-top").fadeOut()
+    }
+  })
+
+  // Animate the scroll to top
+  $("#back-to-top").click(function (e) {
+    e.preventDefault()
+    $("html, body").animate({ scrollTop: 0 }, "300")
+  })
+
   // Function to update the time and date
   function updateTime() {
     const now = new Date()
