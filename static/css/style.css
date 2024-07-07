@@ -233,10 +233,16 @@ footer {
 
 /* Sign Up Page */
 /* Password requirements */
+#password-requirements {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 #password-requirements p {
   font-size: 0.9em;
   color: gray;
   display: inline;
+  margin-bottom: 0;
 }
 
 .neutral .fa-check,
@@ -396,7 +402,7 @@ footer {
 }
 
 /* Extra small devices (phones, less than 415px) */
-@media (max-width: 415px) {
+@media (max-width: 420px) {
   /* .custom-brand-top {
     font-size: 1.3em;
   } */
@@ -407,6 +413,14 @@ footer {
 
   .welcome-subtitle {
     font-size: 0.9em;
+  }
+  #password-requirements {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  #password-requirements p {
+    margin-bottom: 0;
   }
 }
 
