@@ -23,6 +23,22 @@ $(document).ready(function () {
       $("#number").removeClass("neutral valid").addClass("invalid")
     }
   })
+
+  // Function to update the time and date
+  function updateTime() {
+    const now = new Date()
+    const timeString = now.toLocaleTimeString()
+    const options = { year: "numeric", month: "long", day: "numeric" }
+    const dateString = now.toLocaleDateString("en-GB", options)
+    $("#clock").text(timeString)
+    $("#date").text(dateString)
+  }
+
+  // Initial call to update time
+  updateTime()
+
+  // Update time every second
+  setInterval(updateTime, 1000)
 })
 
 function togglePasswordVisibility(inputId, iconId) {
