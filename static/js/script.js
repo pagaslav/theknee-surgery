@@ -54,6 +54,64 @@ $(document).ready(function () {
 
   // Update time every second
   setInterval(updateTime, 1000)
+
+  // Enable editing
+  $("#editButton").click(function () {
+    $('span[id$="Text"]').addClass("d-none")
+    $('input[id$="Input"]').removeClass("d-none")
+    $("#currentPasswordDiv").removeClass("d-none")
+    $(this).addClass("d-none")
+    $("#saveButton, #cancelButton").removeClass("d-none")
+  })
+
+  // Cancel editing
+  $("#cancelButton").click(function () {
+    $('span[id$="Text"]').removeClass("d-none")
+    $('input[id$="Input"]').addClass("d-none")
+    $("#currentPasswordDiv").addClass("d-none")
+    $("#editButton").removeClass("d-none")
+    $("#saveButton, #cancelButton").addClass("d-none")
+  })
+
+  // Enable save button only if current password is entered
+  $("#currentPasswordInput").on("input", function () {
+    if ($(this).val().length > 0) {
+      $("#saveButton").removeAttr("disabled")
+    } else {
+      $("#saveButton").attr("disabled", "disabled")
+    }
+  })
+
+  // Save edited data
+  $("#saveButton").click(function (e) {
+    e.preventDefault()
+    let formData = {
+      name: $("#nameInput").val(),
+      gender: $("#genderInput").val(),
+      dob: $("#dobInput").val(),
+      phone: $("#phoneInput").val(),
+      email: $("#emailInput").val(),
+      current_password: $("#currentPasswordInput").val(),
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/edit_user_ajax",
+      contentType: "application/json",
+      data: JSON.stringify(formData),
+      success: function (response) {
+        if (response.success) {
+          alert(response.message)
+          location.reload()
+        } else {
+          alert(response.message)
+        }
+      },
+      error: function (response) {
+        alert(response.responseJSON.message)
+      },
+    })
+  })
 })
 
 function togglePasswordVisibility(inputId, iconId) {
