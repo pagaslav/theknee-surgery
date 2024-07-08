@@ -102,7 +102,11 @@ $(document).ready(function () {
       success: function (response) {
         if (response.success) {
           alert(response.message)
-          location.reload()
+          if (response.redirect) {
+            window.location.href = response.redirect
+          } else {
+            location.reload()
+          }
         } else {
           alert(response.message)
         }
