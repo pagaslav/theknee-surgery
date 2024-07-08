@@ -19,7 +19,9 @@ content %}
       <p><strong>Name:</strong> {{ user.name }}</p>
       <p><strong>Role:</strong> {{ user.role }}</p>
       <p><strong>Gender:</strong> {{ user.gender }}</p>
-      <p><strong>Age:</strong> {{ age }}</p>
+      <p>
+        <strong>Date of Birth:</strong> {{ user.dob if user.dob else 'N/A' }}
+      </p>
       <p><strong>Phone:</strong> {{ user.phone }}</p>
       <p><strong>Email:</strong> {{ user.email }}</p>
     </div>

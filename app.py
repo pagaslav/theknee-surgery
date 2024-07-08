@@ -152,14 +152,6 @@ def profile(username):
     # Find the user by email
     user = mongo.db.users.find_one({"email": username})
     if user:
-        # Calculate age based on date of birth if dob exists
-        if "dob" in user:
-            dob = datetime.strptime(user["dob"], "%d.%m.%Y")
-            today = datetime.today()
-            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-        else:
-            age = "N/A"
-
         # Get user's medical records
         medical_records = list(mongo.db.medical_records.find({"patient_id": user["_id"]}))
         
@@ -167,7 +159,7 @@ def profile(username):
         appointments = list(mongo.db.appointments.find({"patient_id": user["_id"]}))
         
         # Render the profile template with user data
-        return render_template("profile.html", user=user, age=age, medical_records=medical_records, appointments=appointments)
+        return render_template("profile.html", user=user, medical_records=medical_records, appointments=appointments)
     else:
         # This case should not occur if login logic is correct, but it's a good safety measure
         flash("User not found", "danger")
