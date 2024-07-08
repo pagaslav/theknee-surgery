@@ -35,6 +35,15 @@ content %}
             class="d-none form-control"
             name="role"
             value="{{ user.role }}"
+            {%
+            if
+            user.role
+            !="admin"
+            %}
+            readonly
+            {%
+            endif
+            %}
           />
         </p>
         <p>
