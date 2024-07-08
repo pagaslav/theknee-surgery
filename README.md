@@ -162,22 +162,83 @@ When a user clicks the "Log Out" link and confirms the logout, the user is redir
     The issue was caused by the JavaScript code for the logout not being correctly executed within the context of the Flask application, leading to the user session not being properly terminated on the server side. This issue is specific to how Jinja templates are rendered and how JavaScript interacts with the Flask backend.
     Initially, the JavaScript code for the logout was included in a custom JavaScript file. This caused the problem as described because the Jinja templating was not correctly interacting with the external JavaScript file. Once the code was moved directly into the `base.html` template, everything worked as expected.
     **Solution:**
-4.  Ensure the JavaScript code is included at the right place in the `base.html` template to properly interact with the Flask backend:
+    Ensure the JavaScript code is included at the right place in the `base.html` template to properly interact with the Flask backend:
 
-        ```html
-        <!-- Inline script for logout modal -->
-        <script>
-          $(document).ready(function () {
-            // Attach a click event handler to the confirmLogout button
-            $("#confirmLogout").click(function () {
-              // Redirect the user to the logout URL
-              window.location.href = "{{ url_for('logout') }}"
-            })
-          })
-        </script>
-        ```
+            ```html
+            <!-- Inline script for logout modal -->
+            <script>
+              $(document).ready(function () {
+                // Attach a click event handler to the confirmLogout button
+                $("#confirmLogout").click(function () {
+                  // Redirect the user to the logout URL
+                  window.location.href = "{{ url_for('logout') }}"
+                })
+              })
+            </script>
+            ```
 
-    After implementing the above solution, the logout functionality works as expected, with the user being properly logged out and the navigation menu updating correctly to reflect the logged-out state.
+        After implementing the above solution, the logout functionality works as expected, with the user being properly logged out and the navigation menu updating correctly to reflect the logged-out state.
+
+#### User Email Update Issue
+
+**Problem:**
+When a user updates their email address in the profile settings, the user remains logged in with the new email address, but they are redirected to the home page. Upon returning to the profile page, the user’s profile information is displayed correctly, but a “User not found” notification appears at the top of the page.
+
+**Steps to Reproduce:**
+
+    1.	Log in to your account.
+    2.	Go to the profile page.
+    3.	Click the “Edit” button to enable editing mode.
+    4.	Change the email address to a new valid email address.
+    5.	Enter the current password and click “Save.”
+    6.	Observe the redirection to the home page.
+    7.	Navigate back to the profile page.
+    8.	Observe the “User not found” notification at the top of the page.
+
+**Expected Behavior:**
+
+    •	The user should remain on the profile page after updating the email address.
+    •	No “User not found” notification should appear if the profile information is displayed correctly.
+
+**Actual Behavior:**
+
+    •	The user is redirected to the home page after updating the email address.
+    •	A “User not found” notification appears at the top of the profile page upon returning.
+
+**Screenshot:**
+![Bug 3, User not found Message](static/documentation/bugs/1/bug-3-1.webp)
+
+**Cause:**
+The issue was caused by the Flask application not correctly updating the session and redirecting after an email change. Although the session email was updated, the redirection logic did not reflect the new session state, leading to the user being treated as unauthenticated or non-existent in subsequent requests.
+
+**Solution:**
+Ensure that after updating the email in the session, the user is redirected correctly and the session state is fully updated:
+
+      ```python
+      # Update session email if changed
+      if current_email != new_email:
+          session["user"] = new_email
+          flash("Your email has been updated to {}.".format(new_email), "success")
+          return {"success": True, "message": "Your email has been updated.", "redirect": url_for("profile", username=new_email)}
+      else:
+          flash("Your information has been updated.", "success")
+          return {"success": True, "message": "Your information has been updated.", "redirect": url_for("profile", username=current_email)}
+
+Ensure the JavaScript handles the success response correctly:
+
+      ```javascript
+      success: function (response) {
+        if (response.success) {
+          alert(response.message);
+          window.location.href = response.redirect; // Updated to redirect after successful email change
+        } else {
+          alert(response.message);
+        }
+      }
+
+After implementing the above solution, the email change functionality works as expected, keeping the user authenticated with the new email address and displaying the appropriate success message on the profile page.
+
+![Bug 3, Result](static/documentation/bugs/1/bug-3-2.webp)
 
 ### Unsolved Bugs
 
