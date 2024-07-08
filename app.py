@@ -164,6 +164,57 @@ def profile(username):
         # This case should not occur if login logic is correct, but it's a good safety measure
         flash("User not found", "danger")
         return redirect(url_for("index"))
+    
+
+@app.route("/edit_user_ajax", methods=["POST"])
+def edit_user_ajax():
+    if "user" in session:
+        current_email = session["user"]
+        user = mongo.db.users.find_one({"email": current_email})
+        if user:
+            current_password = request.json.get("current_password")
+
+            # Verify current password
+            if not check_password_hash(user["password"], current_password):
+                return {"success": False, "message": "Current password is incorrect."}, 403
+
+            # Get form data
+            name = request.json.get("name")
+            gender = request.json.get("gender")
+            dob = request.json.get("dob")
+            phone = request.json.get("phone")
+            new_email = request.json.get("email").lower()
+
+            # Update data dictionary
+            update_data = {
+                "name": name,
+                "gender": gender,
+                "dob": dob if dob else user.get("dob"),  # Ensure dob is not null
+                "phone": phone,
+                "email": new_email,
+            }
+
+            # Allow role change only for admin users
+            if user["role"] == "admin":
+                role = request.json.get("role")
+                update_data["role"] = role if role else user.get("role")  # Ensure role is not null
+
+            # Update user information in the database
+            mongo.db.users.update_one(
+                {"_id": user["_id"]},
+                {"$set": update_data}
+            )
+
+            # Update session email if changed
+            if current_email != new_email:
+                session["user"] = new_email
+
+            return {"success": True, "message": "Your information has been updated."}
+        else:
+            return {"success": False, "message": "User not found."}, 404
+    else:
+        return {"success": False, "message": "You need to log in to edit your information."}, 403
+    
 
 if __name__ == "__main__":
     # Run the Flask application
