@@ -208,8 +208,11 @@ def edit_user_ajax():
             # Update session email if changed
             if current_email != new_email:
                 session["user"] = new_email
-
-            return {"success": True, "message": "Your information has been updated."}
+                flash("Your email has been updated to {}.".format(new_email), "success")
+                return {"success": True, "message": "Your email has been updated.", "redirect": url_for("profile", username=new_email)}
+            else:
+                flash("Your information has been updated.", "success")
+                return {"success": True, "message": "Your information has been updated.", "redirect": url_for("profile", username=current_email)}
         else:
             return {"success": False, "message": "User not found."}, 404
     else:
