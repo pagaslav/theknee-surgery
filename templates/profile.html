@@ -16,17 +16,104 @@ content %}
       <h3>User Information</h3>
     </div>
     <div class="card-body">
-      <p><strong>Name:</strong> {{ user.name }}</p>
-      <p><strong>Role:</strong> {{ user.role }}</p>
-      <p><strong>Gender:</strong> {{ user.gender }}</p>
-      <p>
-        <strong>Date of Birth:</strong> {{ user.dob if user.dob else 'N/A' }}
-      </p>
-      <p><strong>Phone:</strong> {{ user.phone }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
+      <form id="editUserForm">
+        <p>
+          <strong>Name:</strong> <span id="nameText">{{ user.name }}</span>
+          <input
+            type="text"
+            id="nameInput"
+            class="d-none form-control"
+            name="name"
+            value="{{ user.name }}"
+          />
+        </p>
+        <p>
+          <strong>Role:</strong> <span id="roleText">{{ user.role }}</span>
+          <input
+            type="text"
+            id="roleInput"
+            class="d-none form-control"
+            name="role"
+            value="{{ user.role }}"
+          />
+        </p>
+        <p>
+          <strong>Gender:</strong>
+          <span id="genderText">{{ user.gender }}</span>
+          <input
+            type="text"
+            id="genderInput"
+            class="d-none form-control"
+            name="gender"
+            value="{{ user.gender }}"
+          />
+        </p>
+        <p>
+          <strong>Date of Birth:</strong>
+          <span id="dobText">{{ user.dob or 'N/A' }}</span>
+          <input
+            type="date"
+            id="dobInput"
+            class="d-none form-control"
+            name="dob"
+            value="{{ user.dob }}"
+          />
+        </p>
+        <p>
+          <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
+          <input
+            type="text"
+            id="phoneInput"
+            class="d-none form-control"
+            name="phone"
+            value="{{ user.phone }}"
+          />
+        </p>
+        <p>
+          <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
+          <input
+            type="text"
+            id="emailInput"
+            class="d-none form-control"
+            name="email"
+            value="{{ user.email }}"
+          />
+        </p>
+        <div id="currentPasswordDiv" class="d-none">
+          <p>
+            <strong>Current Password:</strong>
+            <input
+              type="password"
+              id="currentPasswordInput"
+              class="form-control"
+              name="current_password"
+              required
+            />
+          </p>
+        </div>
+        <div class="d-flex justify-content-start">
+          <button type="button" id="editButton" class="btn btn-primary">
+            Edit
+          </button>
+          <button
+            type="button"
+            id="saveButton"
+            class="btn btn-success d-none ms-2"
+            disabled
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            id="cancelButton"
+            class="btn btn-danger d-none ms-2"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-
   <!-- Medical Records -->
   <div class="card mb-3">
     <div class="card-header">
