@@ -1,27 +1,6 @@
 $(document).ready(function () {
   $("#floatingPassword").on("input", function () {
-    let password = $(this).val()
-
-    // Check the length of the password
-    if (password.length >= 8) {
-      $("#length").removeClass("neutral invalid").addClass("valid")
-    } else {
-      $("#length").removeClass("neutral valid").addClass("invalid")
-    }
-
-    // Check for uppercase letter
-    if (/[A-Z]/.test(password)) {
-      $("#uppercase").removeClass("neutral invalid").addClass("valid")
-    } else {
-      $("#uppercase").removeClass("neutral valid").addClass("invalid")
-    }
-
-    // Check for number
-    if (/\d/.test(password)) {
-      $("#number").removeClass("neutral invalid").addClass("valid")
-    } else {
-      $("#number").removeClass("neutral valid").addClass("invalid")
-    }
+    validatePassword($(this).val())
   })
 
   // Show or hide the button
@@ -102,11 +81,7 @@ $(document).ready(function () {
       success: function (response) {
         if (response.success) {
           alert(response.message)
-          if (response.redirect) {
-            window.location.href = response.redirect
-          } else {
-            location.reload()
-          }
+          location.reload()
         } else {
           alert(response.message)
         }
@@ -129,5 +104,28 @@ function togglePasswordVisibility(inputId, iconId) {
     passwordInput.type = "password"
     passwordIcon.classList.remove("fa-eye-slash")
     passwordIcon.classList.add("fa-eye")
+  }
+}
+
+function validatePassword(password) {
+  // Check the length of the password
+  if (password.length >= 8) {
+    $("#length").removeClass("neutral invalid").addClass("valid")
+  } else {
+    $("#length").removeClass("neutral valid").addClass("invalid")
+  }
+
+  // Check for uppercase letter
+  if (/[A-Z]/.test(password)) {
+    $("#uppercase").removeClass("neutral invalid").addClass("valid")
+  } else {
+    $("#uppercase").removeClass("neutral valid").addClass("invalid")
+  }
+
+  // Check for number
+  if (/\d/.test(password)) {
+    $("#number").removeClass("neutral invalid").addClass("valid")
+  } else {
+    $("#number").removeClass("neutral valid").addClass("invalid")
   }
 }
