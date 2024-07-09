@@ -232,6 +232,31 @@ footer {
 }
 
 /* Sign Up Page */
+.form-floating {
+  position: relative;
+}
+.form-floating input {
+  padding-right: 40px;
+}
+.sample-text {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+.form-control:focus + .sample-text {
+  opacity: 0;
+}
+
+#phone-requirements {
+  font-size: 0.9em;
+  color: gray;
+  display: inline;
+}
+
 /* Password requirements */
 #password-requirements {
   display: flex;
