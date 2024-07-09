@@ -34,6 +34,18 @@ $(document).ready(function () {
   // Update time every second
   setInterval(updateTime, 1000)
 
+  // Monitor input changes in the '#floatingPhone' field
+  $("#floatingPhone").on("input", function () {
+    // Check if input value length is greater than zero
+    if ($(this).val().length > 0) {
+      // Hide the sample text by setting opacity to 0
+      $(".sample-text").css("opacity", 0)
+    } else {
+      // Show the sample text by setting opacity to 1
+      $(".sample-text").css("opacity", 1)
+    }
+  })
+
   // Enable editing
   $("#editButton").click(function () {
     $('span[id$="Text"]').addClass("d-none")
@@ -81,13 +93,10 @@ $(document).ready(function () {
       success: function (response) {
         if (response.success) {
           alert(response.message)
-          location.reload()
+          window.location.href = response.redirect // Updated to redirect after successful email change
         } else {
           alert(response.message)
         }
-      },
-      error: function (response) {
-        alert(response.responseJSON.message)
       },
     })
   })

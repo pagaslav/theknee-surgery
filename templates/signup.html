@@ -48,17 +48,23 @@ endblock %} {% block content %}
     </div>
 
     <!-- Phone input field with floating label -->
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-1">
       <input
         type="tel"
         class="form-control"
         id="floatingPhone"
         name="phone"
-        placeholder="07990563212"
+        placeholder=""
         pattern="[0-9]{10,11}"
         required
       />
       <label for="floatingPhone">Phone Number</label>
+      <span class="sample-text">07990563212</span>
+    </div>
+
+    <!-- Phone number requirements -->
+    <div id="phone-requirements" class="mb-1">
+      <p class="mb-3"><i class="neutral fa-solid fa-check me-1"></i>Must be 9-10 digits long</p>
     </div>
 
     <!-- Email input field with floating label -->
