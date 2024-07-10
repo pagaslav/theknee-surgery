@@ -212,6 +212,11 @@ def profile(username):
     """ Show the profile for that user."""
     # Find the user by email
     user = mongo.db.users.find_one({"email": username})
+
+    if not user:
+        # If not found in users, check in doctors collection
+        user = mongo.db.doctors.find_one({"email": username})
+        
     if user:
         # Get user's medical records
         medical_records = list(
@@ -304,6 +309,36 @@ def edit_user_ajax():
             "success": False, "message":
             "You need to log in to edit your information."
         }, 403
+
+
+@app.route("/admin/users")
+def admin_users():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        users = list(mongo.db.users.find())
+        doctors = list(mongo.db.doctors.find())
+        return render_template("admin_users.html", users=users, doctors=doctors)
+    else:
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
+
+
+@app.route("/admin/patients")
+def admin_patients():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        patients = mongo.db.users.find({"role": "patient"})
+        return render_template("admin_patients.html", patients=patients)
+    else:
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
+
+@app.route("/admin/doctors")
+def admin_doctors():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        doctors = mongo.db.doctors.find()
+        return render_template("admin_doctors.html", doctors=doctors)
+    else:
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
