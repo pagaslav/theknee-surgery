@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}All Users{% endblock %} {% block
+content %}
+<main class="container">
+  <h2 class="mt-5">All Users</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Full Name</th>
+        <th scope="col">Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>
+          <a href="{{ url_for('profile', username=user.email) }}"
+            >{{ user.name }}</a
+          >
+        </td>
+        <td>{{ user.role }}</td>
+      </tr>
+      {% endfor %} {% for doctor in doctors %}
+      <tr>
+        <td>
+          <a href="{{ url_for('profile', username=doctor.email) }}"
+            >{{ doctor.name }}</a
+          >
+        </td>
+        <td>doctor</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>
+{% endblock %}
