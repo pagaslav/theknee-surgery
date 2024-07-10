@@ -49,13 +49,15 @@ content %}
         <p>
           <strong>Gender:</strong>
           <span id="genderText">{{ user.gender }}</span>
-          <input
-            type="text"
-            id="genderInput"
-            class="d-none form-control"
-            name="gender"
-            value="{{ user.gender }}"
-          />
+          <div class="form-floating d-none" id="genderInputContainer">
+            <select class="form-control" id="genderInput" name="gender">
+              <option value="">Select Gender</option>
+              <option value="male" {% if user.gender == "male" %}selected{% endif %}>Male</option>
+              <option value="female" {% if user.gender == "female" %}selected{% endif %}>Female</option>
+              <option value="other" {% if user.gender == "other" %}selected{% endif %}>Other</option>
+            </select>
+            <label for="genderInput">Gender</label>
+          </div>
         </p>
         <p>
           <strong>Date of Birth:</strong>
