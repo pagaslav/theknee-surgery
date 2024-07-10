@@ -123,6 +123,17 @@ content %}
       </form>
     </div>
   </div>
+
+  {% if user.role == "admin" %}
+  <div class="d-flex justify-content-center mt-4 mb-4">
+    <a
+      href="{{ url_for('add_doctor') }}"
+      class="btn btn-primary btn-lg square-button"
+      >Add Doctor</a
+    >
+  </div>
+  {% endif %}
+
   <!-- Medical Records -->
   <div class="card mb-3">
     <div class="card-header">
