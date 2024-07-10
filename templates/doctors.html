@@ -3,138 +3,29 @@ content %}
 <main class="container">
   <h2 class="mt-5 text-center">Meet Our Doctors</h2>
   <div class="row g-4 mt-3">
+    {% for doctor in doctors %}
     <div class="col-12">
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-4">
             <img
-              src="{{ url_for('static', filename='images/doctors/john-doe-600.webp') }}"
+              src="{{ url_for('static', filename=get_image_path(doctor.image)) }}"
               class="img-fluid rounded-start"
-              alt="Doctor 1"
+              alt="{{ doctor.name }}"
             />
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Dr. John Doe</h5>
-              <p class="card-text">Orthopedic Surgeon</p>
-              <p class="card-text">
-                Dr. John Doe is a leading orthopedic surgeon with over 20 years
-                of experience. He specializes in knee and joint surgeries,
-                providing top-notch care to all his patients.
-              </p>
-              <p class="card-text-hide">
-                His commitment to advancing surgical techniques and his
-                dedication to patient education ensure that each individual
-                receives comprehensive treatment. Dr. Doe&rsquo;s compassionate
-                approach and meticulous attention to detail make him a trusted
-                choice for orthopedic care, renowned for achieving outstanding
-                surgical outcomes and enhancing patients&rsquo; quality of life.
-              </p>
+              <h5 class="card-title">{{ doctor.name }}</h5>
+              <p class="card-text">{{ doctor.specialty }}</p>
+              <p class="card-text">{{ doctor.description }}</p>
+              <p class="card-text-hide">{{ doctor.additional_info }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12">
-      <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img
-              src="{{ url_for('static', filename='images/doctors/jane-smith-600.webp') }}"
-              class="img-fluid rounded-start"
-              alt="Doctor 2"
-            />
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Dr. Jane Smith</h5>
-              <p class="card-text">Rheumatologist</p>
-              <p class="card-text">
-                Dr. Jane Smith is a renowned rheumatologist with a passion for
-                helping patients manage chronic pain and autoimmune diseases.
-                She is dedicated to improving the quality of life for her
-                patients.
-              </p>
-              <p class="card-text-hide">
-                With extensive experience in diagnosing and treating a wide
-                range of rheumatic conditions, Dr. Smith employs a
-                multidisciplinary approach that integrates cutting-edge research
-                and compassionate care. Her commitment to personalized treatment
-                plans ensures that each patient receives tailored care aimed at
-                achieving long-term health and wellness.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img
-              src="{{ url_for('static', filename='images/doctors/emily-johnson-600.webp') }}"
-              class="img-fluid rounded-start"
-              alt="Doctor 3"
-            />
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Dr. Emily Johnson</h5>
-              <p class="card-text">Physical Therapist</p>
-              <p class="card-text">
-                Dr. Emily Johnson is an experienced physical therapist
-                specializing in rehabilitation and recovery. She works closely
-                with patients to develop personalized treatment plans for
-                optimal outcomes.
-              </p>
-              <p class="card-text-hide">
-                Her approach integrates advanced therapeutic techniques with
-                patient education to empower individuals in their recovery
-                journey. With a commitment to enhancing quality of life through
-                comprehensive care, Dr. Johnson ensures each patient receives
-                tailored support and encouragement throughout their
-                rehabilitation process.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="card mb-3">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img
-              src="{{ url_for('static', filename='images/doctors/michael-brown-600.webp') }}"
-              class="img-fluid rounded-start"
-              alt="Doctor 4"
-            />
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Dr. Michael Brown</h5>
-              <p class="card-text">Injection Specialist</p>
-              <p class="card-text">
-                Dr. Michael Brown is a seasoned medical professional
-                specializing in injection procedures. With expertise in
-                precision and patient care, he focuses on administering
-                treatments tailored to individual needs for effective results.
-              </p>
-              <p class="card-text-hide">
-                Dr. Brown&rsquo;s approach emphasizes thorough patient
-                consultations and ongoing support to ensure optimal outcomes.
-                His dedication to advancing medical techniques and commitment to
-                compassionate care make him a trusted specialist in injection
-                therapy. Patients appreciate his personalized approach and the
-                comfort of knowing they are in capable hands throughout their
-                treatment journey.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </main>
 {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
