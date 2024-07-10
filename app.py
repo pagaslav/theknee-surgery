@@ -94,6 +94,10 @@ def login():
         # Find the user by email
         existing_user = mongo.db.users.find_one({"email": email})
 
+        if not existing_user:
+            # If not found in users, check in doctors collection
+            existing_user = mongo.db.doctors.find_one({"email": email})
+
         if existing_user:
             # Check if the password matches
             if check_password_hash(existing_user["password"], password):
@@ -119,6 +123,50 @@ def login():
     return render_template("login.html")
 
 
+def generate_image_name(full_name):
+    return full_name.lower().replace(" ", "-")
+
+@app.route("/add_doctor", methods=["GET", "POST"])
+def add_doctor():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        if request.method == "POST":
+            name = request.form.get("name")
+            email = request.form.get("email")
+            specialty = request.form.get("specialty")
+            description = request.form.get("description")
+            additional_info = request.form.get("additional_info")
+            password = request.form.get("password")
+
+            # Hash the password
+            hashed_password = generate_password_hash(password)
+
+            # Generate image name
+            image_name = generate_image_name(name)
+
+            # Create a new doctor record
+            new_doctor = {
+                "name": name,
+                "email": email,
+                "specialty": specialty,
+                "description": description,
+                "additional_info": additional_info,
+                "image": image_name,  # Automatically generated image name
+                "password": hashed_password,  # Save the hashed password
+                "role": "doctor"  # Assign the role of doctor
+            }
+
+            # Insert the new doctor into the collection
+            mongo.db.doctors.insert_one(new_doctor)
+
+            flash("Doctor added successfully!", "success")
+            return redirect(url_for("doctors"))
+        
+        return render_template("add_doctor.html")
+    else:
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
+    
+
 @app.route("/logout")
 def logout():
     # Remove user from session
@@ -139,7 +187,14 @@ def logout():
 
 @app.route("/doctors")
 def doctors():
-    return render_template("doctors.html")
+    doctors_list = mongo.db.doctors.find()
+    return render_template("doctors.html", doctors=doctors_list)
+
+@app.context_processor
+def utility_processor():
+    def get_image_path(image_name):
+        return f"images/doctors/{image_name}-600.webp"
+    return dict(get_image_path=get_image_path)
 
 
 @app.route("/policy")
