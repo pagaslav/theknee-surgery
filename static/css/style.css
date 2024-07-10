@@ -297,6 +297,20 @@ footer {
 #floatingConfirmPassword {
   padding-right: 2.5rem;
 }
+
+/* Prifile Page */
+
+.square-button {
+  background-color: grey;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  text-align: center;
+}
+
 /* Media queries for responsive design */
 
 @media screen and (max-width: 1400px) {
