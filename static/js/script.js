@@ -49,7 +49,7 @@ $(document).ready(function () {
   // Enable editing
   $("#editButton").click(function () {
     $('span[id$="Text"]').addClass("d-none")
-    $('input[id$="Input"]').removeClass("d-none")
+    $('input[id$="Input"], div[id$="InputContainer"]').removeClass("d-none")
     $("#currentPasswordDiv").removeClass("d-none")
     $(this).addClass("d-none")
     $("#saveButton, #cancelButton").removeClass("d-none")
@@ -58,7 +58,7 @@ $(document).ready(function () {
   // Cancel editing
   $("#cancelButton").click(function () {
     $('span[id$="Text"]').removeClass("d-none")
-    $('input[id$="Input"]').addClass("d-none")
+    $('input[id$="Input"], div[id$="InputContainer"]').addClass("d-none")
     $("#currentPasswordDiv").addClass("d-none")
     $("#editButton").removeClass("d-none")
     $("#saveButton, #cancelButton").addClass("d-none")
