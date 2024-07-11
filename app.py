@@ -1,11 +1,13 @@
 import os
 from flask import (
     Flask, flash, render_template,
+    send_from_directory,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import certifi
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import timedelta, datetime
 
 # Checking if env.py file exists for environment variables
@@ -19,6 +21,7 @@ app = Flask(__name__)
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
+app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), 'static/uploads')
 
 # Initializing PyMongo with Flask application instance with certifi
 mongo = PyMongo(app, tlsCAFile=certifi.where())
@@ -210,40 +213,49 @@ def about():
 @app.route("/profile/<username>")
 def profile(username):
     """ Show the profile for that user."""
-    # Найдите пользователя по email
-    user = mongo.db.users.find_one({"email": username})
+    try:
+        # Найдите пользователя по email
+        user = mongo.db.users.find_one({"email": username})
 
-    if not user:
-        # Если не найден в users, проверьте в коллекции doctors
-        user = mongo.db.doctors.find_one({"email": username})
+        if not user:
+            # Если не найден в users, проверьте в коллекции doctors
+            user = mongo.db.doctors.find_one({"email": username})
         
-    if user:
-        # Получите текущего пользователя из сессии
-        current_email = session.get("user")
-        current_user = mongo.db.users.find_one({"email": current_email})
+        if user:
+            # Получите текущего пользователя из сессии
+            current_email = session.get("user")
+            current_user = mongo.db.users.find_one({"email": current_email})
 
-        # Проверьте, является ли текущий пользователь администратором, просматривающим другой профиль
-        viewing_as_admin = current_user and current_user["role"] == "admin" and current_email != username
+            # Проверьте, является ли текущий пользователь администратором, просматривающим другой профиль
+            viewing_as_admin = current_user and current_user["role"] == "admin" and current_email != username
 
-        # Получите медицинские записи пользователя
-        medical_records = list(
-            mongo.db.medical_records.find({"patient_id": user["_id"]})
-        )
-        # Получите записи о приёмах пользователя
-        appointments = list(
-            mongo.db.appointments.find({"patient_id": user["_id"]})
-        )
-        # Отрендерите шаблон профиля с данными пользователя
-        return render_template(
-            "profile.html",
-            user=user,
-            medical_records=medical_records,
-            appointments=appointments,
-            role=current_user["role"] if viewing_as_admin else user["role"],
-            viewing_as_admin=viewing_as_admin
-        )
-    else:
-        flash("User not found", "danger")
+            # Получите медицинские записи пользователя
+            medical_records = list(
+                mongo.db.medical_records.find({"patient_id": user["_id"]})
+            )
+            # Получите записи о приёмах пользователя
+            appointments = list(
+                mongo.db.appointments.find({"patient_id": user["_id"]})
+            )
+            # Получите загруженные файлы пользователя
+            user_files = list(
+                mongo.db.user_files.find({"user_id": user["_id"]})
+            )
+            # Отрендерите шаблон профиля с данными пользователя
+            return render_template(
+                "profile.html",
+                user=user,
+                medical_records=medical_records,
+                appointments=appointments,
+                user_files=user_files,
+                role=current_user["role"] if viewing_as_admin else user["role"],
+                viewing_as_admin=viewing_as_admin
+            )
+        else:
+            flash("User not found", "danger")
+            return redirect(url_for("index"))
+    except Exception as e:
+        flash(str(e), "danger")
         return redirect(url_for("index"))
 
 
@@ -346,6 +358,78 @@ def edit_user_ajax():
             "success": False, 
             "message": "You need to log in to edit user information."
         }, 403
+
+
+@app.route("/upload_file_ajax", methods=["POST"])
+def upload_file_ajax():
+    if "user" in session:
+        user_id = request.form.get("user_id")
+        file = request.files.get("file")
+        file_type = request.form.get("file_type")
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(file_path)
+
+            file_data = {
+                "user_id": ObjectId(user_id),
+                "file_name": filename,
+                "file_path": file_path,
+                "file_type": file_type,
+                "upload_date": datetime.now()
+            }
+
+            mongo.db.user_files.insert_one(file_data)
+
+            return {
+                "success": True,
+                "message": "File uploaded successfully."
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Invalid file type."
+            }, 400
+    else:
+        return {
+            "success": False,
+            "message": "You need to log in to upload files."
+        }, 403
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "pdf", "doc", "docx"}
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/delete_file/<file_id>", methods=["POST"])
+def delete_file(file_id):
+    if "user" in session:
+        file_record = mongo.db.user_files.find_one({"_id": ObjectId(file_id)})
+        if file_record:
+            try:
+                if os.path.exists(file_record["file_path"]):
+                    os.remove(file_record["file_path"])
+                    flash("File deleted successfully.", "success")
+                else:
+                    flash("File not found on the server.", "danger")
+            except Exception as e:
+                flash(f"An error occurred while trying to delete the file: {str(e)}", "danger")
+                
+            mongo.db.user_files.delete_one({"_id": ObjectId(file_id)})
+        else:
+            flash("File record not found in the database.", "danger")
+    else:
+        flash("You need to log in to delete files.", "danger")
+    return redirect(url_for("profile", username=session["user"]))
+
+@app.route('/uploads/<filename>')
+def view_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
 
 @app.route("/admin/users")
 def admin_users():
