@@ -1,4 +1,13 @@
 $(document).ready(function () {
+  const userRole = $("#userRole").val()
+  const viewingAsAdmin = $("#viewingAsAdmin").val() === "true"
+  console.log("User Role: ", userRole)
+  console.log("Viewing as Admin: ", viewingAsAdmin)
+
+  if (!userRole) {
+    console.error("User role is not defined!")
+  }
+
   $("#floatingPassword").on("input", function () {
     validatePassword($(this).val())
   })
@@ -48,11 +57,20 @@ $(document).ready(function () {
 
   // Enable editing
   $("#editButton").click(function () {
+    console.log("Edit button clicked")
     $('span[id$="Text"]').addClass("d-none")
     $('input[id$="Input"], div[id$="InputContainer"]').removeClass("d-none")
     $("#currentPasswordDiv").removeClass("d-none")
     $(this).addClass("d-none")
     $("#saveButton, #cancelButton").removeClass("d-none")
+
+    // If the user is admin, enable the save button immediately
+    if (userRole === "admin") {
+      console.log("Admin detected, enabling save button")
+      $("#saveButton").removeAttr("disabled")
+    } else {
+      console.log("Not an admin, userRole:", userRole)
+    }
   })
 
   // Cancel editing
@@ -77,6 +95,7 @@ $(document).ready(function () {
   $("#saveButton").click(function (e) {
     e.preventDefault()
     let formData = {
+      user_id: $("#userIdInput").val(),
       name: $("#nameInput").val(),
       gender: $("#genderInput").val(),
       dob: $("#dobInput").val(),
@@ -97,6 +116,9 @@ $(document).ready(function () {
         } else {
           alert(response.message)
         }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error: ", status, error)
       },
     })
   })
