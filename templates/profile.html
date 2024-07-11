@@ -17,6 +17,9 @@ content %}
     </div>
     <div class="card-body">
       <form id="editUserForm">
+        <input type="hidden" id="userRole" value="{{ role }}">
+        <input type="hidden" id="viewingAsAdmin" value="{{ 'true' if viewing_as_admin else 'false' }}">
+        <input type="hidden" id="userIdInput" name="user_id" value="{{ user._id }}">
         <p>
           <strong>Name:</strong> <span id="nameText">{{ user.name }}</span>
           <input
