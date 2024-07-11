@@ -210,32 +210,39 @@ def about():
 @app.route("/profile/<username>")
 def profile(username):
     """ Show the profile for that user."""
-    # Find the user by email
+    # Найдите пользователя по email
     user = mongo.db.users.find_one({"email": username})
 
     if not user:
-        # If not found in users, check in doctors collection
+        # Если не найден в users, проверьте в коллекции doctors
         user = mongo.db.doctors.find_one({"email": username})
         
     if user:
-        # Get user's medical records
+        # Получите текущего пользователя из сессии
+        current_email = session.get("user")
+        current_user = mongo.db.users.find_one({"email": current_email})
+
+        # Проверьте, является ли текущий пользователь администратором, просматривающим другой профиль
+        viewing_as_admin = current_user and current_user["role"] == "admin" and current_email != username
+
+        # Получите медицинские записи пользователя
         medical_records = list(
             mongo.db.medical_records.find({"patient_id": user["_id"]})
         )
-        # Get user's appointments
+        # Получите записи о приёмах пользователя
         appointments = list(
             mongo.db.appointments.find({"patient_id": user["_id"]})
         )
-        # Render the profile template with user data
+        # Отрендерите шаблон профиля с данными пользователя
         return render_template(
             "profile.html",
             user=user,
             medical_records=medical_records,
-            appointments=appointments
+            appointments=appointments,
+            role=current_user["role"] if viewing_as_admin else user["role"],
+            viewing_as_admin=viewing_as_admin
         )
     else:
-        # This case should not occur if login logic is correct,
-        # but it's a good safety measure
         flash("User not found", "danger")
         return redirect(url_for("index"))
 
@@ -244,72 +251,101 @@ def profile(username):
 def edit_user_ajax():
     if "user" in session:
         current_email = session["user"]
-        user = mongo.db.users.find_one({"email": current_email})
-        if user:
-            current_password = request.json.get("current_password")
-
-            # Verify current password
-            if not check_password_hash(user["password"], current_password):
-                return {
-                    "success": False, "message":
-                    "Current password is incorrect."
-                }, 403
-
-            # Get form data
-            name = request.json.get("name")
-            gender = request.json.get("gender")
-            dob = request.json.get("dob")
-            phone = request.json.get("phone")
-            new_email = request.json.get("email").lower()
-
-            # Update data dictionary
-            update_data = {
-                "name": name,
-                "gender": gender,
-                # Ensure dob is not null
-                "dob": dob if dob else user.get("dob"),
-                "phone": phone,
-                "email": new_email,
-            }
-
-            # Allow role change only for admin users
-            if user["role"] == "admin":
-                role = request.json.get("role")
-                # Ensure role is not null
-                update_data["role"] = role if role else user.get("role")
-
-            # Update user information in the database
-            mongo.db.users.update_one(
-                {"_id": user["_id"]},
-                {"$set": update_data}
+        print(f"Current user email: {current_email}")  # Debugging statement
+        current_user = mongo.db.users.find_one(
+            {"email": current_email}
+        ) or mongo.db.doctors.find_one(
+            {"email": current_email}
+        )
+        if current_user:
+            user_id = request.json.get("user_id")
+            print(f"Target user ID: {user_id}")  # Debugging statement
+            user = mongo.db.users.find_one(
+                {"_id": ObjectId(user_id)}
+            ) or mongo.db.doctors.find_one(
+                {"_id": ObjectId(user_id)}
             )
 
-            # Update session email if changed
-            if current_email != new_email:
-                session["user"] = new_email
-                flash(
-                    "Your email has been updated to {}.".format(new_email),
-                    "success"
-                )
-                return {
-                    "success": True, "message": "Your email has been updated.",
-                    "redirect": url_for("profile", username=new_email)
-                }
-            else:
-                flash("Your information has been updated.", "success")
-                return {
-                    "success": True, "message":
-                    "Your information has been updated.",
-                    "redirect": url_for("profile", username=current_email)
-                }
-        else:
-            return {"success": False, "message": "User not found."}, 404
-    else:
-        return {
-            "success": False, "message":
-            "You need to log in to edit your information."
-        }, 403
+            if user:
+                print(f"Found target user: {user['email']}")  # Debugging statement
+                if current_user["role"] != "admin":
+                    current_password = request.json.get("current_password")
+                    print("Current password provided")  # Debugging statement
 
+                    # Verify current password
+                    if not check_password_hash(user["password"], current_password):
+                        print("Incorrect current password")  # Debugging statement
+                        return {
+                            "success": False, 
+                            "message": "Current password is incorrect."
+                        }, 403
+
+                # Get form data
+                name = request.json.get("name")
+                gender = request.json.get("gender")
+                dob = request.json.get("dob")
+                phone = request.json.get("phone")
+                new_email = request.json.get("email").lower()
+
+                # Update data dictionary
+                update_data = {
+                    "name": name,
+                    "gender": gender,
+                    # Ensure dob is not null
+                    "dob": dob if dob else user.get("dob"),
+                    "phone": phone,
+                    "email": new_email,
+                }
+
+                # Allow role change only for admin users
+                if current_user["role"] == "admin":
+                    role = request.json.get("role")
+                    # Ensure role is not null
+                    update_data["role"] = role if role else user.get("role")
+
+                # Update user information in the database
+                if "role" in user and user["role"] == "doctor":
+                    mongo.db.doctors.update_one(
+                        {"_id": user["_id"]},
+                        {"$set": update_data}
+                    )
+                else:
+                    mongo.db.users.update_one(
+                        {"_id": user["_id"]},
+                        {"$set": update_data}
+                    )
+
+                # Update session email if admin is editing their own profile and email changed
+                if current_user["_id"] == user["_id"] and current_email != new_email:
+                    session["user"] = new_email
+                    flash(
+                        "Your email has been updated to {}.".format(new_email),
+                        "success"
+                    )
+                    return {
+                        "success": True, 
+                        "message": "Your email has been updated.",
+                        "redirect": url_for("profile", username=new_email)
+                    }
+                else:
+                    flash("User information has been updated.", "success")
+                    return {
+                        "success": True, 
+                        "message": "User information has been updated.",
+                        "redirect": url_for("profile", username=current_email)
+                    }
+            else:
+                print("User not found")  # Debugging statement
+                return {"success": False, "message": "User not found."}, 404
+        else:
+            print("Current user not found")  # Debugging statement
+            return {"success": False, "message": "Current user not found."}, 404
+    else:
+        print("Not logged in")  # Debugging statement
+        return {
+            "success": False, 
+            "message": "You need to log in to edit user information."
+        }, 403
 
 @app.route("/admin/users")
 def admin_users():
