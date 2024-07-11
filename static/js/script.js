@@ -95,7 +95,7 @@ $(document).ready(function () {
   $("#saveButton").click(function (e) {
     e.preventDefault()
     let formData = {
-      user_id: $("#userIdInput").val(),
+      user_id: $("#editUserIdInput").val(),
       name: $("#nameInput").val(),
       gender: $("#genderInput").val(),
       dob: $("#dobInput").val(),
@@ -120,6 +120,51 @@ $(document).ready(function () {
       error: function (xhr, status, error) {
         console.error("AJAX Error: ", status, error)
       },
+    })
+  })
+
+  // Handle file upload
+  $("#uploadButton")
+    .off("click")
+    .on("click", function (e) {
+      e.preventDefault()
+
+      let formData = new FormData()
+      formData.append("user_id", $("#uploadUserIdInput").val())
+      formData.append("file", $("#fileInput")[0].files[0])
+      formData.append("file_type", $("#fileType").val())
+
+      $.ajax({
+        type: "POST",
+        url: "/upload_file_ajax",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          if (response.success) {
+            alert(response.message)
+            location.reload() // Reload to show the uploaded file
+          } else {
+            alert(response.message)
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX Error: ", status, error)
+        },
+      })
+    })
+
+  // Confirm delete
+  const deleteForms = document.querySelectorAll(".delete-file-form")
+  deleteForms.forEach((form) => {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault()
+      const confirmDelete = confirm(
+        "Are you sure you want to delete this file?"
+      )
+      if (confirmDelete) {
+        form.submit()
+      }
     })
   })
 })
