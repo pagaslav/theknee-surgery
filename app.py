@@ -13,9 +13,6 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# Cloudinary configuration
-import config
-
 # Checking if env.py file exists for environment variables
 if os.path.exists("env.py"):
     import env
