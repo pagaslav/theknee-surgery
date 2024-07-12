@@ -12,8 +12,6 @@ from datetime import timedelta, datetime
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-from dotenv import load_dotenv
-load_dotenv('env.py')
 
 # Cloudinary configuration
 import config
