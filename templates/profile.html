@@ -1,235 +1,236 @@
 {% extends "base.html" %} {% block title %}Profile{% endblock %} {% block
-content %}
-<main class="container">
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %}
-  <div class="alert alert-{{ category }} mt-3">
-    <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
-  </div>
-  {% endfor %} {% endif %} {% endwith %}
-
-  <h2 class="mt-5">Profile</h2>
-
-  <!-- User Information -->
-  <div class="card mb-3">
-    <div class="card-header">
-      <h3>User Information</h3>
+  content %}
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="alert alert-{{ category }} mt-3">
+      <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
     </div>
-    <div class="card-body">
-      <form id="editUserForm">
-        <input type="hidden" id="userRole" value="{{ role }}">
-        <input type="hidden" id="viewingAsAdmin" value="{{ 'true' if viewing_as_admin else 'false' }}">
-        <input type="hidden" id="editUserIdInput" name="user_id" value="{{ user._id }}">
-        <p>
-          <strong>Name:</strong> <span id="nameText">{{ user.name }}</span>
-          <input
-            type="text"
-            id="nameInput"
-            class="d-none form-control"
-            name="name"
-            value="{{ user.name }}"
-          />
-        </p>
-        <p>
-          <strong>Role:</strong> <span id="roleText">{{ user.role }}</span>
-          <input
-            type="text"
-            id="roleInput"
-            class="d-none form-control"
-            name="role"
-            value="{{ user.role }}"
-            {%
-            if
-            user.role
-            !="admin"
-            %}
-            readonly
-            {%
-            endif
-            %}
-          />
-        </p>
-        <p>
-          <strong>Gender:</strong>
-          <span id="genderText">{{ user.gender }}</span>
-          <div class="form-floating d-none" id="genderInputContainer">
-            <select class="form-control" id="genderInput" name="gender">
-              <option value="">Select Gender</option>
-              <option value="male" {% if user.gender == "male" %}selected{% endif %}>Male</option>
-              <option value="female" {% if user.gender == "female" %}selected{% endif %}>Female</option>
-              <option value="other" {% if user.gender == "other" %}selected{% endif %}>Other</option>
-            </select>
-            <label for="genderInput">Gender</label>
-          </div>
-        </p>
-        <p>
-          <strong>Date of Birth:</strong>
-          <span id="dobText">{{ user.dob or 'N/A' }}</span>
-          <input
-            type="date"
-            id="dobInput"
-            class="d-none form-control"
-            name="dob"
-            value="{{ user.dob }}"
-          />
-        </p>
-        <p>
-          <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
-          <input
-            type="text"
-            id="phoneInput"
-            class="d-none form-control"
-            name="phone"
-            value="{{ user.phone }}"
-          />
-        </p>
-        <p>
-          <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
-          <input
-            type="text"
-            id="emailInput"
-            class="d-none form-control"
-            name="email"
-            value="{{ user.email }}"
-          />
-        </p>
-        <div id="currentPasswordDiv" class="d-none">
-          <p>
-            <strong>Current Password:</strong>
-            <input
-              type="password"
-              id="currentPasswordInput"
-              class="form-control"
-              name="current_password"
-              required
-            />
-          </p>
-        </div>
-        <div class="d-flex justify-content-start">
-          <button type="button" id="editButton" class="btn btn-primary">
-            Edit
-          </button>
-          <button
-            type="button"
-            id="saveButton"
-            class="btn btn-success d-none ms-2"
-            disabled
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            id="cancelButton"
-            class="btn btn-danger d-none ms-2"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Display Uploaded Files -->
-  <div class="card mb-3">
-    <div class="card-header">
-        <h3>Uploaded Files</h3>
-    </div>
-    <div class="card-body">
-        {% if user_files %}
-        <ul class="list-group">
-            {% for file in user_files %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{{ url_for('uploaded_file', filename=file.file_name) }}" target="_blank">{{ file.file_name }}</a>
-                <form action="{{ url_for('delete_file', file_id=file._id) }}" method="post" style="display:inline;" class="delete-file-form">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No files uploaded.</p>
-        {% endif %}
-    </div>
-  </div>
-
-    <!-- File Upload Section -->
+    {% endfor %} {% endif %} {% endwith %}
+  
+    <h2 class="mt-5">Profile</h2>
+  
+    <!-- User Information -->
     <div class="card mb-3">
       <div class="card-header">
-        <h3>Upload Documents</h3>
+        <h3>User Information</h3>
       </div>
       <div class="card-body">
-        <form id="uploadForm" enctype="multipart/form-data">
-          <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
-          <div class="mb-3">
-              <label for="fileInput" class="form-label">Upload File</label>
-              <input class="form-control" type="file" id="fileInput" name="file">
-          </div>
-          <div class="mb-3">
-              <label for="fileType" class="form-label">File Type</label>
-              <select class="form-select" id="fileType" name="file_type">
-                  <option value="medical_record">Medical Record</option>
-                  <option value="analysis">Analysis</option>
-                  <option value="profile_picture">Profile Picture</option>
-                  <option value="other">Other</option>
+        <form id="editUserForm">
+          <input type="hidden" id="userRole" value="{{ role }}">
+          <input type="hidden" id="viewingAsAdmin" value="{{ 'true' if viewing_as_admin else 'false' }}">
+          <input type="hidden" id="editUserIdInput" name="user_id" value="{{ user._id }}">
+          <p>
+            <strong>Name:</strong> <span id="nameText">{{ user.name }}</span>
+            <input
+              type="text"
+              id="nameInput"
+              class="d-none form-control"
+              name="name"
+              value="{{ user.name }}"
+            />
+          </p>
+          <p>
+            <strong>Role:</strong> <span id="roleText">{{ user.role }}</span>
+            <input
+              type="text"
+              id="roleInput"
+              class="d-none form-control"
+              name="role"
+              value="{{ user.role }}"
+              {%
+              if
+              user.role
+              !="admin"
+              %}
+              readonly
+              {%
+              endif
+              %}
+            />
+          </p>
+          <p>
+            <strong>Gender:</strong>
+            <span id="genderText">{{ user.gender }}</span>
+            <div class="form-floating d-none" id="genderInputContainer">
+              <select class="form-control" id="genderInput" name="gender">
+                <option value="">Select Gender</option>
+                <option value="male" {% if user.gender == "male" %}selected{% endif %}>Male</option>
+                <option value="female" {% if user.gender == "female" %}selected{% endif %}>Female</option>
+                <option value="other" {% if user.gender == "other" %}selected{% endif %}>Other</option>
               </select>
+              <label for="genderInput">Gender</label>
+            </div>
+          </p>
+          <p>
+            <strong>Date of Birth:</strong>
+            <span id="dobText">{{ user.dob or 'N/A' }}</span>
+            <input
+              type="date"
+              id="dobInput"
+              class="d-none form-control"
+              name="dob"
+              value="{{ user.dob }}"
+            />
+          </p>
+          <p>
+            <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
+            <input
+              type="text"
+              id="phoneInput"
+              class="d-none form-control"
+              name="phone"
+              value="{{ user.phone }}"
+            />
+          </p>
+          <p>
+            <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
+            <input
+              type="text"
+              id="emailInput"
+              class="d-none form-control"
+              name="email"
+              value="{{ user.email }}"
+            />
+          </p>
+          <div id="currentPasswordDiv" class="d-none">
+            <p>
+              <strong>Current Password:</strong>
+              <input
+                type="password"
+                id="currentPasswordInput"
+                class="form-control"
+                name="current_password"
+                required
+              />
+            </p>
           </div>
-          <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
+          <div class="d-flex justify-content-start">
+            <button type="button" id="editButton" class="btn btn-primary">
+              Edit
+            </button>
+            <button
+              type="button"
+              id="saveButton"
+              class="btn btn-success d-none ms-2"
+              disabled
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              id="cancelButton"
+              class="btn btn-danger d-none ms-2"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
+  
+    <!-- Display Uploaded Files -->
+    <div class="card mb-3">
+      <div class="card-header">
+          <h3>Uploaded Files</h3>
+      </div>
+      <div class="card-body">
+          <ul class="list-group" id="uploaded-files-list">
+              {% for file in user_files %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ file.file_url }}" target="_blank">{{ file.file_name }}</a>
+                <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
+                    <input type="hidden" name="file_id" value="{{ file.file_id }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </li>
+              {% endfor %}
+          </ul>
+          {% if not user_files %}
+          <p id="no-files-message">No files uploaded.</p>
+          {% endif %}
+      </div>
+    </div>
 
-  {% if user.role == "admin" %}
-  <div class="d-flex justify-content-center mt-4 mb-4">
-    <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
-    <a href="{{ url_for('admin_patients') }}" class="btn btn-primary btn-lg square-button ms-5">All Patients</a>
-    <a href="{{ url_for('admin_doctors') }}" class="btn btn-primary btn-lg square-button ms-5">All Doctors</a>
-    <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
+<!-- File Upload Section -->
+<div class="card mb-3">
+  <div class="card-header">
+    <h3>Upload Documents</h3>
   </div>
-  {% endif %}
-
-  <!-- Medical Records -->
-  <div class="card mb-3">
-    <div class="card-header">
-      <h3>Medical Records</h3>
-    </div>
-    <div class="card-body">
-      {% if medical_records %}
-      <ul class="list-group">
-        {% for record in medical_records %}
-        <li class="list-group-item">
-          <p><strong>Description:</strong> {{ record.description }}</p>
-          <p><strong>Treatment:</strong> {{ record.treatment }}</p>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p>No medical records found.</p>
-      {% endif %}
-    </div>
+  <div class="card-body">
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
+      <div class="mb-3">
+          <label for="fileInput" class="form-label">Upload File</label>
+          <input class="form-control" type="file" id="fileInput" name="file">
+      </div>
+      <div class="mb-3">
+          <label for="fileType" class="form-label">File Type</label>
+          <select class="form-select" id="fileType" name="file_type">
+              <option value="medical_record">Medical Record</option>
+              <option value="analysis">Analysis</option>
+              <option value="profile_picture">Profile Picture</option>
+              <option value="other">Other</option>
+          </select>
+      </div>
+      <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
+    </form>
   </div>
-
-  <!-- Appointments -->
-  <div class="card mb-3">
-    <div class="card-header">
-      <h3>Appointments</h3>
+</div>
+  
+    {% if user.role == "admin" %}
+    <div class="d-flex justify-content-center mt-4 mb-4">
+      <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
+      <a href="{{ url_for('admin_patients') }}" class="btn btn-primary btn-lg square-button ms-5">All Patients</a>
+      <a href="{{ url_for('admin_doctors') }}" class="btn btn-primary btn-lg square-button ms-5">All Doctors</a>
+      <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
     </div>
-    <div class="card-body">
-      {% if appointments %}
-      <ul class="list-group">
-        {% for appointment in appointments %}
-        <li class="list-group-item">
-          <p><strong>Date:</strong> {{ appointment.date }}</p>
-          <p><strong>Time:</strong> {{ appointment.time }}</p>
-          <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-          <p><strong>Status:</strong> {{ appointment.status }}</p>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p>No appointments found.</p>
-      {% endif %}
+    {% endif %}
+  
+    <!-- Medical Records -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <h3>Medical Records</h3>
+      </div>
+      <div class="card-body">
+        {% if medical_records %}
+        <ul class="list-group">
+          {% for record in medical_records %}
+          <li class="list-group-item">
+            <p><strong>Description:</strong> {{ record.description }}</p>
+            <p><strong>Treatment:</strong> {{ record.treatment }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>No medical records found.</p>
+        {% endif %}
+      </div>
     </div>
-  </div>
-</main>
-{% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
-endblock %}
+  
+    <!-- Appointments -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <h3>Appointments</h3>
+      </div>
+      <div class="card-body">
+        {% if appointments %}
+        <ul class="list-group">
+          {% for appointment in appointments %}
+          <li class="list-group-item">
+            <p><strong>Date:</strong> {{ appointment.date }}</p>
+            <p><strong>Time:</strong> {{ appointment.time }}</p>
+            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+            <p><strong>Status:</strong> {{ appointment.status }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>No appointments found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+  {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
+  endblock %}
+  

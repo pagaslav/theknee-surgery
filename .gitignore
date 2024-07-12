@@ -7,3 +7,8 @@ __pycache__/
 node_modules/
 .github/
 cloudinary_python.txt
+static/documentation/credentials.json
+drive_helper.py
+static/uploads/
+# Cloudinary config file
+config.py

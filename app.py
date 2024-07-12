@@ -1,7 +1,7 @@
 import os
 from flask import (
     Flask, flash, render_template,
-    send_from_directory,
+    send_from_directory, jsonify,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -9,6 +9,12 @@ import certifi
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import timedelta, datetime
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# Cloudinary configuration
+import config
 
 # Checking if env.py file exists for environment variables
 if os.path.exists("env.py"):
@@ -363,72 +369,81 @@ def edit_user_ajax():
 @app.route("/upload_file_ajax", methods=["POST"])
 def upload_file_ajax():
     if "user" in session:
-        user_id = request.form.get("user_id")
         file = request.files.get("file")
         file_type = request.form.get("file_type")
+        user_id = request.form.get("user_id")
 
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-            file.save(file_path)
+            result = cloudinary.uploader.upload(file)
 
-            file_data = {
+            file_url = result['secure_url']
+            file_id = result['public_id']
+            file_name = secure_filename(file.filename)
+
+            new_file = {
                 "user_id": ObjectId(user_id),
-                "file_name": filename,
-                "file_path": file_path,
+                "file_id": file_id,
+                "file_url": file_url,
+                "file_name": file_name,
                 "file_type": file_type,
-                "upload_date": datetime.now()
+                "uploaded_at": datetime.utcnow()
             }
+            mongo.db.user_files.insert_one(new_file)
 
-            mongo.db.user_files.insert_one(file_data)
-
-            return {
+            return jsonify({
                 "success": True,
-                "message": "File uploaded successfully."
-            }
+                "message": "File uploaded successfully.",
+                "file_id": file_id,
+                "file_url": file_url,
+                "file_name": file_name
+            })
         else:
-            return {
+            return jsonify({
                 "success": False,
                 "message": "Invalid file type."
-            }, 400
+            }), 400
     else:
-        return {
+        return jsonify({
             "success": False,
             "message": "You need to log in to upload files."
-        }, 403
+        }), 403
+
+@app.route("/delete_file", methods=["POST"])
+def delete_file():
+    if "user" in session:
+        file_id = request.form.get("file_id")
+        print(f"Received request to delete file with ID: {file_id}")
+        if file_id:
+            if delete_from_cloudinary(file_id):
+                file_record = mongo.db.user_files.find_one({"file_id": file_id})
+                if file_record:
+                    result = mongo.db.user_files.delete_one({"file_id": file_id})
+                    print(f"Database deletion result: {result.deleted_count} document(s) deleted.")
+                    if result.deleted_count > 0:
+                        return jsonify({"success": True, "message": "File deleted successfully."})
+                    else:
+                        return jsonify({"success": False, "message": "File deleted from Cloudinary but not found in the database."})
+                else:
+                    return jsonify({"success": False, "message": "File not found in the database."})
+            else:
+                return jsonify({"success": False, "message": "Failed to delete the file from Cloudinary."})
+        else:
+            return jsonify({"success": False, "message": "File ID is required."})
+    else:
+        return jsonify({"success": False, "message": "You need to log in to delete files."})
+
+def delete_from_cloudinary(file_id):
+    try:
+        result = cloudinary.uploader.destroy(file_id)
+        print(f"Cloudinary deletion result: {result}")
+        return result.get("result") == "ok"
+    except Exception as error:
+        print(f"An error occurred: {error}")
+        return False
 
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "pdf", "doc", "docx"}
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route("/delete_file/<file_id>", methods=["POST"])
-def delete_file(file_id):
-    if "user" in session:
-        file_record = mongo.db.user_files.find_one({"_id": ObjectId(file_id)})
-        if file_record:
-            try:
-                if os.path.exists(file_record["file_path"]):
-                    os.remove(file_record["file_path"])
-                    flash("File deleted successfully.", "success")
-                else:
-                    flash("File not found on the server.", "danger")
-            except Exception as e:
-                flash(f"An error occurred while trying to delete the file: {str(e)}", "danger")
-                
-            mongo.db.user_files.delete_one({"_id": ObjectId(file_id)})
-        else:
-            flash("File record not found in the database.", "danger")
-    else:
-        flash("You need to log in to delete files.", "danger")
-    return redirect(url_for("profile", username=session["user"]))
-
-@app.route('/uploads/<filename>')
-def view_file(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
-
-@app.route("/uploads/<filename>")
-def uploaded_file(filename):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 @app.route("/admin/users")
