@@ -124,48 +124,69 @@ $(document).ready(function () {
   })
 
   // Handle file upload
-  $("#uploadButton")
-    .off("click")
-    .on("click", function (e) {
-      e.preventDefault()
+  $("#uploadButton").click(function (e) {
+    e.preventDefault()
 
-      let formData = new FormData()
-      formData.append("user_id", $("#uploadUserIdInput").val())
-      formData.append("file", $("#fileInput")[0].files[0])
-      formData.append("file_type", $("#fileType").val())
+    let formData = new FormData()
+    formData.append("user_id", $("#uploadUserIdInput").val())
+    formData.append("file", $("#fileInput")[0].files[0])
+    formData.append("file_type", $("#fileType").val())
 
+    $.ajax({
+      type: "POST",
+      url: "/upload_file_ajax",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        if (response.success) {
+          alert(response.message)
+          // Add the new file to the list without reloading
+          let newFileHtml = `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="${response.file_url}" target="_blank">${response.file_name}</a>
+                  <form action="/delete_file" method="post" style="display:inline;" class="delete-file-form">
+                      <input type="hidden" name="file_id" value="${response.file_id}">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </li>`
+          $("#uploaded-files-list").append(newFileHtml)
+          $("#no-files-message").hide()
+        } else {
+          alert(response.message)
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error: ", status, error)
+      },
+    })
+  })
+
+  // Confirm delete
+  $(document).on("submit", ".delete-file-form", function (event) {
+    event.preventDefault()
+    const confirmDelete = confirm("Are you sure you want to delete this file?")
+    if (confirmDelete) {
+      const form = $(this)
       $.ajax({
         type: "POST",
-        url: "/upload_file_ajax",
-        data: formData,
-        contentType: false,
-        processData: false,
+        url: form.attr("action"),
+        data: form.serialize(),
         success: function (response) {
           if (response.success) {
-            alert(response.message)
-            location.reload() // Reload to show the uploaded file
+            form.closest("li").remove()
+            if ($("#uploaded-files-list").children().length === 0) {
+              $("#no-files-message").show()
+            }
           } else {
-            alert(response.message)
+            alert("Failed to delete the file.")
           }
         },
         error: function (xhr, status, error) {
           console.error("AJAX Error: ", status, error)
         },
       })
-    })
-
-  // Confirm delete
-  const deleteForms = document.querySelectorAll(".delete-file-form")
-  deleteForms.forEach((form) => {
-    form.addEventListener("submit", function (event) {
-      event.preventDefault()
-      const confirmDelete = confirm(
-        "Are you sure you want to delete this file?"
-      )
-      if (confirmDelete) {
-        form.submit()
-      }
-    })
+    }
   })
 })
 
