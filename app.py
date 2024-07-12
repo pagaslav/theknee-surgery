@@ -12,6 +12,8 @@ from datetime import timedelta, datetime
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from dotenv import load_dotenv
+load_dotenv('env.py')
 
 # Cloudinary configuration
 import config
@@ -27,7 +29,9 @@ app = Flask(__name__)
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
+app.secret_key = os.environ.get("SECRET_KEY")
 app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), 'static/uploads')
+
 
 # Initializing PyMongo with Flask application instance with certifi
 mongo = PyMongo(app, tlsCAFile=certifi.where())
