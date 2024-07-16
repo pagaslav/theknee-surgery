@@ -219,19 +219,19 @@ def about():
 def profile(username):
     """ Show the profile for that user."""
     try:
-        # Найдите пользователя по email
+        # Find the user by email
         user = mongo.db.users.find_one({"email": username})
 
         if not user:
-            # Если не найден в users, проверьте в коллекции doctors
+            # If not found in users, check in doctors collection
             user = mongo.db.doctors.find_one({"email": username})
         
         if user:
-            # Получите текущего пользователя из сессии
+            # Get the current user from session
             current_email = session.get("user")
             current_user = mongo.db.users.find_one({"email": current_email})
 
-            # Проверьте, является ли текущий пользователь администратором, просматривающим другой профиль
+            # Check if the current user is an admin viewing another profile
             viewing_as_admin = current_user and current_user["role"] == "admin" and current_email != username
 
             # Получите медицинские записи пользователя
@@ -246,7 +246,7 @@ def profile(username):
             user_files = list(
                 mongo.db.user_files.find({"user_id": user["_id"]})
             )
-            # Отрендерите шаблон профиля с данными пользователя
+            # Render profile template with user data
             return render_template(
                 "profile.html",
                 user=user,
