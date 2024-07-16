@@ -50,6 +50,27 @@
             />
           </p>
           <p>
+            <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
+            <input
+              type="text"
+              id="phoneInput"
+              class="d-none form-control"
+              name="phone"
+              value="{{ user.phone }}"
+            />
+          </p>
+          <p>
+            <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
+            <input
+              type="text"
+              id="emailInput"
+              class="d-none form-control"
+              name="email"
+              value="{{ user.email }}"
+            />
+          </p>
+          {% if user.role == "patient" %}
+          <p>
             <strong>Gender:</strong>
             <span id="genderText">{{ user.gender }}</span>
             <div class="form-floating d-none" id="genderInputContainer">
@@ -73,26 +94,19 @@
               value="{{ user.dob }}"
             />
           </p>
+          {% endif %}
+
+          {% if user.role == "doctor" %}
           <p>
-            <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
+            <strong>Specialty:</strong> <span>{{ user.specialty }}</span>
             <input
               type="text"
-              id="phoneInput"
               class="d-none form-control"
-              name="phone"
-              value="{{ user.phone }}"
+              name="specialty"
+              value="{{ user.specialty }}"
             />
           </p>
-          <p>
-            <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
-            <input
-              type="text"
-              id="emailInput"
-              class="d-none form-control"
-              name="email"
-              value="{{ user.email }}"
-            />
-          </p>
+          {% endif %}
           <div id="currentPasswordDiv" class="d-none">
             <p>
               <strong>Current Password:</strong>
@@ -152,40 +166,40 @@
       </div>
     </div>
 
-<!-- File Upload Section -->
-<div class="card mb-3">
-  <div class="card-header">
-    <h3>Upload Documents</h3>
-  </div>
-  <div class="card-body">
-    <form id="uploadForm" enctype="multipart/form-data">
-      <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
-      <div class="mb-3">
-          <label for="fileInput" class="form-label">Upload File</label>
-          <input class="form-control" type="file" id="fileInput" name="file">
+    <!-- File Upload Section -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <h3>Upload Documents</h3>
       </div>
-      <div class="mb-3">
-          <label for="fileType" class="form-label">File Type</label>
-          <select class="form-select" id="fileType" name="file_type">
-              <option value="medical_record">Medical Record</option>
-              <option value="analysis">Analysis</option>
-              <option value="profile_picture">Profile Picture</option>
-              <option value="other">Other</option>
-          </select>
+      <div class="card-body">
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
+          <div class="mb-3">
+              <label for="fileInput" class="form-label">Upload File</label>
+              <input class="form-control" type="file" id="fileInput" name="file">
+          </div>
+          <div class="mb-3">
+              <label for="fileType" class="form-label">File Type</label>
+              <select class="form-select" id="fileType" name="file_type">
+                  <option value="medical_record">Medical Record</option>
+                  <option value="analysis">Analysis</option>
+                  <option value="profile_picture">Profile Picture</option>
+                  <option value="other">Other</option>
+              </select>
+          </div>
+          <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
+        </form>
       </div>
-      <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
-    </form>
-  </div>
-</div>
-  
-    {% if user.role == "admin" %}
-    <div class="d-flex justify-content-center mt-4 mb-4">
-      <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
-      <a href="{{ url_for('admin_patients') }}" class="btn btn-primary btn-lg square-button ms-5">All Patients</a>
-      <a href="{{ url_for('admin_doctors') }}" class="btn btn-primary btn-lg square-button ms-5">All Doctors</a>
-      <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
     </div>
-    {% endif %}
+  
+  {% if user.role == "admin" %}
+  <div class="d-flex justify-content-center mt-4 mb-4">
+    <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
+    <a href="{{ url_for('admin_patients') }}" class="btn btn-primary btn-lg square-button ms-5">All Patients</a>
+    <a href="{{ url_for('admin_doctors') }}" class="btn btn-primary btn-lg square-button ms-5">All Doctors</a>
+    <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
+  </div>
+  {% endif %}
   
     <!-- Medical Records -->
     <div class="card mb-3">
@@ -207,30 +221,28 @@
         {% endif %}
       </div>
     </div>
-  
-    <!-- Appointments -->
+
+     <!-- Appointments -->
     <div class="card mb-3">
       <div class="card-header">
-        <h3>Appointments</h3>
+          <h3>Appointments</h3>
       </div>
       <div class="card-body">
-        {% if appointments %}
-        <ul class="list-group">
-          {% for appointment in appointments %}
-          <li class="list-group-item">
-            <p><strong>Date:</strong> {{ appointment.date }}</p>
-            <p><strong>Time:</strong> {{ appointment.time }}</p>
-            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-            <p><strong>Status:</strong> {{ appointment.status }}</p>
-          </li>
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p>No appointments found.</p>
-        {% endif %}
-      </div>
+          {% if appointments %}
+          <ul class="list-group">
+              {% for appointment in appointments %}
+              <li class="list-group-item">
+                  <p><strong>Date:</strong> {{ appointment.date }}</p>
+                  <p><strong>Time:</strong> {{ appointment.time }}</p>
+                  <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+                  <p><strong>Status:</strong> {{ appointment.status }}</p>
+              </li>
+              {% endfor %}
+          </ul>
+          {% else %}
+          <p>No appointments found.</p>
+          {% endif %}
     </div>
+  </div>
   </main>
-  {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
-  endblock %}
-  
+  {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{% endblock %}
