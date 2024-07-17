@@ -45,55 +45,6 @@ def index():
     return render_template('index.html')
 
 
-# @app.route("/signup", methods=["GET", "POST"])
-# def signup():
-#     if request.method == "POST":
-#         # Get form data
-#         name = request.form.get("name")
-#         gender = request.form.get("gender")
-#         dob = request.form.get("dob")  # Get date of birth
-#         phone = request.form.get("phone")
-#         # Convert email to lower case
-#         email = request.form.get("email").lower()
-#         password = request.form.get("password")
-#         confirm_password = request.form.get("confirm_password")
-#         # Check if the email already exists
-#         existing_user = mongo.db.users.find_one({"email": email})
-#         if existing_user:
-#             flash(
-#                 "Email already exists. Please use a different email.", "danger"
-#             )
-#             return redirect(url_for("signup"))
-
-#         # Check if passwords match
-#         if password == confirm_password:
-#             # Hash the password
-#             hashed_password = generate_password_hash(password)
-#             # Create a new user record
-#             new_user = {
-#                 "name": name,
-#                 "gender": gender,
-#                 "dob": dob,  # Save date of birth
-#                 "phone": phone,
-#                 "email": email,
-#                 "password": hashed_password,
-#                 "role": "patient"  # Assign role
-#             }
-#             # Insert the new user into the database
-#             mongo.db.users.insert_one(new_user)
-#             flash("Registration successful!", "success")
-
-#             # Log the user in by adding their email to the session
-#             session["user"] = email
-
-#             return redirect(url_for("profile", username=email))
-#         else:
-#             flash("Passwords do not match. Please try again.", "danger")
-#             return redirect(url_for("signup"))
-
-#     # Render the signup template
-#     return render_template("signup.html")
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -608,28 +559,19 @@ def allowed_file(filename):
 @app.route("/admin/users")
 def admin_users():
     if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        # Fetch all users and doctors
         users = list(mongo.db.users.find())
         doctors = list(mongo.db.doctors.find())
-        return render_template("admin_users.html", users=users, doctors=doctors)
-    else:
-        flash("You do not have permission to access this page.", "danger")
-        return redirect(url_for("index"))
+        
+        # Sort users: admin first, then doctors, then patients
+        admins = [user for user in users if user['role'] == 'admin']
+        sorted_doctors = sorted(doctors, key=lambda x: x['name'])
+        sorted_patients = sorted([user for user in users if user['role'] == 'patient'], key=lambda x: x['name'])
 
+        # Combine sorted lists
+        sorted_users = admins + sorted_doctors + sorted_patients
 
-@app.route("/admin/patients")
-def admin_patients():
-    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
-        patients = mongo.db.users.find({"role": "patient"})
-        return render_template("admin_patients.html", patients=patients)
-    else:
-        flash("You do not have permission to access this page.", "danger")
-        return redirect(url_for("index"))
-
-@app.route("/admin/doctors")
-def admin_doctors():
-    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
-        doctors = mongo.db.doctors.find()
-        return render_template("admin_doctors.html", doctors=doctors)
+        return render_template("admin_users.html", users=sorted_users)
     else:
         flash("You do not have permission to access this page.", "danger")
         return redirect(url_for("index"))
