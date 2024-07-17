@@ -206,8 +206,77 @@
         </form>
       </div>
     </div>
+
+    {% if user.role == "admin" %}
+    <!-- Appointment Requests Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Appointment Requests</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Patient Name</th>
+                            <th scope="col">Reason</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointment_requests %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('profile', username=appointment.patient_email) }}">
+                                    {{ appointment.patient_name }}
+                                </a>
+                            </td>
+                            <td>{{ appointment.reason }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('assign_appointment') }}" style="display: inline">
+                                    <input type="hidden" name="appointment_id" value="{{ appointment._id }}" />
+                                    <select name="doctor_id" required>
+                                        <option value="">Select Doctor</option>
+                                        {% for doctor in doctors %}
+                                        <option value="{{ doctor._id }}">{{ doctor.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Assign Doctor</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
    
-  
+    {% if user.role == "doctor" %}
+    <!-- Assigned Patients Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Assigned Patients</h3>
+        </div>
+        <div class="card-body">
+            {% if assigned_patients %}
+            <ul class="list-group">
+                {% for appointment in assigned_patients %}
+                <li class="list-group-item">
+                    <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}">{{ appointment.patient_name }}</a></p>
+                    <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+                    <p><strong>Date:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No assigned patients.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Display Uploaded Files -->
     <div class="card mb-3">
       <div class="card-header">
@@ -285,27 +354,23 @@
       </div>
     </div>
 
-     <!-- Appointments -->
+    {% if user.role == "patient" %}
+    <!-- Appointment Request Form -->
     <div class="card mb-3">
       <div class="card-header">
-          <h3>Appointments</h3>
+        <h3>Request an Appointment</h3>
       </div>
       <div class="card-body">
-          {% if appointments %}
-          <ul class="list-group">
-              {% for appointment in appointments %}
-              <li class="list-group-item">
-                  <p><strong>Date:</strong> {{ appointment.date }}</p>
-                  <p><strong>Time:</strong> {{ appointment.time }}</p>
-                  <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-                  <p><strong>Status:</strong> {{ appointment.status }}</p>
-              </li>
-              {% endfor %}
-          </ul>
-          {% else %}
-          <p>No appointments found.</p>
-          {% endif %}
+        <form id="appointmentRequestForm" method="POST" action="{{ url_for('request_appointment') }}">
+          <input type="hidden" name="patient_id" value="{{ user._id }}">
+          <div class="mb-3">
+            <label for="appointmentReason" class="form-label">Reason for Appointment</label>
+            <textarea class="form-control" id="appointmentReason" name="reason" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Request Appointment</button>
+        </form>
+      </div>
     </div>
-  </div>
+    {% endif %}
   </main>
   {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{% endblock %}
