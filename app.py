@@ -118,7 +118,7 @@ def signup():
             return redirect(url_for("signup"))
 
         # Validate password requirements
-        if not re.match(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", password):
+        if not re.match(r"(?=.*\d)(?=.*[A-Z]).{8,}", password):
             flash("Password must contain at least 8 characters, including UPPER/lowercase and numbers", "danger")
             return redirect(url_for("signup"))
 
@@ -315,7 +315,7 @@ def change_password():
             return redirect(url_for("profile", username=session["user"]))
 
         # Validate new password requirements
-        if not re.match(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", new_password):
+        if not re.match(r"(?=.*\d)(?=.*[A-Z]).{8,}", new_password):
             flash("Password must contain at least 8 characters, including UPPER/lowercase and numbers.", "danger")
             return redirect(url_for("profile", username=session["user"]))
 

@@ -90,8 +90,8 @@ endblock %} {% block content %}
         placeholder="Password"
         required
         minlength="8"
-        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-        title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
+        pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
+        title="Password must contain at least 8 characters, including UPPERCASE letters and numbers"
         onkeyup="validatePassword('floatingPasswordRegister', 'password-requirements-register')"
       />
       <label for="floatingPasswordRegister">Password</label>

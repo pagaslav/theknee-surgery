@@ -244,3 +244,16 @@ function togglePasswordVisibility(passwordFieldId, iconId) {
     icon.classList.add("fa-eye")
   }
 }
+
+// Function to validate confirm password
+function validateConfirmPassword(passwordId, confirmPasswordId) {
+  const password = document.getElementById(passwordId).value
+  const confirmPassword = document.getElementById(confirmPasswordId).value
+  if (password !== confirmPassword) {
+    document
+      .getElementById(confirmPasswordId)
+      .setCustomValidity("Passwords do not match")
+  } else {
+    document.getElementById(confirmPasswordId).setCustomValidity("")
+  }
+}
