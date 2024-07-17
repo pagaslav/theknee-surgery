@@ -260,8 +260,6 @@
   {% if user.role == "admin" %}
   <div class="d-flex justify-content-center mt-4 mb-4">
     <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
-    <a href="{{ url_for('admin_patients') }}" class="btn btn-primary btn-lg square-button ms-5">All Patients</a>
-    <a href="{{ url_for('admin_doctors') }}" class="btn btn-primary btn-lg square-button ms-5">All Doctors</a>
     <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
   </div>
   {% endif %}
