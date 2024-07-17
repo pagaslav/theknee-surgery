@@ -188,41 +188,59 @@ $(document).ready(function () {
       })
     }
   })
+  $("#togglePasswordForm").click(function () {
+    $("#changePasswordForm").toggleClass("d-none")
+  })
 })
 
-function togglePasswordVisibility(inputId, iconId) {
-  let passwordInput = document.getElementById(inputId)
-  let passwordIcon = document.getElementById(iconId)
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text"
-    passwordIcon.classList.remove("fa-eye")
-    passwordIcon.classList.add("fa-eye-slash")
-  } else {
-    passwordInput.type = "password"
-    passwordIcon.classList.remove("fa-eye-slash")
-    passwordIcon.classList.add("fa-eye")
-  }
-}
+// Function to validate password requirements
+function validatePassword(id, requirementsId) {
+  const password = document.getElementById(id).value
+  const requirements = document.getElementById(requirementsId)
 
-function validatePassword(password) {
-  // Check the length of the password
+  const length = requirements.querySelector('p[id^="length"]')
+  const uppercase = requirements.querySelector('p[id^="uppercase"]')
+  const number = requirements.querySelector('p[id^="number"]')
+
+  // Check length
   if (password.length >= 8) {
-    $("#length").removeClass("neutral invalid").addClass("valid")
+    length.classList.remove("neutral")
+    length.classList.add("valid")
   } else {
-    $("#length").removeClass("neutral valid").addClass("invalid")
+    length.classList.remove("valid")
+    length.classList.add("neutral")
   }
 
   // Check for uppercase letter
   if (/[A-Z]/.test(password)) {
-    $("#uppercase").removeClass("neutral invalid").addClass("valid")
+    uppercase.classList.remove("neutral")
+    uppercase.classList.add("valid")
   } else {
-    $("#uppercase").removeClass("neutral valid").addClass("invalid")
+    uppercase.classList.remove("valid")
+    uppercase.classList.add("neutral")
   }
 
   // Check for number
   if (/\d/.test(password)) {
-    $("#number").removeClass("neutral invalid").addClass("valid")
+    number.classList.remove("neutral")
+    number.classList.add("valid")
   } else {
-    $("#number").removeClass("neutral valid").addClass("invalid")
+    number.classList.remove("valid")
+    number.classList.add("neutral")
+  }
+}
+
+// Function to toggle password visibility
+function togglePasswordVisibility(passwordFieldId, iconId) {
+  const passwordField = document.getElementById(passwordFieldId)
+  const icon = document.getElementById(iconId)
+  if (passwordField.type === "password") {
+    passwordField.type = "text"
+    icon.classList.remove("fa-eye")
+    icon.classList.add("fa-eye-slash")
+  } else {
+    passwordField.type = "password"
+    icon.classList.remove("fa-eye-slash")
+    icon.classList.add("fa-eye")
   }
 }

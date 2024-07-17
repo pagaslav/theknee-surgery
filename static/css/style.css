@@ -258,12 +258,14 @@ footer {
 }
 
 /* Password requirements */
-#password-requirements {
+#password-requirements-register,
+#password-requirements-change {
   display: flex;
   flex-wrap: wrap;
 }
 
-#password-requirements p {
+#password-requirements-register p,
+#password-requirements-change p {
   font-size: 0.9em;
   color: gray;
   display: inline;

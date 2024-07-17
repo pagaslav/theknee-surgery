@@ -142,6 +142,71 @@
         </form>
       </div>
     </div>
+
+    <!-- Change Password -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <h3>Change Password</h3>
+      </div>
+      <div class="card-body">
+        <button type="button" class="btn btn-secondary" id="togglePasswordForm">Change Password</button>
+        <form id="changePasswordForm" class="d-none mt-3" method="POST" action="{{ url_for('change_password') }}">
+          <input type="hidden" name="user_id" value="{{ user._id }}">
+
+          <div class="mb-3">
+            <label for="currentPassword" class="form-label">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" name="current_password" required>
+          </div>
+
+          <!-- New Password input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              id="newPassword"
+              name="new_password"
+              placeholder="New Password"
+              required
+              minlength="8"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
+              onkeyup="validatePassword('newPassword', 'password-requirements-change')"
+            />
+            <label for="newPassword">New Password</label>
+            <span class="password-toggle" onclick="togglePasswordVisibility('newPassword', 'new-password-icon')">
+              <i id="new-password-icon" class="fa-regular fa-eye"></i>
+            </span>
+          </div>
+
+          <!-- Password requirements -->
+          <div id="password-requirements-change" class="mb-3">
+            <p id="length-change" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>At least 8 characters</p>
+            <p id="uppercase-change" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>An uppercase letter</p>
+            <p id="number-change" class="neutral"><i class="fa-solid fa-check me-1"></i>At least one number</p>
+          </div>
+
+          <!-- Confirm New Password input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              id="confirmNewPassword"
+              name="confirm_new_password"
+              placeholder="Confirm New Password"
+              required
+              onkeyup="validateConfirmPassword('newPassword', 'confirmNewPassword')"
+            />
+            <label for="confirmNewPassword">Confirm New Password</label>
+            <span class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword', 'confirm-new-password-icon')">
+              <i id="confirm-new-password-icon" class="fa-regular fa-eye"></i>
+            </span>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </form>
+      </div>
+    </div>
+   
   
     <!-- Display Uploaded Files -->
     <div class="card mb-3">
