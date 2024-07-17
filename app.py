@@ -310,15 +310,6 @@ def request_appointment():
         flash("You need to log in to request an appointment.", "danger")
         return redirect(url_for("login"))
 
-# @app.route("/admin/appointments")
-# def admin_appointments():
-#     if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
-#         appointments = list(mongo.db.appointments.find({"status": "pending"}))
-#         doctors = list(mongo.db.doctors.find())
-#         return render_template("admin_appointments.html", appointments=appointments, doctors=doctors)
-#     else:
-#         flash("You do not have permission to access this page.", "danger")
-#         return redirect(url_for("index"))
 
 @app.route("/assign_appointment", methods=["POST"])
 def assign_appointment():
@@ -338,17 +329,35 @@ def assign_appointment():
         flash("You do not have permission to assign appointments.", "danger")
         return redirect(url_for("index"))
     
+@app.route("/accept_appointment", methods=["POST"])
+def accept_appointment():
+    if "user" in session:
+        current_user = mongo.db.users.find_one({"email": session["user"]}) or mongo.db.doctors.find_one({"email": session["user"]})
+        if current_user and (current_user["role"] == "doctor" or current_user["role"] == "admin"):
+            appointment_id = request.form.get("appointment_id")
+            appointment_date = request.form.get("appointment_date")
+            appointment_time = request.form.get("appointment_time")
 
-# @app.route("/doctor/patients")
-# def doctor_patients():
-#     if "user" in session and mongo.db.doctors.find_one({"email": session["user"]}):
-#         doctor = mongo.db.doctors.find_one({"email": session["user"]})
-#         appointments = list(mongo.db.appointments.find({"assigned_doctor_id": doctor["_id"], "status": "assigned"}))
-#         patients = [mongo.db.users.find_one({"_id": appointment["patient_id"]}) for appointment in appointments]
-#         return render_template("doctor_patients.html", appointments=appointments, patients=patients)
-#     else:
-#         flash("You do not have permission to access this page.", "danger")
-#         return redirect(url_for("index"))
+            appointment_datetime = datetime.strptime(f"{appointment_date} {appointment_time}", "%Y-%m-%d %H:%M")
+
+            doctor_name = current_user.get("name")
+            doctor_email = current_user.get("email")
+
+            mongo.db.appointments.update_one(
+                {"_id": ObjectId(appointment_id)},
+                {"$set": {"status": "scheduled", "appointment_datetime": appointment_datetime,
+                    "doctor_name": doctor_name,
+                    "doctor_email": doctor_email}}
+            )
+
+            flash("Appointment accepted and scheduled successfully!", "success")
+            return redirect(url_for("profile", username=session["user"]))
+        else:
+            flash("You do not have permission to perform this action.", "danger")
+            return redirect(url_for("index"))
+    else:
+        flash("You need to log in to accept appointments.", "danger")
+        return redirect(url_for("login"))
     
 
 @app.route("/logout")
@@ -438,9 +447,9 @@ def profile(username):
                     mongo.db.appointments.find({"status": "pending"})
                 )
 
-            # Get assigned appointments for doctor
+            # Get assigned appointments for doctor or admin
             assigned_patients = []
-            if user["role"] == "doctor":  # --- Changed to check user role ---
+            if user["role"] == "doctor" or current_user["role"] == "admin":  # Изменено для проверки роли
                 assigned_patients = list(
                     mongo.db.appointments.find({"assigned_doctor_id": user["_id"]})
                 )
@@ -458,6 +467,14 @@ def profile(username):
                 if patient:
                     appointment["patient_name"] = patient["name"]
                     appointment["patient_email"] = patient["email"]
+
+            # Fetch doctor name and email for scheduled appointments
+            for appointment in appointments:
+                if appointment.get("assigned_doctor_id"):
+                    doctor = mongo.db.doctors.find_one({"_id": appointment["assigned_doctor_id"]})
+                    if doctor:
+                        appointment["doctor_name"] = doctor["name"]
+                        appointment["doctor_email"] = doctor["email"]  # Добавляем email доктора
 
             doctors = list(mongo.db.doctors.find())
 
