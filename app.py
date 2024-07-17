@@ -8,7 +8,7 @@ from bson.objectid import ObjectId
 import certifi
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -286,6 +286,71 @@ def change_password():
         return redirect(url_for("login"))
 
 
+@app.route("/request_appointment", methods=["POST"])
+def request_appointment():
+    if "user" in session:
+        # Get form data
+        patient_id = request.form.get("patient_id")
+        reason = request.form.get("reason")
+
+        # Create a new appointment request
+        new_appointment = {
+            "patient_id": ObjectId(patient_id),
+            "reason": reason,
+            "status": "pending",  # Status of the appointment
+            "assigned_doctor_id": None,
+            "date_requested": datetime.now(timezone.utc)  # Use timezone-aware datetime
+        }
+
+        # Insert the new appointment request into the database
+        mongo.db.appointments.insert_one(new_appointment)
+        flash("Appointment request submitted successfully!", "success")
+        return redirect(url_for("profile", username=session["user"]))
+    else:
+        flash("You need to log in to request an appointment.", "danger")
+        return redirect(url_for("login"))
+
+# @app.route("/admin/appointments")
+# def admin_appointments():
+#     if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+#         appointments = list(mongo.db.appointments.find({"status": "pending"}))
+#         doctors = list(mongo.db.doctors.find())
+#         return render_template("admin_appointments.html", appointments=appointments, doctors=doctors)
+#     else:
+#         flash("You do not have permission to access this page.", "danger")
+#         return redirect(url_for("index"))
+
+@app.route("/assign_appointment", methods=["POST"])
+def assign_appointment():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        appointment_id = request.form.get("appointment_id")
+        doctor_id = request.form.get("doctor_id")
+
+        # Назначьте врача на встречу
+        mongo.db.appointments.update_one(
+            {"_id": ObjectId(appointment_id)},
+            {"$set": {"assigned_doctor_id": ObjectId(doctor_id), "status": "assigned"}}
+        )
+
+        flash("Appointment assigned successfully!", "success")
+        return redirect(url_for("profile", username=session["user"]))
+    else:
+        flash("You do not have permission to assign appointments.", "danger")
+        return redirect(url_for("index"))
+    
+
+# @app.route("/doctor/patients")
+# def doctor_patients():
+#     if "user" in session and mongo.db.doctors.find_one({"email": session["user"]}):
+#         doctor = mongo.db.doctors.find_one({"email": session["user"]})
+#         appointments = list(mongo.db.appointments.find({"assigned_doctor_id": doctor["_id"], "status": "assigned"}))
+#         patients = [mongo.db.users.find_one({"_id": appointment["patient_id"]}) for appointment in appointments]
+#         return render_template("doctor_patients.html", appointments=appointments, patients=patients)
+#     else:
+#         flash("You do not have permission to access this page.", "danger")
+#         return redirect(url_for("index"))
+    
+
 @app.route("/logout")
 def logout():
     # Remove user from session
@@ -336,14 +401,22 @@ def profile(username):
         if not user:
             # If not found in users, check in doctors collection
             user = mongo.db.doctors.find_one({"email": username})
-        
+
         if user:
             # Get the current user from session
             current_email = session.get("user")
             current_user = mongo.db.users.find_one({"email": current_email})
 
+            # --- Added check for current_user in doctors collection ---
+            if not current_user:
+                current_user = mongo.db.doctors.find_one({"email": current_email})
+
+            if not current_user:
+                flash("Current user not found.", "danger")
+                return redirect(url_for("index"))
+
             # Check if the current user is an admin viewing another profile
-            viewing_as_admin = current_user and current_user["role"] == "admin" and current_email != username
+            viewing_as_admin = current_user["role"] == "admin" and current_email != username
 
             # Получите медицинские записи пользователя
             medical_records = list(
@@ -357,6 +430,37 @@ def profile(username):
             user_files = list(
                 mongo.db.user_files.find({"user_id": user["_id"]})
             )
+
+            # Get appointment requests for admin
+            appointment_requests = []
+            if current_user["role"] == "admin":
+                appointment_requests = list(
+                    mongo.db.appointments.find({"status": "pending"})
+                )
+
+            # Get assigned appointments for doctor
+            assigned_patients = []
+            if user["role"] == "doctor":  # --- Changed to check user role ---
+                assigned_patients = list(
+                    mongo.db.appointments.find({"assigned_doctor_id": user["_id"]})
+                )
+
+            # Fetch patient names for appointment requests
+            for appointment in appointment_requests:
+                patient = mongo.db.users.find_one({"_id": appointment["patient_id"]})
+                if patient:
+                    appointment["patient_name"] = patient["name"]
+                    appointment["patient_email"] = patient["email"]
+
+            # Fetch patient names for assigned appointments
+            for appointment in assigned_patients:
+                patient = mongo.db.users.find_one({"_id": appointment["patient_id"]})
+                if patient:
+                    appointment["patient_name"] = patient["name"]
+                    appointment["patient_email"] = patient["email"]
+
+            doctors = list(mongo.db.doctors.find())
+
             # Render profile template with user data
             return render_template(
                 "profile.html",
@@ -365,7 +469,10 @@ def profile(username):
                 appointments=appointments,
                 user_files=user_files,
                 role=current_user["role"] if viewing_as_admin else user["role"],
-                viewing_as_admin=viewing_as_admin
+                viewing_as_admin=viewing_as_admin,
+                appointment_requests=appointment_requests,
+                assigned_patients=assigned_patients,  # --- updated key name ---
+                doctors=doctors
             )
         else:
             flash("User not found", "danger")
@@ -373,7 +480,6 @@ def profile(username):
     except Exception as e:
         flash(str(e), "danger")
         return redirect(url_for("index"))
-
 
 @app.route("/edit_user_ajax", methods=["POST"])
 def edit_user_ajax():
