@@ -253,7 +253,7 @@
     </div>
     {% endif %}
    
-    {% if user.role == "doctor" %}
+    {% if user.role == "doctor" or user.role == "admin" %}
     <!-- Assigned Patients Section -->
     <div class="card mb-3">
         <div class="card-header">
@@ -261,17 +261,35 @@
         </div>
         <div class="card-body">
             {% if assigned_patients %}
-            <ul class="list-group">
-                {% for appointment in assigned_patients %}
-                <li class="list-group-item">
-                    <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}">{{ appointment.patient_name }}</a></p>
-                    <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-                    <p><strong>Date:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                </li>
-                {% endfor %}
-            </ul>
+                <ul class="list-group">
+                    {% for appointment in assigned_patients %}
+                        <li class="list-group-item">
+                            <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}">{{ appointment.patient_name }}</a></p>
+                            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+                            <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
+                            <p><strong>Date Requested:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+
+                            {% if appointment.status == 'assigned' %}
+                                <form method="POST" action="{{ url_for('accept_appointment') }}">
+                                    <input type="hidden" name="appointment_id" value="{{ appointment._id }}">
+                                    <div class="form-group">
+                                        <label for="appointment_date">Appointment Date:</label>
+                                        <input type="date" name="appointment_date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="appointment_time">Appointment Time:</label>
+                                        <input type="time" name="appointment_time" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Accept and Schedule</button>
+                                </form>
+                            {% else %}
+                                <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
             {% else %}
-            <p>No assigned patients.</p>
+                <p>No assigned patients.</p>
             {% endif %}
         </div>
     </div>
@@ -353,6 +371,32 @@
         {% endif %}
       </div>
     </div>
+
+    {% if user.role == "patient" %}
+    <!-- Scheduled Appointments Section -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Scheduled Appointments</h3>
+        </div>
+        <div class="card-body">
+            {% if appointments %}
+                <ul class="list-group">
+                    {% for appointment in appointments %}
+                        {% if appointment.status == 'scheduled' %}
+                            <li class="list-group-item">
+                              <p><strong>Doctor:</strong> <a href="mailto:{{ appointment.doctor_email }}">{{ appointment.doctor_name }}</a></p>
+                              <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+                              <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No scheduled appointments.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 
     {% if user.role == "patient" %}
     <!-- Appointment Request Form -->
