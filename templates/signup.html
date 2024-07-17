@@ -85,23 +85,26 @@ endblock %} {% block content %}
       <input
         type="password"
         class="form-control"
-        id="floatingPassword"
+        id="floatingPasswordRegister"
         name="password"
         placeholder="Password"
         required
-        onkeyup="validatePassword()"
+        minlength="8"
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
+        onkeyup="validatePassword('floatingPasswordRegister', 'password-requirements-register')"
       />
-      <label for="floatingPassword">Password</label>
-      <span class="password-toggle" onclick="togglePasswordVisibility('floatingPassword', 'password-icon')">
-        <i id="password-icon" class="fa-regular fa-eye"></i>
+      <label for="floatingPasswordRegister">Password</label>
+      <span class="password-toggle" onclick="togglePasswordVisibility('floatingPasswordRegister', 'password-icon-register')">
+        <i id="password-icon-register" class="fa-regular fa-eye"></i>
       </span>
     </div>
 
     <!-- Password requirements -->
-    <div id="password-requirements" class="mb-3">
-      <p id="length" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>At least 8 characters</p>
-      <p id="uppercase" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>An uppercase letter</p>
-      <p id="number" class="neutral"><i class="fa-solid fa-check me-1"></i>At least one number</p>
+    <div id="password-requirements-register" class="mb-3">
+      <p id="length-register" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>At least 8 characters</p>
+      <p id="uppercase-register" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>An uppercase letter</p>
+      <p id="number-register" class="neutral"><i class="fa-solid fa-check me-1"></i>At least one number</p>
     </div>
 
     <!-- Confirm Password input field with floating label -->
@@ -109,16 +112,17 @@ endblock %} {% block content %}
       <input
         type="password"
         class="form-control"
-        id="floatingConfirmPassword"
+        id="floatingConfirmPasswordRegister"
         name="confirm_password"
         placeholder="Confirm Password"
         required
+        onkeyup="validateConfirmPassword('floatingPasswordRegister', 'floatingConfirmPasswordRegister')"
       />
-      <label for="floatingConfirmPassword">Confirm Password</label>
-      <span class="password-toggle" onclick="togglePasswordVisibility('floatingConfirmPassword', 'confirm-password-icon')">
-        <i id="confirm-password-icon" class="fa-regular fa-eye"></i>
+      <label for="floatingConfirmPasswordRegister">Confirm Password</label>
+      <span class="password-toggle" onclick="togglePasswordVisibility('floatingConfirmPasswordRegister', 'confirm-password-icon-register')">
+        <i id="confirm-password-icon-register" class="fa-regular fa-eye"></i>
       </span>
-</div>
+    </div>
 
     <!-- Terms and conditions checkbox -->
     <div class="checkbox mb-3">

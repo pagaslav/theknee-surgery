@@ -12,6 +12,9 @@ from datetime import timedelta, datetime
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import secrets
+import string
+import re
 
 # Checking if env.py file exists for environment variables
 if os.path.exists("env.py"):
@@ -42,6 +45,55 @@ def index():
     return render_template('index.html')
 
 
+# @app.route("/signup", methods=["GET", "POST"])
+# def signup():
+#     if request.method == "POST":
+#         # Get form data
+#         name = request.form.get("name")
+#         gender = request.form.get("gender")
+#         dob = request.form.get("dob")  # Get date of birth
+#         phone = request.form.get("phone")
+#         # Convert email to lower case
+#         email = request.form.get("email").lower()
+#         password = request.form.get("password")
+#         confirm_password = request.form.get("confirm_password")
+#         # Check if the email already exists
+#         existing_user = mongo.db.users.find_one({"email": email})
+#         if existing_user:
+#             flash(
+#                 "Email already exists. Please use a different email.", "danger"
+#             )
+#             return redirect(url_for("signup"))
+
+#         # Check if passwords match
+#         if password == confirm_password:
+#             # Hash the password
+#             hashed_password = generate_password_hash(password)
+#             # Create a new user record
+#             new_user = {
+#                 "name": name,
+#                 "gender": gender,
+#                 "dob": dob,  # Save date of birth
+#                 "phone": phone,
+#                 "email": email,
+#                 "password": hashed_password,
+#                 "role": "patient"  # Assign role
+#             }
+#             # Insert the new user into the database
+#             mongo.db.users.insert_one(new_user)
+#             flash("Registration successful!", "success")
+
+#             # Log the user in by adding their email to the session
+#             session["user"] = email
+
+#             return redirect(url_for("profile", username=email))
+#         else:
+#             flash("Passwords do not match. Please try again.", "danger")
+#             return redirect(url_for("signup"))
+
+#     # Render the signup template
+#     return render_template("signup.html")
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -50,43 +102,46 @@ def signup():
         gender = request.form.get("gender")
         dob = request.form.get("dob")  # Get date of birth
         phone = request.form.get("phone")
-        # Convert email to lower case
         email = request.form.get("email").lower()
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
+
         # Check if the email already exists
         existing_user = mongo.db.users.find_one({"email": email})
         if existing_user:
-            flash(
-                "Email already exists. Please use a different email.", "danger"
-            )
+            flash("Email already exists. Please use a different email.", "danger")
             return redirect(url_for("signup"))
 
         # Check if passwords match
-        if password == confirm_password:
-            # Hash the password
-            hashed_password = generate_password_hash(password)
-            # Create a new user record
-            new_user = {
-                "name": name,
-                "gender": gender,
-                "dob": dob,  # Save date of birth
-                "phone": phone,
-                "email": email,
-                "password": hashed_password,
-                "role": "patient"  # Assign role
-            }
-            # Insert the new user into the database
-            mongo.db.users.insert_one(new_user)
-            flash("Registration successful!", "success")
-
-            # Log the user in by adding their email to the session
-            session["user"] = email
-
-            return redirect(url_for("profile", username=email))
-        else:
+        if password != confirm_password:
             flash("Passwords do not match. Please try again.", "danger")
             return redirect(url_for("signup"))
+
+        # Validate password requirements
+        if not re.match(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", password):
+            flash("Password must contain at least 8 characters, including UPPER/lowercase and numbers", "danger")
+            return redirect(url_for("signup"))
+
+        # Hash the password
+        hashed_password = generate_password_hash(password)
+        # Create a new user record
+        new_user = {
+            "name": name,
+            "gender": gender,
+            "dob": dob,
+            "phone": phone,
+            "email": email,
+            "password": hashed_password,
+            "role": "patient"
+        }
+        # Insert the new user into the database
+        mongo.db.users.insert_one(new_user)
+        flash("Registration successful!", "success")
+
+        # Log the user in by adding their email to the session
+        session["user"] = email
+
+        return redirect(url_for("profile", username=email))
 
     # Render the signup template
     return render_template("signup.html")
@@ -173,7 +228,112 @@ def add_doctor():
     else:
         flash("You do not have permission to access this page.", "danger")
         return redirect(url_for("index"))
+
+
+def generate_random_password(length=12):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(secrets.choice(characters) for i in range(length))
+
+
+
+@app.route("/admin/reset_password", methods=["POST"])
+def reset_password_admin():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        user_id = request.form.get("user_id")
+        new_password = generate_random_password()  # Генерация случайного пароля
+
+        hashed_password = generate_password_hash(new_password)
+
+        user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
+        if user:
+            mongo.db.users.update_one(
+                {"_id": ObjectId(user_id)},
+                {"$set": {"password": hashed_password}}
+            )
+            flash(f"Password reset successfully for {user['name']}! New password: {new_password}", "success")
+        else:
+            doctor = mongo.db.doctors.find_one({"_id": ObjectId(user_id)})
+            if doctor:
+                mongo.db.doctors.update_one(
+                    {"_id": ObjectId(user_id)},
+                    {"$set": {"password": hashed_password}}
+                )
+                flash(f"Password reset successfully for Dr. {doctor['name']}! New password: {new_password}", "success")
+            else:
+                flash("User not found.", "danger")
+        return redirect(url_for("admin_users"))
+    else:
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
     
+
+
+@app.route("/admin/delete_user", methods=["POST"])
+def delete_user():
+    if "user" in session and mongo.db.users.find_one({"email": session["user"], "role": "admin"}):
+        user_id = request.form.get("user_id")
+
+        user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
+        if user:
+            mongo.db.users.delete_one({"_id": ObjectId(user_id)})
+            flash("User deleted successfully!", "success")
+        else:
+            doctor = mongo.db.doctors.find_one({"_id": ObjectId(user_id)})
+            if doctor:
+                mongo.db.doctors.delete_one({"_id": ObjectId(user_id)})
+                flash("User deleted successfully!", "success")
+            else:
+                flash("User not found.", "danger")
+        return redirect(url_for("admin_users"))
+    else:
+        flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
+
+@app.route("/change_password", methods=["POST"])
+def change_password():
+    if "user" in session:
+        # Get form data
+        user_id = request.form.get("user_id")
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        confirm_new_password = request.form.get("confirm_new_password")
+
+        # Find the user in the database
+        user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            flash("User not found.", "danger")
+            return redirect(url_for("profile", username=session["user"]))
+
+        # Check if the current password is correct
+        if not check_password_hash(user["password"], current_password):
+            flash("Current password is incorrect.", "danger")
+            return redirect(url_for("profile", username=session["user"]))
+
+        # Check if new passwords match
+        if new_password != confirm_new_password:
+            flash("New passwords do not match.", "danger")
+            return redirect(url_for("profile", username=session["user"]))
+
+        # Validate new password requirements
+        if not re.match(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", new_password):
+            flash("Password must contain at least 8 characters, including UPPER/lowercase and numbers.", "danger")
+            return redirect(url_for("profile", username=session["user"]))
+
+        # Hash the new password
+        hashed_password = generate_password_hash(new_password)
+
+        # Update the user's password in the database
+        mongo.db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"password": hashed_password}}
+        )
+
+        flash("Password updated successfully!", "success")
+        return redirect(url_for("profile", username=session["user"]))
+    else:
+        flash("You need to log in to change your password.", "danger")
+        return redirect(url_for("login"))
+
 
 @app.route("/logout")
 def logout():
