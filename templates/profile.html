@@ -253,7 +253,7 @@
     </div>
     {% endif %}
    
-    {% if user.role == "doctor" or user.role == "admin" %}
+    {% if user.role == "doctor" %}
     <!-- Assigned Patients Section -->
     <div class="card mb-3">
         <div class="card-header">
@@ -264,7 +264,7 @@
                 <ul class="list-group">
                     {% for appointment in assigned_patients %}
                         <li class="list-group-item">
-                            <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}">{{ appointment.patient_name }}</a></p>
+                            <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}" target="_blank">{{ appointment.patient_name }}</a></p>
                             <p><strong>Reason:</strong> {{ appointment.reason }}</p>
                             <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
                             <p><strong>Date Requested:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
@@ -285,6 +285,19 @@
                             {% else %}
                                 <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                             {% endif %}
+                            
+                            {% if appointment.medical_records %}
+                                <h5>Medical Records:</h5>
+                                <ul>
+                                    {% for record in appointment.medical_records %}
+                                        <li>
+                                            <a href="{{ url_for('medical_record_detail', record_id=record._id) }}" target="_blank">
+                                                {{ record.description }} ({{ record.date.strftime('%Y-%m-%d') }})
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
@@ -294,8 +307,7 @@
         </div>
     </div>
     {% endif %}
-
-    <!-- Display Uploaded Files -->
+    <!-- Display Uploaded Files
     <div class="card mb-3">
       <div class="card-header">
           <h3>Uploaded Files</h3>
@@ -316,9 +328,9 @@
           <p id="no-files-message">No files uploaded.</p>
           {% endif %}
       </div>
-    </div>
+    </div> -->
 
-    <!-- File Upload Section -->
+    <!-- File Upload Section
     <div class="card mb-3">
       <div class="card-header">
         <h3>Upload Documents</h3>
@@ -342,35 +354,151 @@
           <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
         </form>
       </div>
+    </div> -->
+  
+    {% if user.role == "admin" %}
+    <div class="d-flex justify-content-center mt-4 mb-4">
+      <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
+      <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
     </div>
+    {% endif %}
   
-  {% if user.role == "admin" %}
-  <div class="d-flex justify-content-center mt-4 mb-4">
-    <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
-    <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
-  </div>
-  {% endif %}
-  
-    <!-- Medical Records -->
+    <!-- Medical Records for Patients -->
+    {% if user.role == "patient" %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Medical Records</h3>
+        </div>
+        <div class="card-body">
+            {% if medical_records %}
+            <ul class="list-group">
+                {% for record in medical_records %}
+                <li class="list-group-item">
+                    <p><strong>Description:</strong> {{ record.description }}</p>
+                    <p><strong>Treatment:</strong> {{ record.treatment }}</p>
+                    <p><strong>Date:</strong> {{ record.date.strftime('%Y-%m-%d') }}</p>
+                    {% if record.doctor_name %}
+                    <p><strong>Doctor:</strong> <a href="mailto:{{ record.doctor_email }}">{{ record.doctor_name }}</a></p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No medical records found.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Medical Records for Doctors -->
+    {% if user.role == "doctor" %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Medical Records</h3>
+        </div>
+        <div class="card-body">
+            {% if doctor_records %}
+            <ul class="list-group">
+                {% for record in doctor_records %}
+                <li class="list-group-item">
+                    <p><strong>Date:</strong> <a href="{{ url_for('edit_medical_record', record_id=record._id) }}">{{ record.date.strftime('%Y-%m-%d') }}</a></p>
+                    <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=record.patient_email) }}">{{ record.patient_name }}</a></p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No medical records found.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Display Uploaded Files for Patients and Admins -->
+    {% if user.role == "patient" or user.role == "admin" %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Uploaded Files</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group" id="uploaded-files-list">
+                {% for file in user_files %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ file.file_url }}" target="_blank">{{ file.file_name }}</a>
+                    <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
+                        <input type="hidden" name="file_id" value="{{ file.file_id }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% if not user_files %}
+            <p id="no-files-message">No files uploaded.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- File Upload Section for Patients and Admins -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Upload Documents</h3>
+        </div>
+        <div class="card-body">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
+                <div class="mb-3">
+                    <label for="fileInput" class="form-label">Upload File</label>
+                    <input class="form-control" type="file" id="fileInput" name="file">
+                </div>
+                <div class="mb-3">
+                    <label for="fileType" class="form-label">File Type</label>
+                    <select class="form-select" id="fileType" name="file_type">
+                        <option value="medical_record">Medical Record</option>
+                        <option value="analysis">Analysis</option>
+                        <option value="profile_picture">Profile Picture</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if user.role == "doctor" %}
     <div class="card mb-3">
       <div class="card-header">
-        <h3>Medical Records</h3>
+        <h3>Add Medical Record</h3>
       </div>
       <div class="card-body">
-        {% if medical_records %}
-        <ul class="list-group">
-          {% for record in medical_records %}
-          <li class="list-group-item">
-            <p><strong>Description:</strong> {{ record.description }}</p>
-            <p><strong>Treatment:</strong> {{ record.treatment }}</p>
-          </li>
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p>No medical records found.</p>
-        {% endif %}
+        <form method="POST" action="{{ url_for('add_medical_record') }}">
+          <div class="mb-3">
+            <label for="patient" class="form-label">Patient</label>
+            <select class="form-select" id="patient" name="patient_id" required>
+              <option value="">Select Patient</option>
+              {% for patient in patients %}
+              <option value="{{ patient._id }}">{{ patient.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="record_date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="record_date" name="record_date" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="treatment" class="form-label">Treatment</label>
+            <textarea class="form-control" id="treatment" name="treatment" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Record</button>
+        </form>
       </div>
     </div>
+    {% endif %}
+
+
 
     {% if user.role == "patient" %}
     <!-- Scheduled Appointments Section -->

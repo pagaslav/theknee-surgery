@@ -1,0 +1,128 @@
+{% extends "base.html" %} {% block title %} Medical Record {% endblock %} {%
+block content %}
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }} mt-3">
+    <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <h2 class="mt-5">Medical Record</h2>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3>Uploaded Files</h3>
+    </div>
+    <div class="card-body">
+      <ul class="list-group" id="uploaded-files-list">
+        {% for file in files %}
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <a href="{{ file.file_url }}" target="_blank">{{ file.file_name }}</a>
+          <form
+            action="{{ url_for('delete_file') }}"
+            method="post"
+            style="display: inline"
+            class="delete-file-form"
+          >
+            <input type="hidden" name="file_id" value="{{ file.file_id }}" />
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      {% if not files %}
+      <p id="no-files-message">No files uploaded.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3>Medical Record Details</h3>
+    </div>
+    <div class="card-body">
+      <form
+        method="POST"
+        action="{{ url_for('update_medical_record', record_id=record._id) }}"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3">
+          <label for="patient" class="form-label">Patient</label>
+          <input
+            type="text"
+            class="form-control"
+            id="patient"
+            value="{{ patient.name }}"
+            readonly
+          />
+        </div>
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            name="record_date"
+            value="{{ record.date.strftime('%Y-%m-%d') }}"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            required
+          >
+{{ record.description }}</textarea
+          >
+        </div>
+        <div class="mb-3">
+          <label for="treatment" class="form-label">Treatment</label>
+          <textarea
+            class="form-control"
+            id="treatment"
+            name="treatment"
+            required
+          >
+{{ record.treatment }}</textarea
+          >
+        </div>
+        {% if session.get('user') == doctor.email or current_user['role'] ==
+        'admin' %}
+        <button type="submit" class="btn btn-primary">Update Record</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <h3>Upload Document</h3>
+    </div>
+    <div class="card-body">
+      <form
+        method="POST"
+        action="{{ url_for('upload_medical_record_file', record_id=record._id) }}"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3">
+          <label for="file" class="form-label">Choose File</label>
+          <input
+            type="file"
+            class="form-control"
+            id="file"
+            name="file"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

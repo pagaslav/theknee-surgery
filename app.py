@@ -402,94 +402,101 @@ def about():
 
 @app.route("/profile/<username>")
 def profile(username):
-    """ Show the profile for that user."""
     try:
-        # Find the user by email
+        # Найти пользователя по email
         user = mongo.db.users.find_one({"email": username})
-
-        if not user:
-            # If not found in users, check in doctors collection
+        if user:
+            print(f"User found in users collection: {user}")
+        else:
             user = mongo.db.doctors.find_one({"email": username})
+            if user:
+                print(f"User found in doctors collection: {user}")
+            else:
+                flash("User not found", "danger")
+                return redirect(url_for("index"))
 
         if user:
-            # Get the current user from session
+            # Текущий пользователь
             current_email = session.get("user")
             current_user = mongo.db.users.find_one({"email": current_email})
-
-            # --- Added check for current_user in doctors collection ---
             if not current_user:
                 current_user = mongo.db.doctors.find_one({"email": current_email})
-
             if not current_user:
                 flash("Current user not found.", "danger")
                 return redirect(url_for("index"))
+            else:
+                print(f"Current user email from session: {current_email}")
 
-            # Check if the current user is an admin viewing another profile
             viewing_as_admin = current_user["role"] == "admin" and current_email != username
 
-            # Получите медицинские записи пользователя
-            medical_records = list(
-                mongo.db.medical_records.find({"patient_id": user["_id"]})
-            )
-            # Получите записи о приёмах пользователя
-            appointments = list(
-                mongo.db.appointments.find({"patient_id": user["_id"]})
-            )
-            # Получите загруженные файлы пользователя
-            user_files = list(
-                mongo.db.user_files.find({"user_id": user["_id"]})
-            )
-
-            # Get appointment requests for admin
-            appointment_requests = []
-            if current_user["role"] == "admin":
-                appointment_requests = list(
-                    mongo.db.appointments.find({"status": "pending"})
-                )
-
-            # Get assigned appointments for doctor or admin
-            assigned_patients = []
-            if user["role"] == "doctor" or current_user["role"] == "admin":  # Изменено для проверки роли
-                assigned_patients = list(
-                    mongo.db.appointments.find({"assigned_doctor_id": user["_id"]})
-                )
-
-            # Fetch patient names for appointment requests
-            for appointment in appointment_requests:
-                patient = mongo.db.users.find_one({"_id": appointment["patient_id"]})
+            # Медицинские записи пользователя
+            medical_records = list(mongo.db.medical_records.find({"patient_id": user["_id"]}))
+            for record in medical_records:
+                doctor = mongo.db.doctors.find_one({"_id": record["doctor_id"]})
+                if doctor:
+                    record["doctor_name"] = doctor["name"]
+                    record["doctor_email"] = doctor["email"]
+                patient = mongo.db.users.find_one({"_id": record["patient_id"]})
                 if patient:
-                    appointment["patient_name"] = patient["name"]
-                    appointment["patient_email"] = patient["email"]
+                    record["patient_name"] = patient["name"]
+                    record["patient_email"] = patient["email"]
 
-            # Fetch patient names for assigned appointments
-            for appointment in assigned_patients:
-                patient = mongo.db.users.find_one({"_id": appointment["patient_id"]})
-                if patient:
-                    appointment["patient_name"] = patient["name"]
-                    appointment["patient_email"] = patient["email"]
+            # Медицинские записи доктора
+            doctor_records = []
+            if user["role"] == "doctor":
+                doctor_records = list(mongo.db.medical_records.find({"doctor_id": user["_id"]}))
+                for record in doctor_records:
+                    patient = mongo.db.users.find_one({"_id": record["patient_id"]})
+                    if patient:
+                        record["patient_name"] = patient["name"]
+                        record["patient_email"] = patient["email"]
+            else:
+                doctor_records = []
 
-            # Fetch doctor name and email for scheduled appointments
+            # Назначенные приёмы
+            appointments = list(mongo.db.appointments.find({"patient_id": user["_id"]}))
             for appointment in appointments:
                 if appointment.get("assigned_doctor_id"):
                     doctor = mongo.db.doctors.find_one({"_id": appointment["assigned_doctor_id"]})
                     if doctor:
                         appointment["doctor_name"] = doctor["name"]
-                        appointment["doctor_email"] = doctor["email"]  # Добавляем email доктора
+                        appointment["doctor_email"] = doctor["email"]
 
+            # Запросы на приём для администратора
+            appointment_requests = []
+            if current_user["role"] == "admin":
+                appointment_requests = list(mongo.db.appointments.find({"status": "pending"}))
+
+            # Назначенные пациенты для доктора или администратора
+            assigned_patients = []
+            if user["role"] == "doctor" or current_user["role"] == "admin":
+                assigned_patients = list(mongo.db.appointments.find({"assigned_doctor_id": user["_id"]}))
+                for appointment in assigned_patients:
+                    patient = mongo.db.users.find_one({"_id": appointment["patient_id"]})
+                    if patient:
+                        appointment["patient_name"] = patient["name"]
+                        appointment["patient_email"] = patient["email"]
+                        appointment["medical_records"] = list(mongo.db.medical_records.find({"patient_id": patient["_id"]}))
+                        print(f"Assigned patient: {appointment}")
+                    else:
+                        print(f"Patient not found for appointment {appointment['_id']}")
+
+            # Список пациентов для выбора доктором
+            patients = list(mongo.db.users.find({"role": "patient"}))
             doctors = list(mongo.db.doctors.find())
-
-            # Render profile template with user data
             return render_template(
                 "profile.html",
                 user=user,
                 medical_records=medical_records,
                 appointments=appointments,
-                user_files=user_files,
+                user_files=list(mongo.db.user_files.find({"user_id": user["_id"]})),
                 role=current_user["role"] if viewing_as_admin else user["role"],
                 viewing_as_admin=viewing_as_admin,
                 appointment_requests=appointment_requests,
-                assigned_patients=assigned_patients,  # --- updated key name ---
-                doctors=doctors
+                assigned_patients=assigned_patients,
+                doctors=doctors,
+                patients=patients,
+                doctor_records=doctor_records
             )
         else:
             flash("User not found", "danger")
@@ -497,6 +504,93 @@ def profile(username):
     except Exception as e:
         flash(str(e), "danger")
         return redirect(url_for("index"))
+    
+    
+
+@app.route('/edit_medical_record/<record_id>', methods=['GET', 'POST'])
+def edit_medical_record(record_id):
+    record = mongo.db.medical_records.find_one({"_id": ObjectId(record_id)})
+    if record:
+        doctor = mongo.db.doctors.find_one({"_id": record["doctor_id"]})
+        patient = mongo.db.users.find_one({"_id": record["patient_id"]})
+        files = list(mongo.db.medical_record_files.find({"record_id": ObjectId(record_id)}))
+        return render_template("medical_record_detail.html", record=record, doctor=doctor, patient=patient, files=files)
+    else:
+        flash("Medical record not found.", "danger")
+        return redirect(url_for("index"))
+    
+
+@app.route('/update_medical_record/<record_id>', methods=['POST'])
+def update_medical_record(record_id):
+    try:
+        description = request.form['description']
+        treatment = request.form['treatment']
+        record_date = request.form['record_date']
+
+        # Обновление записи в базе данных
+        mongo.db.medical_records.update_one(
+            {"_id": ObjectId(record_id)},
+            {"$set": {
+                "description": description,
+                "treatment": treatment,
+                "date": datetime.strptime(record_date, "%Y-%m-%d")
+            }}
+        )
+
+        # Загрузка документа
+        if 'file' in request.files:
+            file = request.files['file']
+            if file and allowed_file(file.filename):
+                result = cloudinary.uploader.upload(file)
+                file_url = result['secure_url']
+                file_id = result['public_id']
+                file_name = secure_filename(file.filename)
+
+                new_file = {
+                    "record_id": ObjectId(record_id),
+                    "file_id": file_id,
+                    "file_url": file_url,
+                    "file_name": file_name,
+                    "uploaded_at": datetime.utcnow()
+                }
+                mongo.db.medical_record_files.insert_one(new_file)
+
+        flash('Medical record updated successfully', 'success')
+    except Exception as e:
+        flash(str(e), 'danger')
+
+    return redirect(url_for('medical_record_detail', record_id=record_id))
+
+
+@app.route('/upload_medical_record_file/<record_id>', methods=['POST'])
+def upload_medical_record_file(record_id):
+    try:
+        if 'file' in request.files:
+            file = request.files['file']
+            if file and allowed_file(file.filename):
+                result = cloudinary.uploader.upload(file)
+                file_url = result['secure_url']
+                file_id = result['public_id']
+                file_name = secure_filename(file.filename)
+
+                new_file = {
+                    "record_id": ObjectId(record_id),
+                    "file_id": file_id,
+                    "file_url": file_url,
+                    "file_name": file_name,
+                    "uploaded_at": datetime.utcnow()
+                }
+                mongo.db.medical_record_files.insert_one(new_file)
+
+                flash('File uploaded successfully', 'success')
+            else:
+                flash('Invalid file type', 'danger')
+        else:
+            flash('No file selected', 'danger')
+    except Exception as e:
+        flash(str(e), 'danger')
+
+    return redirect(url_for('edit_medical_record', record_id=record_id))
 
 @app.route("/edit_user_ajax", methods=["POST"])
 def edit_user_ajax():
@@ -697,6 +791,55 @@ def admin_users():
         return render_template("admin_users.html", users=sorted_users)
     else:
         flash("You do not have permission to access this page.", "danger")
+        return redirect(url_for("index"))
+
+
+@app.route('/add_medical_record', methods=['POST'])
+def add_medical_record():
+    try:
+        patient_id = request.form.get('patient_id')
+        doctor_email = session.get('user')
+        if not doctor_email:
+            raise Exception("Doctor email not found in session.")
+        
+        doctor = mongo.db.doctors.find_one({"email": doctor_email})
+        if not doctor:
+            raise Exception("Doctor not found in the database.")
+        
+        doctor_id = doctor["_id"]
+        description = request.form.get('description')
+        treatment = request.form.get('treatment')
+        record_date = request.form.get('record_date')
+        patient_email = request.form.get('patient_email')
+
+        # Проверка наличия всех необходимых данных
+        if not all([patient_id, doctor_id, description, treatment, record_date, patient_email]):
+            raise Exception("Missing required fields.")
+        
+        # Добавление записи в БД
+        mongo.db.medical_records.insert_one({
+            'patient_id': ObjectId(patient_id),
+            'doctor_id': ObjectId(doctor_id),
+            'description': description,
+            'treatment': treatment,
+            'date': datetime.strptime(record_date, "%Y-%m-%d")
+        })
+
+        flash('Medical record added successfully', 'success')
+        return redirect(url_for('profile', username=patient_email))
+    except Exception as e:
+        flash(str(e), 'danger')
+        return redirect(url_for('profile', username=session.get('user')))
+
+@app.route("/medical_record/<record_id>")
+def medical_record_detail(record_id):
+    record = mongo.db.medical_records.find_one({"_id": ObjectId(record_id)})
+    if record:
+        doctor = mongo.db.doctors.find_one({"_id": record["doctor_id"]})
+        patient = mongo.db.users.find_one({"_id": record["patient_id"]})
+        return render_template("medical_record_detail.html", record=record, doctor=doctor, patient=patient)
+    else:
+        flash("Medical record not found.", "danger")
         return redirect(url_for("index"))
 
 
