@@ -1,294 +1,290 @@
 {% extends "base.html" %} {% block title %}The Knee Surgery | Sign Up Page{%
 endblock %} {% block content %}
 
-<!-- Bootstrap Sign Up Form -->
-<section class="form-sign">
-  <form method="POST" action="{{ url_for('signup') }}">
-    <!-- Display flashed messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %}
-    <!-- Loop through each message -->
-    {% for category, message in messages %}
-    <div class="">
-      <h2 class="h3 mb-3 fw-normal alert alert-{{ category }}">
-        {{ message }}
-      </h2>
-    </div>
-    {% endfor %} {% endif %} {% endwith %}
-    <h2 class="h2 mb-3 fw-normal">Create Your Account</h2>
+      <!-- Bootstrap Sign Up Form -->
+      <section class="form-sign">
+        <form method="POST" action="{{ url_for('signup') }}">
+          <!-- Display flashed messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <!-- Loop through each message -->
+          {% for category, message in messages %}
+          <div class="">
+            <h2 class="h3 mb-3 fw-normal alert alert-{{ category }}">
+              {{ message }}
+            </h2>
+          </div>
+          {% endfor %} {% endif %} {% endwith %}
+          <h2 class="h2 mb-3 fw-normal">Create Your Account</h2>
 
-    <!-- Name input field with floating label -->
-    <div class="form-floating mb-3">
-      <input
-        type="text"
-        class="form-control"
-        id="floatingName"
-        name="name"
-        placeholder="Full Name"
-        aria-label="Full Name"
-        required
-      />
-      <label for="floatingName">Full Name</label>
-    </div>
+          <!-- Name input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingName"
+              name="name"
+              placeholder="Full Name"
+              aria-label="Full Name"
+              required>
+            <label for="floatingName">Full Name</label>
+          </div>
 
-    <!-- Gender input field with floating label -->
-    <div class="form-floating mb-3">
-      <select class="form-control" id="floatingGender" name="gender" required>
-        <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
-      <label for="floatingGender">Gender</label>
-    </div>
+          <!-- Gender input field with floating label -->
+          <div class="form-floating mb-3">
+            <select class="form-control" id="floatingGender" name="gender" required>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            <label for="floatingGender">Gender</label>
+          </div>
 
-    <!-- Date of Birth input field with floating label -->
-    <div class="form-floating mb-3">
-      <input
-        type="date"
-        class="form-control"
-        id="floatingDob"
-        name="dob"
-        placeholder="Date of Birth"
-        aria-label="Date of Birth"
-        required
-      />
-      <label for="floatingDob">Date of Birth</label>
-    </div>
+          <!-- Date of Birth input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="date"
+              class="form-control"
+              id="floatingDob"
+              name="dob"
+              aria-label="Date of Birth"
+              required>
+            <label for="floatingDob">Date of Birth</label>
+          </div>
 
-    <!-- Phone input field with floating label -->
-    <div class="form-floating mb-1">
-      <input
-        type="tel"
-        class="form-control"
-        id="floatingPhone"
-        name="phone"
-        placeholder=""
-        pattern="[0-9]{9,11}"
-        aria-describedby="phone-requirements"
-        aria-label="Phone Number"
-        required>
-      <label for="floatingPhone">Phone Number</label>
-      <span class="sample-text">07990563212</span>
-    </div>
+          <!-- Phone input field with floating label -->
+          <div class="form-floating mb-1">
+            <input
+              type="tel"
+              class="form-control"
+              id="floatingPhone"
+              name="phone"
+              placeholder=""
+              pattern="[0-9]{9,11}"
+              aria-describedby="phone-requirements"
+              aria-label="Phone Number"
+              required>
+            <label for="floatingPhone">Phone Number</label>
+            <span class="sample-text">07990563212</span>
+          </div>
 
-    <!-- Phone number requirements -->
-    <div id="phone-requirements" class="mb-1">
-      <p class="mb-3">
-        <i class="neutral fa-solid fa-check me-1"></i>Must be 9-11 digits long
-      </p>
-    </div>
+          <!-- Phone number requirements -->
+          <div id="phone-requirements" class="mb-1">
+            <p class="mb-3">
+              <i class="neutral fa-solid fa-check me-1"></i>Must be 9-11 digits long
+            </p>
+          </div>
 
-    <!-- Email input field with floating label -->
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="floatingEmail"
-        name="email"
-        placeholder="name@example.com"
-        aria-label="Email address"
-        required>
-      <label for="floatingEmail">Email address</label>
-    </div>
+          <!-- Email input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              id="floatingEmail"
+              name="email"
+              placeholder="name@example.com"
+              aria-label="Email address"
+              required>
+            <label for="floatingEmail">Email address</label>
+          </div>
 
-    <!-- Password input field with floating label -->
-    <div class="form-floating">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPasswordRegister"
-        name="password"
-        placeholder="Password"
-        aria-describedby="password-requirements-register"
-        aria-label="Password"
-        required
-        minlength="8"
-        pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
-        title="Password must contain at least 8 characters, including UPPERCASE letters and numbers"
-        onkeyup="validatePassword('floatingPasswordRegister', 'password-requirements-register')">
-      <label for="floatingPasswordRegister">Password</label>
-      <span
-        class="password-toggle"
-        onclick="togglePasswordVisibility('floatingPasswordRegister', 'password-icon-register')"
-      >
-        <i id="password-icon-register" class="fa-regular fa-eye"></i>
-      </span>
-    </div>
-
-    <!-- Password requirements -->
-    <div id="password-requirements-register" class="mb-3">
-      <p id="length-register" class="neutral me-3">
-        <i class="fa-solid fa-check me-1"></i>At least 8 characters
-      </p>
-      <p id="uppercase-register" class="neutral me-3">
-        <i class="fa-solid fa-check me-1"></i>An uppercase letter
-      </p>
-      <p id="number-register" class="neutral">
-        <i class="fa-solid fa-check me-1"></i>At least one number
-      </p>
-    </div>
-
-    <!-- Confirm Password input field with floating label -->
-    <div class="form-floating mb-3">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingConfirmPasswordRegister"
-        name="confirm_password"
-        placeholder="Confirm Password"
-        aria-label="Confirm Password"
-        required
-        onkeyup="validateConfirmPassword('floatingPasswordRegister', 'floatingConfirmPasswordRegister')">
-      <label for="floatingConfirmPasswordRegister">Confirm Password</label>
-      <span
-        class="password-toggle"
-        onclick="togglePasswordVisibility('floatingConfirmPasswordRegister', 'confirm-password-icon-register')"
-      >
-        <i id="confirm-password-icon-register" class="fa-regular fa-eye"></i>
-      </span>
-    </div>
-
-    <!-- Terms and conditions checkbox -->
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" name="terms" value="agree" required /> I agree to
-        the
-        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal"
-          >terms and conditions</a
-        >
-      </label>
-    </div>
-
-    <!-- Sign up button -->
-    <button
-      class="w-50 btn btn-lg btn-primary"
-      type="submit"
-      aria-label="Sign Up Button"
-    >
-      Sign Up
-    </button>
-  </form>
-</section>
-
-<!-- Modal for Terms and Conditions -->
-<section
-  class="modal fade"
-  id="termsModal"
-  tabindex="-1"
-  aria-labelledby="termsModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="termsModalLabel">Terms and Conditions</h2>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="container mt-5">
-          <h3>Introduction</h3>
-          <p>
-            Welcome to The Knee Surgery. These terms and conditions outline the
-            rules and regulations for the use of The Knee Surgery's Website,
-            located at theknee.surgery.
-          </p>
-          <p>
-            By accessing this website we assume you accept these terms and
-            conditions. Do not continue to use The Knee Surgery if you do not
-            agree to take all of the terms and conditions stated on this page.
-          </p>
-
-          <h2>Use of the Website</h2>
-          <ul>
-            <li>You must be at least 18 years of age to use this website.</li>
-            <li>
-              You must provide accurate and complete information when creating
-              an account.
-            </li>
-            <li>
-              You are responsible for maintaining the confidentiality of your
-              account and password.
-            </li>
-          </ul>
-
-          <h3>Intellectual Property Rights</h3>
-          <p>
-            Unless otherwise stated, The Knee Surgery and/or its licensors own
-            the intellectual property rights for all material on The Knee
-            Surgery. All intellectual property rights are reserved. You may
-            access this from The Knee Surgery for your own personal use
-            subjected to restrictions set in these terms and conditions.
-          </p>
-
-          <h3>Limitation of Liability</h3>
-          <p>
-            The materials on The Knee Surgery's website are provided on an 'as
-            is' basis. The Knee Surgery makes no warranties, expressed or
-            implied, and hereby disclaims and negates all other warranties,
-            including without limitation, implied warranties or conditions of
-            merchantability, fitness for a particular purpose, or
-            non-infringement of intellectual property or other violation of
-            rights.
-          </p>
-
-          <h3>Privacy</h3>
-          <p>
-            Please read our
-            <a
-              href="{{ url_for('policy') }}"
-              aria-label="Read our Privacy Policy"
-              >Privacy Policy.</a
+          <!-- Password input field with floating label -->
+          <div class="form-floating">
+            <input
+              type="password"
+              class="form-control"
+              id="floatingPasswordRegister"
+              name="password"
+              placeholder="Password"
+              aria-describedby="password-requirements-register"
+              aria-label="Password"
+              required
+              minlength="8"
+              pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
+              title="Password must contain at least 8 characters, including UPPERCASE letters and numbers"
+              onkeyup="validatePassword('floatingPasswordRegister', 'password-requirements-register')">
+            <label for="floatingPasswordRegister">Password</label>
+            <span
+              class="password-toggle"
+              onclick="togglePasswordVisibility('floatingPasswordRegister', 'password-icon-register')"
             >
-          </p>
+              <i id="password-icon-register" class="fa-regular fa-eye"></i>
+            </span>
+          </div>
 
-          <h3>Changes to These Terms</h3>
-          <p>
-            We reserve the right to amend these terms and conditions at any
-            time. We will notify you of any changes by posting the new terms and
-            conditions on this page.
-          </p>
+          <!-- Password requirements -->
+          <div id="password-requirements-register" class="mb-3">
+            <p id="length-register" class="neutral me-3">
+              <i class="fa-solid fa-check me-1"></i>At least 8 characters
+            </p>
+            <p id="uppercase-register" class="neutral me-3">
+              <i class="fa-solid fa-check me-1"></i>An uppercase letter
+            </p>
+            <p id="number-register" class="neutral">
+              <i class="fa-solid fa-check me-1"></i>At least one number
+            </p>
+          </div>
 
-          <h3>Contact Information</h3>
-          <p>
-            If you have any questions about these Terms, please contact us at
-            info@theknee.surgery.
-          </p>
+          <!-- Confirm Password input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              id="floatingConfirmPasswordRegister"
+              name="confirm_password"
+              placeholder="Confirm Password"
+              aria-label="Confirm Password"
+              required
+              onkeyup="validateConfirmPassword('floatingPasswordRegister', 'floatingConfirmPasswordRegister')">
+            <label for="floatingConfirmPasswordRegister">Confirm Password</label>
+            <span
+              class="password-toggle"
+              onclick="togglePasswordVisibility('floatingConfirmPasswordRegister', 'confirm-password-icon-register')"
+            >
+              <i id="confirm-password-icon-register" class="fa-regular fa-eye"></i>
+            </span>
+          </div>
 
-          <h3>Governing Law</h3>
-          <p>
-            These terms and conditions are governed by and construed in
-            accordance with the laws of the United Kingdom and you irrevocably
-            submit to the exclusive jurisdiction of the courts in that State or
-            location.
-          </p>
+          <!-- Terms and conditions checkbox -->
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" name="terms" value="agree" required> I agree to the
+              <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal"
+                >terms and conditions</a
+              >
+            </label>
+          </div>
 
-          <h3>Owner and Developer Information</h3>
-          <p>
-            This website is owned by Mr X. All materials are provided by and the
-            development is done by Artem Bryzh. The site, server, and clinic are
-            located in the UK.
-          </p>
+          <!-- Sign up button -->
+          <button
+            class="w-50 btn btn-lg btn-primary"
+            type="submit"
+            aria-label="Sign Up Button"
+          >
+            Sign Up
+          </button>
+        </form>
+      </section>
+
+      <!-- Modal for Terms and Conditions -->
+      <section
+        class="modal fade"
+        id="termsModal"
+        tabindex="-1"
+        aria-labelledby="termsModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="termsModalLabel">Terms and Conditions</h2>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="container mt-5">
+                <h3>Introduction</h3>
+                <p>
+                  Welcome to The Knee Surgery. These terms and conditions outline the
+                  rules and regulations for the use of The Knee Surgery's Website,
+                  located at theknee.surgery.
+                </p>
+                <p>
+                  By accessing this website we assume you accept these terms and
+                  conditions. Do not continue to use The Knee Surgery if you do not
+                  agree to take all of the terms and conditions stated on this page.
+                </p>
+
+                <h2>Use of the Website</h2>
+                <ul>
+                  <li>You must be at least 18 years of age to use this website.</li>
+                  <li>
+                    You must provide accurate and complete information when creating
+                    an account.
+                  </li>
+                  <li>
+                    You are responsible for maintaining the confidentiality of your
+                    account and password.
+                  </li>
+                </ul>
+
+                <h3>Intellectual Property Rights</h3>
+                <p>
+                  Unless otherwise stated, The Knee Surgery and/or its licensors own
+                  the intellectual property rights for all material on The Knee
+                  Surgery. All intellectual property rights are reserved. You may
+                  access this from The Knee Surgery for your own personal use
+                  subjected to restrictions set in these terms and conditions.
+                </p>
+
+                <h3>Limitation of Liability</h3>
+                <p>
+                  The materials on The Knee Surgery's website are provided on an 'as
+                  is' basis. The Knee Surgery makes no warranties, expressed or
+                  implied, and hereby disclaims and negates all other warranties,
+                  including without limitation, implied warranties or conditions of
+                  merchantability, fitness for a particular purpose, or
+                  non-infringement of intellectual property or other violation of
+                  rights.
+                </p>
+
+                <h3>Privacy</h3>
+                <p>
+                  Please read our
+                  <a
+                    href="{{ url_for('policy') }}"
+                    aria-label="Read our Privacy Policy"
+                    >Privacy Policy.</a
+                  >
+                </p>
+
+                <h3>Changes to These Terms</h3>
+                <p>
+                  We reserve the right to amend these terms and conditions at any
+                  time. We will notify you of any changes by posting the new terms and
+                  conditions on this page.
+                </p>
+
+                <h3>Contact Information</h3>
+                <p>
+                  If you have any questions about these Terms, please contact us at
+                  info@theknee.surgery.
+                </p>
+
+                <h3>Governing Law</h3>
+                <p>
+                  These terms and conditions are governed by and construed in
+                  accordance with the laws of the United Kingdom and you irrevocably
+                  submit to the exclusive jurisdiction of the courts in that State or
+                  location.
+                </p>
+
+                <h3>Owner and Developer Information</h3>
+                <p>
+                  This website is owned by Mr X. All materials are provided by and the
+                  development is done by Artem Bryzh. The site, server, and clinic are
+                  located in the UK.
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
 {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
 endblock %}
