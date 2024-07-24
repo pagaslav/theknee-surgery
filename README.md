@@ -5,28 +5,35 @@
 View the live site [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/)
 
 ## Introduction
+Welcome to The Knee Surgery Clinic, your trusted destination for expert knee care and surgery. Our website is designed to offer patients a seamless experience, from registration to recovery. As a patient, you can easily register, request appointments, and communicate with our dedicated clinic staff. Our team is here to approve your requests, assign you to the right doctor, and schedule your appointments based on your specific needs. Doctors can review patient information, set exact dates and times for consultations, and update medical records to ensure you receive the best possible care. We are committed to providing a user-friendly platform that connects you with our skilled medical professionals and supports you throughout your knee surgery journey. Join us at The Knee Surgery Clinic and take the first step towards a healthier, pain-free life.
 
 ## Project Goals
+The primary goal of The Knee Surgery Clinic website is to streamline the process of knee care for both patients and medical professionals. Our objectives include:
+
+  1.	**Simplified Patient Registration**: Enable new patients to easily register on the platform and provide essential medical information.
+	2.	**Efficient Appointment Requests**: Allow patients to request appointments with our doctors, ensuring that their needs are addressed promptly.
+	3.	**Seamless Communication**: Facilitate clear and effective communication between patients, clinic staff, and doctors.
+	4.	**Comprehensive Medical Record Management**: Provide doctors with the tools to manage and update patient medical records efficiently.
+	5.	**Optimized Scheduling**: Assist clinic staff in approving appointment requests and assigning them to the appropriate doctors, ensuring that appointments are scheduled at convenient times for both patients and doctors.
+	6.	**Enhanced User Experience**: Offer a user-friendly interface that simplifies the entire process, from registration to receiving care, making it accessible to all users.
+	7.	**Patient Empowerment**: Empower patients with access to their medical records and the ability to track their treatment progress, promoting a proactive approach to their health.
+
+Our mission is to provide a platform that not only improves the efficiency of clinic operations but also enhances the overall experience for our patients, ensuring they receive the best possible knee care.
 
 ## User Stories
 
 ### First Time Visitor Goals:
 
-1. As a first-time visitor, I want to quickly understand what **The Knee surgery** is all about so I can...
-2. As a first-time visitor, I'm looking for...
-3. As a first-time visitor, I hope to find...
+1. As a first-time visitor, I want to quickly understand what **The Knee surgery** offers so I can start managing my knee health effectively.
+2. As a first-time visitor, I'm looking for an easy way to register as a patient and provide my medical information without any confusion, ensuring a smooth start.
+3. As a first-time visitor, I want to learn about the clinic’s doctors and their expertise, so I feel assured about the quality of care I will receive.
+4. As a first-time visitor, I’m looking for contact details and the clinic’s location to easily reach out for further assistance or plan a visit.
 
 ### Returning Visitor Goals:
 
-1. As a returning visitor, I wish to see...
-2. As a returning visitor, I'm interested in...
-3. As a returning visitor, I want to be able to quickly access my...
-
-### Frequent Visitor Goals:
-
-1. As a frequent user, I want to check for any new features...
-2. As a frequent user, I'm interested in seeing if there are any new...
-3. As a frequent user, I look forward to finding out if there have been updates or improvements to the site that might...
+1. As a returning visitor, I want to easily log into my account to access my medical records and upcoming appointment details.
+2. As a returning visitor, I’m looking for a quick way to request a follow-up appointment or update an existing appointment.
+3. As a returning visitor, I want to review and update my personal information to ensure my profile is current and accurate.
 
 ## User Experience (UX) &
 
