@@ -1,18 +1,32 @@
+/* jshint esversion: 11 */
+/* global $ */
+
+/**
+ * Function to handle document ready event
+ */
 $(document).ready(function () {
+  // Get user role value
   const userRole = $("#userRole").val()
+  // Check if viewing as admin
   const viewingAsAdmin = $("#viewingAsAdmin").val() === "true"
   console.log("User Role: ", userRole)
   console.log("Viewing as Admin: ", viewingAsAdmin)
 
+  // Log error if user role is not defined
   if (!userRole) {
     console.error("User role is not defined!")
   }
 
+  /**
+   * Function to validate password on input event
+   */
   $("#floatingPassword").on("input", function () {
     validatePassword($(this).val())
   })
 
-  // Show or hide the button
+  /**
+   * Function to show or hide the back-to-top button based on scroll position
+   */
   $(window).scroll(function () {
     if ($(this).scrollTop() > 100) {
       $("#back-to-top").fadeIn()
@@ -21,13 +35,17 @@ $(document).ready(function () {
     }
   })
 
-  // Animate the scroll to top
+  /**
+   * Function to animate scroll to top when back-to-top button is clicked
+   */
   $("#back-to-top").click(function (e) {
     e.preventDefault()
     $("html, body").animate({ scrollTop: 0 }, "300")
   })
 
-  // Function to update the time and date
+  /**
+   * Function to update time and date every second
+   */
   function updateTime() {
     const now = new Date()
     const timeString = now.toLocaleTimeString()
@@ -43,7 +61,9 @@ $(document).ready(function () {
   // Update time every second
   setInterval(updateTime, 1000)
 
-  // Monitor input changes in the '#floatingPhone' field
+  /**
+   * Function to handle input changes in the '#floatingPhone' field
+   */
   $("#floatingPhone").on("input", function () {
     // Check if input value length is greater than zero
     if ($(this).val().length > 0) {
@@ -55,7 +75,9 @@ $(document).ready(function () {
     }
   })
 
-  // Enable editing
+  /**
+   * Function to enable editing of user information
+   */
   $("#editButton").click(function () {
     console.log("Edit button clicked")
     $('span[id$="Text"]').addClass("d-none")
@@ -73,7 +95,9 @@ $(document).ready(function () {
     }
   })
 
-  // Cancel editing
+  /**
+   * Function to cancel editing of user information
+   */
   $("#cancelButton").click(function () {
     $('span[id$="Text"]').removeClass("d-none")
     $('input[id$="Input"], div[id$="InputContainer"]').addClass("d-none")
@@ -82,7 +106,9 @@ $(document).ready(function () {
     $("#saveButton, #cancelButton").addClass("d-none")
   })
 
-  // Enable save button only if current password is entered
+  /**
+   * Function to enable save button only if current password is entered
+   */
   $("#currentPasswordInput").on("input", function () {
     if ($(this).val().length > 0) {
       $("#saveButton").removeAttr("disabled")
@@ -91,7 +117,9 @@ $(document).ready(function () {
     }
   })
 
-  // Save edited data
+  /**
+   * Function to save edited user data
+   */
   $("#saveButton").click(function (e) {
     e.preventDefault()
     let formData = {
@@ -123,7 +151,9 @@ $(document).ready(function () {
     })
   })
 
-  // Handle file upload
+  /**
+   * Function to handle file upload
+   */
   $("#uploadButton").click(function (e) {
     e.preventDefault()
 
@@ -162,7 +192,9 @@ $(document).ready(function () {
     })
   })
 
-  // Confirm delete
+  /**
+   * Function to confirm file deletion
+   */
   $(document).on("submit", ".delete-file-form", function (event) {
     event.preventDefault()
     const confirmDelete = confirm("Are you sure you want to delete this file?")
@@ -188,12 +220,20 @@ $(document).ready(function () {
       })
     }
   })
+
+  /**
+   * Function to toggle visibility of change password form
+   */
   $("#togglePasswordForm").click(function () {
     $("#changePasswordForm").toggleClass("d-none")
   })
 })
 
-// Function to validate password requirements
+/**
+ * Function to validate password requirements
+ * @param {string} id - The ID of the password input field
+ * @param {string} requirementsId - The ID of the password requirements container
+ */
 function validatePassword(id, requirementsId) {
   const password = document.getElementById(id).value
   const requirements = document.getElementById(requirementsId)
@@ -230,7 +270,11 @@ function validatePassword(id, requirementsId) {
   }
 }
 
-// Function to toggle password visibility
+/**
+ * Function to toggle password visibility
+ * @param {string} passwordFieldId - The ID of the password input field
+ * @param {string} iconId - The ID of the eye icon
+ */
 function togglePasswordVisibility(passwordFieldId, iconId) {
   const passwordField = document.getElementById(passwordFieldId)
   const icon = document.getElementById(iconId)
@@ -245,15 +289,24 @@ function togglePasswordVisibility(passwordFieldId, iconId) {
   }
 }
 
-// Function to validate confirm password
+/**
+ * Function to validate confirm password
+ * @param {string} passwordId - The ID of the password input field
+ * @param {string} confirmPasswordId - The ID of the confirm password input field
+ */
 function validateConfirmPassword(passwordId, confirmPasswordId) {
+  // Get the values of the password and confirm password input fields
   const password = document.getElementById(passwordId).value
   const confirmPassword = document.getElementById(confirmPasswordId).value
+
+  // Check if the password and confirm password values match
   if (password !== confirmPassword) {
+    // If they do not match, set a custom validity message
     document
       .getElementById(confirmPasswordId)
       .setCustomValidity("Passwords do not match")
   } else {
+    // If they match, clear the custom validity messag
     document.getElementById(confirmPasswordId).setCustomValidity("")
   }
 }

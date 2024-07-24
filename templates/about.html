@@ -1,11 +1,10 @@
-{% extends "base.html" %} {% block title %}About Us{% endblock %} {% block
+{% extends "base.html" %} {% block title %}The Knee Surgery | About Us{% endblock %} {% block
 content %}
 
 <!-- About Us Section -->
-<main class="container-fluid px-4">
+<section class="container-fluid px-2">
   <h2 class="text-center">About Us</h1>
-
-  <p class="text-center mt-4 welcome-title">A Decade of Excellence in Healthcare</p>
+    <p class="text-center mt-4 welcome-title">A Decade of Excellence in Healthcare</p>
     <p class="text-center welcome-subtitle">
       At The Knee Surgery Clinic, we pride ourselves on delivering the highest
       quality orthopedic care. Located in the heart of Newport, Wales, our
@@ -13,211 +12,157 @@ content %}
       patient satisfaction and medical excellence has made us a trusted name in
       knee and joint treatments.
     </p>
-  </section>
+</section>
 
-  <!-- Carousel Section -->
-  <div class="carousel-container mx-auto my-3">
-    <div
-      id="carouselExampleIndicators"
-      class="carousel slide"
-      data-bs-ride="carousel"
-    >
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="3"
-          aria-label="Slide 4"
-        ></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <picture>
-            <source
-              media="(max-width: 600px)"
-              srcset="{{ url_for('static', filename='images/about/mobile/hospital-reception-small.webp') }}"
-            />
-            <source
-              media="(max-width: 1200px)"
-              srcset="{{ url_for('static', filename='images/about/tablet/hospital-reception-medium.webp') }}"
-            />
-            <img
-              src="{{ url_for('static', filename='images/about/desktop/hospital-reception-1920-1050.webp') }}"
-              class="d-block w-100"
-              alt="First slide"
-            />
-          </picture>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>First Slide</h5>
-            <p>Some representative placeholder content for the first slide.</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <picture>
-            <source
-              media="(max-width: 600px)"
-              srcset="{{ url_for('static', filename='images/about/mobile/busy-hospital-corridor-small.webp') }}"
-            />
-            <source
-              media="(max-width: 1200px)"
-              srcset="{{ url_for('static', filename='images/about/tablet/busy-hospital-corridor-medium.webp') }}"
-            />
-            <img
-              src="{{ url_for('static', filename='images/about/desktop/busy-hospital-corridor-1920-1050.webp') }}"
-              class="d-block w-100"
-              alt="Second slide"
-            />
-          </picture>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Second Slide</h5>
-            <p>Some representative placeholder content for the second slide.</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <picture>
-            <source
-              media="(max-width: 600px)"
-              srcset="{{ url_for('static', filename='images/about/mobile/operating-theatre-small.webp') }}"
-            />
-            <source
-              media="(max-width: 1200px)"
-              srcset="{{ url_for('static', filename='images/about/tablet/operating-theatre-medium.webp') }}"
-            />
-            <img
-              src="{{ url_for('static', filename='images/about/desktop/operating-theatre-1920-1050.webp') }}"
-              class="d-block w-100"
-              alt="Third slide"
-            />
-          </picture>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Third Slide</h5>
-            <p>Some representative placeholder content for the third slide.</p>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <picture>
-            <source
-              media="(max-width: 600px)"
-              srcset="{{ url_for('static', filename='images/about/mobile/room-of-an-hospital-small.webp') }}"
-            />
-            <source
-              media="(max-width: 1200px)"
-              srcset="{{ url_for('static', filename='images/about/tablet/room-of-an-hospital-medium.webp') }}"
-            />
-            <img
-              src="{{ url_for('static', filename='images/about/desktop/room-of-an-hospital-1920-1050.webp') }}"
-              class="d-block w-100"
-              alt="Fourth slide"
-            />
-          </picture>
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Fourth Slide</h5>
-            <p>Some representative placeholder content for the fourth slide.</p>
-          </div>
+<!-- Carousel Section: Standard Bootstrap carousel component -->
+<section class="carousel-container mx-auto my-3" role="region">
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+        aria-current="true" aria-label="Reception at our clinic slide"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+        aria-label="Busy hospital corridor slide"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+        aria-label="Operating theatre slide"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+        aria-label="Hospital room slide"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <picture>
+          <source media="(max-width: 600px)"
+            srcset="{{ url_for('static', filename='images/about/mobile/hospital-reception-small.webp') }}" />
+          <source media="(max-width: 1200px)"
+            srcset="{{ url_for('static', filename='images/about/tablet/hospital-reception-medium.webp') }}" />
+          <img src="{{ url_for('static', filename='images/about/desktop/hospital-reception-1920-1050.webp') }}"
+            class="d-block w-100" alt="Reception at our clinic" />
+        </picture>
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Reception at Our Clinic</h3>
+          <p class="bg-light text-dark">Our reception area is designed to provide a warm and inviting environment for
+            our patients.</p>
         </div>
       </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev"
-      >
+      <div class="carousel-item">
+        <picture>
+          <source media="(max-width: 600px)"
+            srcset="{{ url_for('static', filename='images/about/mobile/busy-hospital-corridor-small.webp') }}" />
+          <source media="(max-width: 1200px)"
+            srcset="{{ url_for('static', filename='images/about/tablet/busy-hospital-corridor-medium.webp') }}" />
+          <img src="{{ url_for('static', filename='images/about/desktop/busy-hospital-corridor-1920-1050.webp') }}"
+            class="d-block w-100" alt="Our Hospital Corridor" />
+        </picture>
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Our Hospital Corridor</h3>
+          <p class="bg-light text-dark">A convenient modern clinic.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <picture>
+          <source media="(max-width: 600px)"
+            srcset="{{ url_for('static', filename='images/about/mobile/operating-theatre-small.webp') }}" />
+          <source media="(max-width: 1200px)"
+            srcset="{{ url_for('static', filename='images/about/tablet/operating-theatre-medium.webp') }}" />
+          <img src="{{ url_for('static', filename='images/about/desktop/operating-theatre-1920-1050.webp') }}"
+            class="d-block w-100" alt="Operating Theatre" />
+        </picture>
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Operating Theatre</h3>
+          <p class="bg-light text-dark">Our operating theatre is equipped with the latest advancements in medical
+            technology.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <picture>
+          <source media="(max-width: 600px)"
+            srcset="{{ url_for('static', filename='images/about/mobile/room-of-an-hospital-small.webp') }}" />
+          <source media="(max-width: 1200px)"
+            srcset="{{ url_for('static', filename='images/about/tablet/room-of-an-hospital-medium.webp') }}" />
+          <img src="{{ url_for('static', filename='images/about/desktop/room-of-an-hospital-1920-1050.webp') }}"
+            class="d-block w-100" alt="Fourth slide" />
+        </picture>
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Hospital Room</h3>
+          <p class="bg-light text-dark">The hospital room in our clinic offers a comfortable and modern environment,
+            <br>designed to ensure patient well-being and convenience during their stay.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next"
-      >
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
   </div>
+</section>
 
-  <!-- Continuation of About Us Section -->
-  <section class="about-section">
-    <h3 class="text-center">Our Journey</h3>
-    <p>
-      Our story began ten years ago when a group of passionate orthopedic
-      surgeons came together with a vision: to create a clinic that provides
-      world-class knee surgery and joint treatments to the people of Newport and
-      beyond. Since our inception, we have been dedicated to improving the lives
-      of our patients by offering cutting-edge medical care in a compassionate
-      and welcoming environment.
-    </p>
+<!-- Continuation of About Us Section -->
+<section class="about-section">
+  <h3 class="text-center">Our Journey</h3>
+  <p>
+    Our story began ten years ago when a group of passionate orthopedic
+    surgeons came together with a vision: to create a clinic that provides
+    world-class knee surgery and joint treatments to the people of Newport and
+    beyond. Since our inception, we have been dedicated to improving the lives
+    of our patients by offering cutting-edge medical care in a compassionate
+    and welcoming environment.
+  </p>
 
-    <h3 class="text-center">Our Commitment to Quality</h3>
-    <p>
-      Over the years, we have grown and evolved, but our commitment to quality
-      has remained steadfast. We believe that excellent medical care is not just
-      about advanced technology and skilled professionals; it is also about
-      understanding the unique needs of each patient. That is why we tailor our
-      treatment plans to meet the specific needs of our patients, ensuring they
-      receive the best possible care.
-    </p>
+  <h3 class="text-center">Our Commitment to Quality</h3>
+  <p>
+    Over the years, we have grown and evolved, but our commitment to quality
+    has remained steadfast. We believe that excellent medical care is not just
+    about advanced technology and skilled professionals; it is also about
+    understanding the unique needs of each patient. That is why we tailor our
+    treatment plans to meet the specific needs of our patients, ensuring they
+    receive the best possible care.
+  </p>
 
-    <h3 class="text-center">Patient Satisfaction</h3>
-    <p>
-      We are proud to say that in our ten years of operation, we have not had a
-      single dissatisfied patient. Our patients' testimonials speak volumes
-      about the care and dedication of our staff. From the moment they walk
-      through our doors, our patients know they are in good hands. Our friendly
-      staff and state-of-the-art facilities ensure a comfortable and positive
-      experience for everyone who visits our clinic.
-    </p>
+  <h3 class="text-center">Patient Satisfaction</h3>
+  <p>
+    We are proud to say that in our ten years of operation, we have not had a
+    single dissatisfied patient. Our patients' testimonials speak volumes
+    about the care and dedication of our staff. From the moment they walk
+    through our doors, our patients know they are in good hands. Our friendly
+    staff and state-of-the-art facilities ensure a comfortable and positive
+    experience for everyone who visits our clinic.
+  </p>
 
-    <h3 class="text-center">Continuous Improvement</h3>
-    <p>
-      To maintain our high standards, our doctors undergo rigorous retraining
-      and certification programs every year. This commitment to continuous
-      improvement ensures that we stay at the forefront of medical advancements
-      and provide our patients with the latest and most effective treatments.
-      Our team of experienced surgeons and medical professionals is dedicated to
-      achieving the best possible outcomes for our patients.
-    </p>
+  <h3 class="text-center">Continuous Improvement</h3>
+  <p>
+    To maintain our high standards, our doctors undergo rigorous retraining
+    and certification programs every year. This commitment to continuous
+    improvement ensures that we stay at the forefront of medical advancements
+    and provide our patients with the latest and most effective treatments.
+    Our team of experienced surgeons and medical professionals is dedicated to
+    achieving the best possible outcomes for our patients.
+  </p>
 
-    <h3 class="text-center">Our Community</h3>
-    <p>
-      Being a part of the Newport community is something we cherish deeply. Over
-      the past decade, we have formed strong bonds with our patients and their
-      families. We believe in giving back to the community that has supported
-      us, and we regularly participate in local health fairs and educational
-      seminars to promote awareness about knee and joint health.
-    </p>
+  <h3 class="text-center">Our Community</h3>
+  <p>
+    Being a part of the Newport community is something we cherish deeply. Over
+    the past decade, we have formed strong bonds with our patients and their
+    families. We believe in giving back to the community that has supported
+    us, and we regularly participate in local health fairs and educational
+    seminars to promote awareness about knee and joint health.
+  </p>
 
-    <h3 class="text-center">Looking to the Future</h3>
-    <p>
-      As we look to the future, we remain committed to our mission of providing
-      exceptional orthopedic care. We will continue to innovate, improve, and
-      expand our services to meet the growing needs of our patients. We are
-      excited about what the next decade holds and look forward to continuing
-      our journey of excellence in healthcare.
-    </p>
-  </section>
-</main>
+  <h3 class="text-center">Looking to the Future</h3>
+  <p>
+    As we look to the future, we remain committed to our mission of providing
+    exceptional orthopedic care. We will continue to innovate, improve, and
+    expand our services to meet the growing needs of our patients. We are
+    excited about what the next decade holds and look forward to continuing
+    our journey of excellence in healthcare.
+  </p>
+</section>
 
 {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
 endblock %}

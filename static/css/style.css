@@ -54,6 +54,7 @@ img {
   padding-left: 30px;
   padding-right: 30px;
 }
+
 /* Logo */
 .navbar-brand {
   display: flex;
@@ -62,11 +63,13 @@ img {
 }
 
 .nav-link {
-  color: white !important; /* Default color for all nav links */
+  color: white !important;
+  /* Default color for all nav links */
 }
 
 .nav-link.active {
-  color: #ffb74d !important; /* Highlight color */
+  color: #ffb74d !important;
+  /* Highlight color */
 }
 
 .logo-setup {
@@ -183,27 +186,11 @@ footer {
   margin-right: 20px;
 }
 
-/* .services-subtitle {
-  font-family: "Oswald", sans-serif;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 1.5em;
-  color: #666;
-  text-align: center;
-  margin: auto;
-} */
 .carousel-container {
   width: 100%;
   max-width: 100%;
   padding: 40px;
 }
-
-/* .carousel-inner img {
-  width: 100%;
-  height: auto;
-  max-height: 75vh;
-  object-fit: cover;
-} */
 
 /* Login Page */
 .form-sign {
@@ -235,9 +222,11 @@ footer {
 .form-floating {
   position: relative;
 }
+
 .form-floating input {
   padding-right: 40px;
 }
+
 .sample-text {
   position: absolute;
   top: 50%;
@@ -247,6 +236,7 @@ footer {
   pointer-events: none;
   transition: opacity 0.2s ease-out;
 }
+
 .form-control:focus + .sample-text {
   opacity: 0;
 }
@@ -300,8 +290,7 @@ footer {
   padding-right: 2.5rem;
 }
 
-/* Prifile Page */
-
+/* Profile Page */
 .square-button {
   background-color: grey;
   width: 150px;
@@ -314,7 +303,6 @@ footer {
 }
 
 /* Media queries for responsive design */
-
 @media screen and (max-width: 1400px) {
   .welcome-title {
     font-size: 2.6em;
@@ -363,7 +351,6 @@ footer {
   }
 }
 
-/* Media queries to change the order of elements */
 @media (max-width: 960px) {
   .welcome-flex {
     flex-direction: column;
@@ -379,7 +366,6 @@ footer {
     padding: 10px;
   }
 
-  /* Stack buttons vertically */
   .button-group {
     flex-direction: column;
     align-items: center;
@@ -412,10 +398,6 @@ footer {
     display: none !important;
   }
 
-  /* .brand-logo-text {
-    font-size: 18px;
-  } */
-
   .welcome-title {
     font-size: 1.4em;
   }
@@ -432,22 +414,10 @@ footer {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
-
-  /* #services-subtitle-1 {
-    display: none;
-  }
-
-  .services-subtitle > {
-    font-size: 1.3em;
-  } */
 }
 
 /* Extra small devices (phones, less than 415px) */
 @media (max-width: 420px) {
-  /* .custom-brand-top {
-    font-size: 1.3em;
-  } */
-
   .welcome-title {
     font-size: 1.2em;
   }
@@ -455,6 +425,7 @@ footer {
   .welcome-subtitle {
     font-size: 0.9em;
   }
+
   #password-requirements {
     display: flex;
     flex-wrap: wrap;
@@ -467,10 +438,6 @@ footer {
 
 /* Extra extra small devices (small phones, less than 355px) */
 @media (max-width: 355px) {
-  /* .custom-brand-top {
-    font-size: 1.2em;
-  } */
-
   .welcome-title {
     font-size: 1em;
   }
