@@ -1371,7 +1371,7 @@ def medical_record_detail(record_id):
     """
     Route to display the details of a specific medical record.
     Fetches the record, associated doctor, and patient from the database.
-    Renders the medical record detail template 
+    Renders the medical record detail template
     or redirects with an error message if not found.
     """
     # Find the medical record in the database

@@ -1,160 +1,159 @@
 {% extends "base.html" %} {% block title %}The Knee Surgery | Medical Record{%
 endblock %} {% block content %}
-<div class="container">
-  <!-- Flash messages for user notifications -->
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %}
-  <div class="alert alert-{{ category }} mt-3">
-    <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
-  </div>
-  {% endfor %} {% endif %} {% endwith %}
+      <div class="container">
+        <!-- Flash messages for user notifications -->
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} mt-3">
+          <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
 
-  <!-- Main title for the medical record section -->
-  <h2 class="mt-5">Medical Record</h2>
+        <!-- Main title for the medical record section -->
+        <h2 class="mt-5">Medical Record</h2>
 
-  <!-- Uploaded files section -->
-  <div class="card mb-3">
-    <div class="card-header">
-      <h3>Uploaded Files</h3>
-    </div>
-    <div class="card-body">
-      <!-- List of uploaded files -->
-      <ul class="list-group" id="uploaded-files-list">
-        {% for file in files %}
-        <li
-          class="list-group-item d-flex justify-content-between align-items-center"
-        >
-          <a
-            href="{{ file.file_url }}"
-            target="_blank"
-            aria-label="Download {{ file.file_name }}"
-            >{{ file.file_name }}</a
-          >
-          <form
-            action="{{ url_for('delete_file') }}"
-            method="post"
-            style="display: inline"
-            class="delete-file-form"
-            aria-label="Delete"
-          >
-            <input type="hidden" name="file_id" value="{{ file.file_id }}" />
-            <button
-              type="submit"
-              class="btn btn-danger btn-sm"
-              aria-label="Delete File"
+        <!-- Uploaded files section -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Uploaded Files</h3>
+          </div>
+          <div class="card-body">
+            <!-- List of uploaded files -->
+            <ul class="list-group" id="uploaded-files-list">
+              {% for file in files %}
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <a
+                  href="{{ file.file_url }}"
+                  target="_blank"
+                  aria-label="Download {{ file.file_name }}"
+                  >{{ file.file_name }}</a
+                >
+                <form
+                  action="{{ url_for('delete_file') }}"
+                  method="post"
+                  style="display: inline"
+                  class="delete-file-form"
+                  aria-label="Delete"
+                >
+                  <input type="hidden" name="file_id" value="{{ file.file_id }}" />
+                  <button
+                    type="submit"
+                    class="btn btn-danger btn-sm"
+                    aria-label="Delete File"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </li>
+              {% endfor %}
+            </ul>
+            {% if not files %}
+            <p id="no-files-message">No files uploaded.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Medical record details section -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Medical Record Details</h3>
+          </div>
+          <div class="card-body">
+            <form
+              method="POST"
+              action="{{ url_for('update_medical_record', record_id=record._id) }}"
+              enctype="multipart/form-data"
             >
-              Delete
-            </button>
-          </form>
-        </li>
-        {% endfor %}
-      </ul>
-      {% if not files %}
-      <p id="no-files-message">No files uploaded.</p>
-      {% endif %}
-    </div>
-  </div>
+              <div class="mb-3">
+                <label for="patient" class="form-label" aria-label="Patient Name"
+                  >Patient</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="patient"
+                  value="{{ patient.name }}"
+                  readonly>
+              </div>
+              <div class="mb-3">
+                <label for="date" class="form-label" aria-label="Record Date"
+                  >Date</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date"
+                  name="record_date"
+                  value="{{ record.date.strftime('%d-%m-%Y') }}"
+                  required>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label" aria-label="Description"
+                  >Description</label
+                >
+                <textarea
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  required
+                >
+      {{ record.description }}</textarea
+                >
+              </div>
+              <div class="mb-3">
+                <label for="treatment" class="form-label" aria-label="Treatment"
+                  >Treatment</label
+                >
+                <textarea
+                  class="form-control"
+                  id="treatment"
+                  name="treatment"
+                  required
+                >
+      {{ record.treatment }}</textarea
+                >
+              </div>
+              {% if session.get('user') == doctor.email or current_user['role'] ==
+              'admin' %}
+              <button
+                type="submit"
+                class="btn btn-primary"
+                aria-label="Update Medical Record"
+              >
+                Update Record
+              </button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
 
-  <!-- Medical record details section -->
-  <div class="card mb-3">
-    <div class="card-header">
-      <h3>Medical Record Details</h3>
-    </div>
-    <div class="card-body">
-      <form
-        method="POST"
-        action="{{ url_for('update_medical_record', record_id=record._id) }}"
-        enctype="multipart/form-data"
-      >
-        <div class="mb-3">
-          <label for="patient" class="form-label" aria-label="Patient Name"
-            >Patient</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="patient"
-            value="{{ patient.name }}"
-            readonly
-          />
+        <!-- Upload document section -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Upload Document</h3>
+          </div>
+          <div class="card-body">
+            <form
+              method="POST"
+              action="{{ url_for('upload_medical_record_file', record_id=record._id) }}"
+              enctype="multipart/form-data"
+            >
+              <div class="mb-3">
+                <label for="file" class="form-label">Choose File</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="file"
+                  name="file"
+                  required>
+              </div>
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="date" class="form-label" aria-label="Record Date"
-            >Date</label
-          >
-          <input
-            type="date"
-            class="form-control"
-            id="date"
-            name="record_date"
-            value="{{ record.date.strftime('%d-%m-%Y') }}"
-            required
-          />
-        </div>
-        <div class="mb-3">
-          <label for="description" class="form-label" aria-label="Description"
-            >Description</label
-          >
-          <textarea
-            class="form-control"
-            id="description"
-            name="description"
-            required
-          >
-{{ record.description }}</textarea
-          >
-        </div>
-        <div class="mb-3">
-          <label for="treatment" class="form-label" aria-label="Treatment"
-            >Treatment</label
-          >
-          <textarea
-            class="form-control"
-            id="treatment"
-            name="treatment"
-            required
-          >
-{{ record.treatment }}</textarea
-          >
-        </div>
-        {% if session.get('user') == doctor.email or current_user['role'] ==
-        'admin' %}
-        <button
-          type="submit"
-          class="btn btn-primary"
-          aria-label="Update Medical Record"
-        >
-          Update Record
-        </button>
-        {% endif %}
-      </form>
-    </div>
-  </div>
+      </div>
+{% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
+endblock %}
 
-  <!-- Upload document section -->
-  <div class="card mb-3">
-    <div class="card-header">
-      <h3>Upload Document</h3>
-    </div>
-    <div class="card-body">
-      <form
-        method="POST"
-        action="{{ url_for('upload_medical_record_file', record_id=record._id) }}"
-        enctype="multipart/form-data"
-      >
-        <div class="mb-3">
-          <label for="file" class="form-label">Choose File</label>
-          <input
-            type="file"
-            class="form-control"
-            id="file"
-            name="file"
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
-      </form>
-    </div>
-  </div>
-</div>
-{% endblock %}
