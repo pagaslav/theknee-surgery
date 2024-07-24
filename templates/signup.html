@@ -67,8 +67,7 @@ endblock %} {% block content %}
         pattern="[0-9]{9,11}"
         aria-describedby="phone-requirements"
         aria-label="Phone Number"
-        required
-      />
+        required>
       <label for="floatingPhone">Phone Number</label>
       <span class="sample-text">07990563212</span>
     </div>
@@ -89,8 +88,7 @@ endblock %} {% block content %}
         name="email"
         placeholder="name@example.com"
         aria-label="Email address"
-        required
-      />
+        required>
       <label for="floatingEmail">Email address</label>
     </div>
 
@@ -108,8 +106,7 @@ endblock %} {% block content %}
         minlength="8"
         pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
         title="Password must contain at least 8 characters, including UPPERCASE letters and numbers"
-        onkeyup="validatePassword('floatingPasswordRegister', 'password-requirements-register')"
-      />
+        onkeyup="validatePassword('floatingPasswordRegister', 'password-requirements-register')">
       <label for="floatingPasswordRegister">Password</label>
       <span
         class="password-toggle"
@@ -142,8 +139,7 @@ endblock %} {% block content %}
         placeholder="Confirm Password"
         aria-label="Confirm Password"
         required
-        onkeyup="validateConfirmPassword('floatingPasswordRegister', 'floatingConfirmPasswordRegister')"
-      />
+        onkeyup="validateConfirmPassword('floatingPasswordRegister', 'floatingConfirmPasswordRegister')">
       <label for="floatingConfirmPasswordRegister">Confirm Password</label>
       <span
         class="password-toggle"

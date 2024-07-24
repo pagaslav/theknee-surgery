@@ -1,257 +1,244 @@
 {% extends "base.html" %} {% block title %}The Knee Surgery | Home page{%
 endblock %} {% block content %}
 
-<!-- Main Welcome Section -->
-<section class="mt-3">
-  <!-- Title and Subtitle of the Welcome Section -->
-  <div class="text-center h1">
-    <h2 class="welcome-title">Welcome to The Knee Surgery</h2>
-    <p class="welcome-subtitle">Your Health &ndash; Our Priority</p>
-  </div>
+      <!-- Main Welcome Section -->
+      <section class="mt-3">
+        <!-- Title and Subtitle of the Welcome Section -->
+        <div class="text-center h1">
+          <h2 class="welcome-title">Welcome to The Knee Surgery</h2>
+          <p class="welcome-subtitle">Your Health &ndash; Our Priority</p>
+        </div>
 
-  <!-- Flex container for text and image -->
-  <div class="welcome-flex">
-    <!-- Text Section -->
-    <div class="welcome-text">
-      <p>
-        Our team of dedicated professionals is here to provide you with the
-        highest standard of care, using the latest techniques and technologies
-        in knee surgery.
-      </p>
-      <p>
-        Whether you're dealing with a sports injury, arthritis, or need a knee
-        replacement, we're here to help you every step of the way. Trust us to
-        make your recovery journey as smooth and comfortable as possible.
-      </p>
-      <p>
-        Our clinic is equipped with state-of-the-art facilities, ensuring that
-        you receive the best possible treatment in a comfortable and safe
-        environment. We believe in a patient-centered approach, tailoring each
-        treatment plan to meet your individual needs and goals.
-      </p>
-      <p>
-        Beyond surgery, we offer comprehensive rehabilitation programs to help
-        you regain strength and mobility. Our team of physical therapists and
-        support staff will work closely with you to monitor your progress and
-        adjust your recovery plan as needed, ensuring you achieve the best
-        possible outcomes.
-      </p>
+        <!-- Flex container for text and image -->
+        <div class="welcome-flex">
+          <!-- Text Section -->
+          <div class="welcome-text">
+            <p>
+              Our team of dedicated professionals is here to provide you with the
+              highest standard of care, using the latest techniques and technologies
+              in knee surgery.
+            </p>
+            <p>
+              Whether you're dealing with a sports injury, arthritis, or need a knee
+              replacement, we're here to help you every step of the way. Trust us to
+              make your recovery journey as smooth and comfortable as possible.
+            </p>
+            <p>
+              Our clinic is equipped with state-of-the-art facilities, ensuring that
+              you receive the best possible treatment in a comfortable and safe
+              environment. We believe in a patient-centered approach, tailoring each
+              treatment plan to meet your individual needs and goals.
+            </p>
+            <p>
+              Beyond surgery, we offer comprehensive rehabilitation programs to help
+              you regain strength and mobility. Our team of physical therapists and
+              support staff will work closely with you to monitor your progress and
+              adjust your recovery plan as needed, ensuring you achieve the best
+              possible outcomes.
+            </p>
 
-      <!-- Button Group for navigation -->
-      <div class="button-group">
-        <a
-          href="{{ url_for('about') }}"
-          class="btn btn-info"
-          aria-label="Learn more about us"
-          >About Us</a
-        >
-        <a
-          href="{{ url_for('doctors') }}"
-          class="btn btn-primary"
-          aria-label="Meet our doctors"
-          >Our Doctors</a
-        >
-      </div>
-    </div>
+            <!-- Button Group for navigation -->
+            <div class="button-group">
+              <a
+                href="{{ url_for('about') }}"
+                class="btn btn-info"
+                aria-label="Learn more about us"
+                >About Us</a
+              >
+              <a
+                href="{{ url_for('doctors') }}"
+                class="btn btn-primary"
+                aria-label="Meet our doctors"
+                >Our Doctors</a
+              >
+            </div>
+          </div>
 
-    <!-- Image Section -->
-    <div class="welcome-image">
-      <figure class="">
-        <img
-          src="{{ url_for('static', filename='images/index/doctor-knee.webp') }}"
-          class="img-fluid"
-          alt="Doctor showing a knee X-ray"
-          aria-label="Doctor showing a knee X-ray"
-        />
-      </figure>
-    </div>
-  </div>
-</section>
+          <!-- Image Section -->
+          <div class="welcome-image">
+            <figure class="">
+              <img
+                src="{{ url_for('static', filename='images/index/doctor-knee.webp') }}"
+                class="img-fluid"
+                alt="Doctor showing a knee X-ray"
+                aria-label="Doctor showing a knee X-ray">
+            </figure>
+          </div>
+        </div>
+      </section>
 
-<!-- Clinic Services Section -->
-<section>
-  <!-- Section Title -->
-  <div class="text-center h1">
-    <h2 class="welcome-title">Our Clinic Services</h2>
-  </div>
+      <!-- Clinic Services Section -->
+      <section>
+        <!-- Section Title -->
+        <div class="text-center h1">
+          <h2 class="welcome-title">Our Clinic Services</h2>
+        </div>
 
-  <!-- Bootstrap Grid of Cards for Different Services -->
-  <div class="row row-cols-1 row-cols-md-2 g-4 cards me-3 ms-3">
-    <!-- Initial Consultation and Diagnosis Card -->
-    <div class="col">
-      <div class="card">
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="{{ url_for('static', filename='images/index/initial-consultation-600.webp') }}"
-          />
-          <img
-            src="{{ url_for('static', filename='images/index/initial-consultation-960.webp') }}"
-            class="card-img-top"
-            alt="Initial Consultation and Diagnosis"
-            aria-label="Initial Consultation and Diagnosis"
-          />
-        </picture>
-        <div class="card-body">
-          <h3 class="card-title">Initial Consultation and Diagnosis</h3>
-          <p class="card-text card-text-hide">
-            Our initial consultation and diagnostic services are designed to
-            thoroughly assess your knee condition. Our specialists successfully
-            use advanced imaging techniques such as X-rays, MRIs, and CT scans
-            to provide accurate diagnoses. We take the time to understand your
-            symptoms and medical history to develop a personalized treatment
-            plan. Trust us to identify the root cause of your knee issues and
-            recommend the best course of action.
-          </p>
+        <!-- Bootstrap Grid of Cards for Different Services -->
+        <div class="row row-cols-1 row-cols-md-2 g-4 cards me-3 ms-3">
+          <!-- Initial Consultation and Diagnosis Card -->
+          <div class="col">
+            <div class="card">
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcset="{{ url_for('static', filename='images/index/initial-consultation-600.webp') }}">
+                <img
+                  src="{{ url_for('static', filename='images/index/initial-consultation-960.webp') }}"
+                  class="card-img-top"
+                  alt="Initial Consultation and Diagnosis"
+                  aria-label="Initial Consultation and Diagnosis">
+              </picture>
+              <div class="card-body">
+                <h3 class="card-title">Initial Consultation and Diagnosis</h3>
+                <p class="card-text card-text-hide">
+                  Our initial consultation and diagnostic services are designed to
+                  thoroughly assess your knee condition. Our specialists successfully
+                  use advanced imaging techniques such as X-rays, MRIs, and CT scans
+                  to provide accurate diagnoses. We take the time to understand your
+                  symptoms and medical history to develop a personalized treatment
+                  plan. Trust us to identify the root cause of your knee issues and
+                  recommend the best course of action.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Arthroscopic Surgery Card -->
+          <div class="col">
+            <div class="card">
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcset="{{ url_for('static', filename='images/index/arthroscopic-surgery-600.webp') }}">
+                <img
+                  src="{{ url_for('static', filename='images/index/arthroscopic-surgery-960.webp') }}"
+                  class="card-img-top"
+                  alt="Arthroscopic Surgery"
+                  aria-label="Arthroscopic Surgery">
+              </picture>
+              <div class="card-body">
+                <h3 class="card-title">Arthroscopic Surgery</h3>
+                <p class="card-text card-text-hide">
+                  Arthroscopic surgery is a minimally invasive procedure that allows
+                  our surgeons to diagnose and treat knee joint issues. Using small
+                  incisions and specialized instruments, we can address problems such
+                  as meniscus tears and ligament injuries. This technique offers
+                  quicker recovery times and less postoperative pain compared to
+                  traditional surgery. Our experienced surgeons are dedicated to
+                  providing you with the best possible outcomes.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Knee Replacement Card -->
+          <div class="col">
+            <div class="card">
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcset="{{ url_for('static', filename='images/index/knee-replacement-600.webp') }}">
+                <img
+                  src="{{ url_for('static', filename='images/index/knee-replacement-960.webp') }}"
+                  class="card-img-top"
+                  alt="Knee Replacement"
+                  aria-label="Knee Replacement">
+              </picture>
+              <div class="card-body">
+                <h3 class="card-title">Knee Replacement</h3>
+                <p class="card-text card-text-hide">
+                  Knee replacement surgery, also known as arthroplasty, is a highly
+                  effective procedure for relieving pain and restoring function in
+                  damaged knees. Our surgeons use state-of-the-art implants to replace
+                  the damaged joint surfaces. This surgery is typically recommended
+                  for patients with severe arthritis or significant knee injuries.
+                  With proper rehabilitation, you can expect to regain mobility and
+                  improve your quality of life.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Ligament Reconstruction Card -->
+          <div class="col">
+            <div class="card">
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcset="{{ url_for('static', filename='images/index/ligament-reconstruction-600.webp') }}">
+                <img
+                  src="{{ url_for('static', filename='images/index/ligament-reconstruction-960.webp') }}"
+                  class="card-img-top"
+                  alt="Ligament Reconstruction"
+                  aria-label="Ligament Reconstruction">
+              </picture>
+              <div class="card-body">
+                <h3 class="card-title">Ligament Reconstruction</h3>
+                <p class="card-text card-text-hide">
+                  Ligament reconstruction surgery is vitally crucial for patients with
+                  torn ACL or PCL ligaments. Our skilled surgeons use grafts to
+                  reconstruct the damaged ligaments, ensuring stability and strength
+                  in the knee joint. This procedure is often performed
+                  arthroscopically, resulting in less scarring and faster recovery.
+                  Post-surgery, our modern rehabilitation programs help you regain
+                  your strength and prevent any future injuries.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Physical Therapy and Rehabilitation Card -->
+          <div class="col">
+            <div class="card">
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcset="{{ url_for('static', filename='images/index/rehabilitation-600.webp') }}">
+                <img
+                  src="{{ url_for('static', filename='images/index/rehabilitation-960.webp') }}"
+                  class="card-img-top"
+                  alt="Physical Therapy and Rehabilitation"
+                  aria-label="Physical Therapy and Rehabilitation">
+              </picture>
+              <div class="card-body">
+                <h3 class="card-title">Physical Therapy and Rehabilitation</h3>
+                <p class="card-text card-text-hide">
+                  Physical therapy and rehabilitation are integral cornerstones and
+                  essential components of knee treatment. Our therapists design
+                  personalized exercise programs to improve strength, flexibility, and
+                  function. We use a combination of manual therapy, therapeutic
+                  exercises, and modalities to aid recovery. Regular physical therapy
+                  sessions can help you achieve optimal results and prevent future
+                  knee problems.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Injection Procedures Card -->
+          <div class="col">
+            <div class="card">
+              <picture>
+                <source
+                  media="(max-width: 600px)"
+                  srcset="{{ url_for('static', filename='images/index/injection-600.webp') }}">
+                <img
+                  src="{{ url_for('static', filename='images/index/injection-960.webp') }}"
+                  class="card-img-top"
+                  alt="Injection Procedures"
+                  aria-label="Injection Procedures">
+              </picture>
+              <div class="card-body">
+                <h3 class="card-title">Injection Procedures</h3>
+                <p class="card-text card-text-hide">
+                  Injection procedures such as hyaluronic acid, PRP, and
+                  corticosteroids offer non-surgical options for managing knee pain.
+                  Hyaluronic acid injections provide lubrication and cushioning in the
+                  joint. PRP injections use your own blood to promote healing and
+                  reduce inflammation. Corticosteroid injections are effective for
+                  reducing pain and swelling. These treatments can delay or even
+                  prevent the need for surgery.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <!-- Arthroscopic Surgery Card -->
-    <div class="col">
-      <div class="card">
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="{{ url_for('static', filename='images/index/arthroscopic-surgery-600.webp') }}"
-          />
-          <img
-            src="{{ url_for('static', filename='images/index/arthroscopic-surgery-960.webp') }}"
-            class="card-img-top"
-            alt="Arthroscopic Surgery"
-            aria-label="Arthroscopic Surgery"
-          />
-        </picture>
-        <div class="card-body">
-          <h3 class="card-title">Arthroscopic Surgery</h3>
-          <p class="card-text card-text-hide">
-            Arthroscopic surgery is a minimally invasive procedure that allows
-            our surgeons to diagnose and treat knee joint issues. Using small
-            incisions and specialized instruments, we can address problems such
-            as meniscus tears and ligament injuries. This technique offers
-            quicker recovery times and less postoperative pain compared to
-            traditional surgery. Our experienced surgeons are dedicated to
-            providing you with the best possible outcomes.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Knee Replacement Card -->
-    <div class="col">
-      <div class="card">
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="{{ url_for('static', filename='images/index/knee-replacement-600.webp') }}"
-          />
-          <img
-            src="{{ url_for('static', filename='images/index/knee-replacement-960.webp') }}"
-            class="card-img-top"
-            alt="Knee Replacement"
-            aria-label="Knee Replacement"
-          />
-        </picture>
-        <div class="card-body">
-          <h3 class="card-title">Knee Replacement</h3>
-          <p class="card-text card-text-hide">
-            Knee replacement surgery, also known as arthroplasty, is a highly
-            effective procedure for relieving pain and restoring function in
-            damaged knees. Our surgeons use state-of-the-art implants to replace
-            the damaged joint surfaces. This surgery is typically recommended
-            for patients with severe arthritis or significant knee injuries.
-            With proper rehabilitation, you can expect to regain mobility and
-            improve your quality of life.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Ligament Reconstruction Card -->
-    <div class="col">
-      <div class="card">
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="{{ url_for('static', filename='images/index/ligament-reconstruction-600.webp') }}"
-          />
-          <img
-            src="{{ url_for('static', filename='images/index/ligament-reconstruction-960.webp') }}"
-            class="card-img-top"
-            alt="Ligament Reconstruction"
-            aria-label="Ligament Reconstruction"
-          />
-        </picture>
-        <div class="card-body">
-          <h3 class="card-title">Ligament Reconstruction</h3>
-          <p class="card-text card-text-hide">
-            Ligament reconstruction surgery is vitally crucial for patients with
-            torn ACL or PCL ligaments. Our skilled surgeons use grafts to
-            reconstruct the damaged ligaments, ensuring stability and strength
-            in the knee joint. This procedure is often performed
-            arthroscopically, resulting in less scarring and faster recovery.
-            Post-surgery, our modern rehabilitation programs help you regain
-            your strength and prevent any future injuries.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Physical Therapy and Rehabilitation Card -->
-    <div class="col">
-      <div class="card">
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="{{ url_for('static', filename='images/index/rehabilitation-600.webp') }}"
-          />
-          <img
-            src="{{ url_for('static', filename='images/index/rehabilitation-960.webp') }}"
-            class="card-img-top"
-            alt="Physical Therapy and Rehabilitation"
-            aria-label="Physical Therapy and Rehabilitation"
-          />
-        </picture>
-        <div class="card-body">
-          <h3 class="card-title">Physical Therapy and Rehabilitation</h3>
-          <p class="card-text card-text-hide">
-            Physical therapy and rehabilitation are integral cornerstones and
-            essential components of knee treatment. Our therapists design
-            personalized exercise programs to improve strength, flexibility, and
-            function. We use a combination of manual therapy, therapeutic
-            exercises, and modalities to aid recovery. Regular physical therapy
-            sessions can help you achieve optimal results and prevent future
-            knee problems.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Injection Procedures Card -->
-    <div class="col">
-      <div class="card">
-        <picture>
-          <source
-            media="(max-width: 600px)"
-            srcset="{{ url_for('static', filename='images/index/injection-600.webp') }}"
-          />
-          <img
-            src="{{ url_for('static', filename='images/index/injection-960.webp') }}"
-            class="card-img-top"
-            alt="Injection Procedures"
-            aria-label="Injection Procedures"
-          />
-        </picture>
-        <div class="card-body">
-          <h3 class="card-title">Injection Procedures</h3>
-          <p class="card-text card-text-hide">
-            Injection procedures such as hyaluronic acid, PRP, and
-            corticosteroids offer non-surgical options for managing knee pain.
-            Hyaluronic acid injections provide lubrication and cushioning in the
-            joint. PRP injections use your own blood to promote healing and
-            reduce inflammation. Corticosteroid injections are effective for
-            reducing pain and swelling. These treatments can delay or even
-            prevent the need for surgery.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+      </section>
   {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
   endblock %}
-</section>

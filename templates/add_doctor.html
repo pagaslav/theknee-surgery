@@ -1,92 +1,88 @@
 {% extends "base.html" %} {% block title %}The Knee Surgery | Add Doctor{%
 endblock %} {% block content %}
-<div class="container">
-  <!-- Title for the Add Doctor form -->
-  <h2 class="mt-5 text-center">Add New Doctor</h2>
+      <div class="container">
+        <!-- Title for the Add Doctor form -->
+        <h2 class="mt-5 text-center">Add New Doctor</h2>
 
-  <!-- Form for adding a new doctor -->
-  <form method="POST" action="{{ url_for('add_doctor') }}">
-    <!-- Full Name input field -->
-    <div class="mb-3">
-      <label for="name" class="form-label">Full Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"
-        name="name"
-        aria-label="Full Name"
-        required
-      />
-    </div>
+        <!-- Form for adding a new doctor -->
+        <form method="POST" action="{{ url_for('add_doctor') }}">
+          <!-- Full Name input field -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              aria-label="Full Name"
+              required>
+          </div>
 
-    <!-- Specialty input field -->
-    <div class="mb-3">
-      <label for="specialty" class="form-label">Specialty</label>
-      <input
-        type="text"
-        class="form-control"
-        id="specialty"
-        name="specialty"
-        aria-label="Specialty"
-        required
-      />
-    </div>
+          <!-- Specialty input field -->
+          <div class="mb-3">
+            <label for="specialty" class="form-label">Specialty</label>
+            <input
+              type="text"
+              class="form-control"
+              id="specialty"
+              name="specialty"
+              aria-label="Specialty"
+              required>
+          </div>
 
-    <!-- Description input field -->
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea
-        class="form-control"
-        id="description"
-        name="description"
-        aria-label="Description"
-        required
-      ></textarea>
-    </div>
+          <!-- Description input field -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              aria-label="Description"
+              required
+            ></textarea>
+          </div>
 
-    <!-- Additional Information input field -->
-    <div class="mb-3">
-      <label for="additional_info" class="form-label"
-        >Additional Information: hidden on screens less than 600px</label
-      >
-      <textarea
-        class="form-control"
-        id="additional_info"
-        name="additional_info"
-        aria-label="Additional Information"
-      ></textarea>
-    </div>
+          <!-- Additional Information input field -->
+          <div class="mb-3">
+            <label for="additional_info" class="form-label"
+              >Additional Information: hidden on screens less than 600px</label
+            >
+            <textarea
+              class="form-control"
+              id="additional_info"
+              name="additional_info"
+              aria-label="Additional Information"
+            ></textarea>
+          </div>
 
-    <!-- Email input field -->
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        aria-label="Email"
-        required
-      />
-    </div>
+          <!-- Email input field -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              aria-label="Email"
+              required>
+          </div>
 
-    <!-- Password input field -->
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        aria-label="Password"
-        required
-      />
-    </div>
+          <!-- Password input field -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              aria-label="Password"
+              required>
+          </div>
 
-    <!-- Submit button -->
-    <button type="submit" class="btn btn-primary" aria-label="Add Doctor">
-      Add Doctor
-    </button>
-  </form>
-</div>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary" aria-label="Add Doctor">
+            Add Doctor
+          </button>
+        </form>
+      </div>
 {% endblock %}

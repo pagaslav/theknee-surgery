@@ -1,38 +1,38 @@
 {% extends "base.html" %} {% block title %}The Knee Surgery | Our Doctors{%
 endblock %} {% block content %}
 
-<h2 class="mt-5 text-center">Meet Our Doctors</h2>
+      <h2 class="mt-5 text-center">Meet Our Doctors</h2>
 
-<!-- This div contains a row of cards, each representing a doctor -->
-<div class="row g-4 mt-3">
-  <!-- Loop through each doctor in the 'doctors' list, which is fetched from the MongoDB database -->
-  {% for doctor in doctors %}
-  <div class="col-12">
-    <div class="card mb-3">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img
-            src="{{
-              url_for('static', filename=get_image_path(doctor.image)) 
-              if doctor.image else
-              url_for('static', filename='images/default-doctor.webp') 
-            }}"
-            class="img-fluid rounded-start"
-            alt="{{ doctor.name }}"
-          />
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h3 class="card-title">{{ doctor.name }}</h3>
-            <p class="card-text">{{ doctor.specialty }}</p>
-            <p class="card-text">{{ doctor.description }}</p>
-            <p class="card-text-hide">{{ doctor.additional_info }}</p>
+      <!-- This div contains a row of cards, each representing a doctor -->
+      <div class="row g-4 mt-3">
+        <!-- Loop through each doctor in the 'doctors' list, which is fetched from the MongoDB database -->
+        {% for doctor in doctors %}
+        <div class="col-12">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img
+                  src="{{
+                    url_for('static', filename=get_image_path(doctor.image)) 
+                    if doctor.image else
+                    url_for('static', filename='images/default-doctor.webp') 
+                  }}"
+                  class="img-fluid rounded-start"
+                  alt="{{ doctor.name }}"
+                />
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h3 class="card-title">{{ doctor.name }}</h3>
+                  <p class="card-text">{{ doctor.specialty }}</p>
+                  <p class="card-text">{{ doctor.description }}</p>
+                  <p class="card-text-hide">{{ doctor.additional_info }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        {% endfor %}
       </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
 {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
 endblock %}

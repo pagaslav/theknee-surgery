@@ -1,84 +1,82 @@
 {% extends "base.html" %} {% block title %}The Knee Surgery | Login Page{%
 endblock %} {% block content %}
 
-<!-- Bootstrap Login Form -->
-<section class="form-sign">
-  <form method="POST" action="{{ url_for('login') }}">
-    <!-- Display flashed messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %}
-    <!-- Loop through each message -->
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">
-      <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
-    </div>
-    {% endfor %} {% else %}
-    <h2 class="h2 mb-3 fw-normal">Login to Your Account</h2>
-    {% endif %} {% endwith %}
+      <!-- Bootstrap Login Form -->
+      <section class="form-sign">
+        <form method="POST" action="{{ url_for('login') }}">
+          <!-- Display flashed messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <!-- Loop through each message -->
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
+          </div>
+          {% endfor %} {% else %}
+          <h2 class="h2 mb-3 fw-normal">Login to Your Account</h2>
+          {% endif %} {% endwith %}
 
-    <!-- Email input field with floating label -->
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="floatingInput"
-        name="email"
-        placeholder="name@example.com"
-        aria-label="Email address"
-        required
-      />
-      <label for="floatingInput">Email address</label>
-    </div>
+          <!-- Email input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              id="floatingInput"
+              name="email"
+              placeholder="name@example.com"
+              aria-label="Email address"
+              required>
+            <label for="floatingInput">Email address</label>
+          </div>
 
-    <!-- Password input field with floating label -->
-    <div class="form-floating mb-3">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        name="password"
-        placeholder="Password"
-        aria-label="Password"
-        required
-      />
-      <label for="floatingPassword">Password</label>
-    </div>
+          <!-- Password input field with floating label -->
+          <div class="form-floating mb-3">
+            <input
+              type="password"
+              class="form-control"
+              id="floatingPassword"
+              name="password"
+              placeholder="Password"
+              aria-label="Password"
+              required>
+            <label for="floatingPassword">Password</label>
+          </div>
 
-    <!-- Remember me checkbox -->
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" name="remember" value="remember-me" /> Remember
-        me
-      </label>
-    </div>
+          <!-- Remember me checkbox -->
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" name="remember" value="remember-me" /> Remember
+              me
+            </label>
+          </div>
 
-    <!-- Sign in button -->
-    <button
-      class="w-50 btn btn-lg btn-primary"
-      type="submit"
-      aria-label="Sign In Button"
-    >
-      Sign In
-    </button>
+          <!-- Sign in button -->
+          <button
+            class="w-50 btn btn-lg btn-primary"
+            type="submit"
+            aria-label="Sign In Button"
+          >
+            Sign In
+          </button>
 
-    <!-- Sign up link for new users -->
-    <p class="mt-5 mb-3 text-muted">
-      Don't have an account?
-      <a href="{{ url_for('signup') }}" aria-label="Sign up for a new account"
-        >Sign up</a
-      >
-    </p>
-    <!-- Forget password section -->
-    <p class="mt-5 mb-3 text-muted">
-      Forgot your password? Contact the administrator at
-      <a
-        href="mailto:theknee.surgery@gmail.com"
-        aria-label="Email the administrator to reset your password"
-        >theknee.surgery@gmail.com</a
-      >
-    </p>
-  </form>
-</section>
+          <!-- Sign up link for new users -->
+          <p class="mt-5 mb-3 text-muted">
+            Don't have an account?
+            <a href="{{ url_for('signup') }}" aria-label="Sign up for a new account"
+              >Sign up</a
+            >
+          </p>
+          <!-- Forget password section -->
+          <p class="mt-5 mb-3 text-muted">
+            Forgot your password? Contact the administrator at
+            <a
+              href="mailto:theknee.surgery@gmail.com"
+              aria-label="Email the administrator to reset your password"
+              >theknee.surgery@gmail.com</a
+            >
+          </p>
+        </form>
+      </section>
 
 {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{%
 endblock %}
