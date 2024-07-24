@@ -1,8 +1,8 @@
 # The Knee surgery README
 
-![Responsive Mockup]()
+![Responsive Mockup](static/documentation/respons-knee.webp)
 
-View the live site [here]()
+View the live site [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/)
 
 ## Introduction
 
