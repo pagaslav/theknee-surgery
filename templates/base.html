@@ -140,13 +140,6 @@
                 >Log In</a
               >
             </li>
-            <!-- <li class="nav-item">
-              <a
-                class="nav-link {% if request.endpoint == 'signup' %}active{% endif %}"
-                href="{{ url_for('signup') }}"
-                >Sign Up</a
-              >
-            </li> -->
             {% endif %}
             <li class="nav-item">
               <a
@@ -168,7 +161,11 @@
       {% endblock %}
     </header>
 
-    {% block content %} {% endblock %}
+    <main class="container">
+      {% block content %}
+      <!-- Content will be injected here -->
+      {% endblock %}
+    </main>
 
     <!-- Modal HTML -->
     <div

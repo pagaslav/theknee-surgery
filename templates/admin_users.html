@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block title %}All Users{% endblock %} {% block
-content %}
-<main class="container">
+{% extends "base.html" %} {% block title %}The Knee Surgery | All Users{%
+endblock %} {% block content %}
+<div class="container">
   <!-- Flash messages section -->
   <div class="container mt-3">
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -23,7 +23,11 @@ content %}
     </div>
     {% endif %} {% endwith %}
   </div>
+
+  <!-- Main title for the All Users section -->
   <h2 class="mt-5 text-center">All Users</h2>
+
+  <!-- Table responsive wrapper -->
   <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover text-center">
       <thead class="thead-dark">
@@ -37,28 +41,34 @@ content %}
         {% for user in users %}
         <tr>
           <td>
-            <a href="{{ url_for('profile', username=user.email) }}"
+            <a
+              href="{{ url_for('profile', username=user.email) }}"
+              aria-label="View profile of {{ user.name }}"
               >{{ user.name }}</a
             >
           </td>
           <td>{{ user.role }}</td>
           <td>
+            <!-- Reset password form -->
             <form
               method="POST"
               action="{{ url_for('reset_password_admin') }}"
               style="display: inline"
               onsubmit="return confirm('Are you sure you want to reset the password for {{ user.name }}?');"
+              aria-label="Reset password for {{ user.name }}"
             >
               <input type="hidden" name="user_id" value="{{ user._id }}" />
               <button type="submit" class="btn btn-warning">
                 Reset Password
               </button>
             </form>
+            <!-- Delete user form -->
             <form
               method="POST"
               action="{{ url_for('delete_user') }}"
               style="display: inline"
               onsubmit="return confirm('Are you sure you want to delete {{ user.name }}?');"
+              aria-label="Delete user {{ user.name }}"
             >
               <input type="hidden" name="user_id" value="{{ user._id }}" />
               <button type="submit" class="btn btn-danger">Delete</button>
@@ -69,5 +79,5 @@ content %}
       </tbody>
     </table>
   </div>
-</main>
+</div>
 {% endblock %}

@@ -1,548 +1,563 @@
-{% extends "base.html" %} {% block title %}Profile{% endblock %} {% block
-  content %}
-  <main class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %} {% for category, message in messages %}
-    <div class="alert alert-{{ category }} mt-3">
-      <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
+{% extends "base.html" %} {% block title %}The Knee Surgery | Profile{% endblock %} {% block
+content %}
+<div class="container">
+
+  <!-- Flash messages for user notifications -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <!-- Loop through each message and display it -->
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} mt-3">
+    <h2 class="h2 mb-3 fw-normal">{{ message }}</h2>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <!-- Main title for the profile section -->
+  <h2 class="mt-5">Profile</h2>
+
+  <!-- User Information -->
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>User Information</h3>
     </div>
-    {% endfor %} {% endif %} {% endwith %}
-  
-    <h2 class="mt-5">Profile</h2>
-  
-    <!-- User Information -->
-    <div class="card mb-3">
-      <div class="card-header">
-        <h3>User Information</h3>
-      </div>
-      <div class="card-body">
-        <form id="editUserForm">
-          <input type="hidden" id="userRole" value="{{ role }}">
-          <input type="hidden" id="viewingAsAdmin" value="{{ 'true' if viewing_as_admin else 'false' }}">
-          <input type="hidden" id="editUserIdInput" name="user_id" value="{{ user._id }}">
-          <p>
-            <strong>Name:</strong> <span id="nameText">{{ user.name }}</span>
-            <input
-              type="text"
-              id="nameInput"
-              class="d-none form-control"
-              name="name"
-              value="{{ user.name }}"
-            />
-          </p>
-          <p>
-            <strong>Role:</strong> <span id="roleText">{{ user.role }}</span>
-            <input
-              type="text"
-              id="roleInput"
-              class="d-none form-control"
-              name="role"
-              value="{{ user.role }}"
-              {%
-              if
-              user.role
-              !="admin"
-              %}
-              readonly
-              {%
-              endif
-              %}
-            />
-          </p>
-          <p>
-            <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
-            <input
-              type="text"
-              id="phoneInput"
-              class="d-none form-control"
-              name="phone"
-              value="{{ user.phone }}"
-            />
-          </p>
-          <p>
-            <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
-            <input
-              type="text"
-              id="emailInput"
-              class="d-none form-control"
-              name="email"
-              value="{{ user.email }}"
-            />
-          </p>
-          {% if user.role == "patient" %}
-          <p>
-            <strong>Gender:</strong>
-            <span id="genderText">{{ user.gender }}</span>
-            <div class="form-floating d-none" id="genderInputContainer">
-              <select class="form-control" id="genderInput" name="gender">
-                <option value="">Select Gender</option>
-                <option value="male" {% if user.gender == "male" %}selected{% endif %}>Male</option>
-                <option value="female" {% if user.gender == "female" %}selected{% endif %}>Female</option>
-                <option value="other" {% if user.gender == "other" %}selected{% endif %}>Other</option>
-              </select>
-              <label for="genderInput">Gender</label>
-            </div>
-          </p>
-          <p>
-            <strong>Date of Birth:</strong>
-            <span id="dobText">{{ user.dob or 'N/A' }}</span>
-            <input
-              type="date"
-              id="dobInput"
-              class="d-none form-control"
-              name="dob"
-              value="{{ user.dob }}"
-            />
-          </p>
-          {% endif %}
+    <!-- Card Body -->
+    <div class="card-body">
+      <form id="editUserForm">
+        <!-- Hidden inputs for role and viewing as admin -->
+        <input type="hidden" id="userRole" value="{{ role }}">
+        <input type="hidden" id="viewingAsAdmin" value="{{ 'true' if viewing_as_admin else 'false' }}">
+        <input type="hidden" id="editUserIdInput" name="user_id" value="{{ user._id }}">
 
-          {% if user.role == "doctor" %}
-          <p>
-            <strong>Specialty:</strong> <span>{{ user.specialty }}</span>
-            <input
-              type="text"
-              class="d-none form-control"
-              name="specialty"
-              value="{{ user.specialty }}"
-            />
-          </p>
-          {% endif %}
-          <div id="currentPasswordDiv" class="d-none">
-            <p>
-              <strong>Current Password:</strong>
-              <input
-                type="password"
-                id="currentPasswordInput"
-                class="form-control"
-                name="current_password"
-                required
-              />
-            </p>
-          </div>
-          <div class="d-flex justify-content-start">
-            <button type="button" id="editButton" class="btn btn-primary">
-              Edit
-            </button>
-            <button
-              type="button"
-              id="saveButton"
-              class="btn btn-success d-none ms-2"
-              disabled
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              id="cancelButton"
-              class="btn btn-danger d-none ms-2"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <!-- Name field -->
+        <p>
+          <strong>Name:</strong> <span id="nameText">{{ user.name }}</span>
+          <input type="text" id="nameInput" class="d-none form-control" name="name" aria-label="Name"
+            value="{{ user.name }}" />
+        </p>
 
-    <!-- Change Password -->
-    <div class="card mb-3">
-      <div class="card-header">
-        <h3>Change Password</h3>
-      </div>
-      <div class="card-body">
-        <button type="button" class="btn btn-secondary" id="togglePasswordForm">Change Password</button>
-        <form id="changePasswordForm" class="d-none mt-3" method="POST" action="{{ url_for('change_password') }}">
-          <input type="hidden" name="user_id" value="{{ user._id }}">
+        <!-- Role field, read-only if not admin -->
+        <p>
+          <strong>Role:</strong> <span id="roleText">{{ user.role }}</span>
+          <input type="text" id="roleInput" class="d-none form-control" name="role" value="{{ user.role }}" {% if
+            user.role !="admin" %} readonly {% endif %} />
+        </p>
 
-          <div class="mb-3">
-            <label for="currentPassword" class="form-label">Current Password</label>
-            <input type="password" class="form-control" id="currentPassword" name="current_password" required>
-          </div>
+        <!-- Phone field -->
+        <p>
+          <strong>Phone:</strong> <span id="phoneText">{{ user.phone }}</span>
+          <input type="text" id="phoneInput" class="d-none form-control" name="phone" aria-label="Phone"
+            value="{{ user.phone }}" />
+        </p>
 
-          <!-- New Password input field with floating label -->
-          <div class="form-floating mb-3">
-            <input
-              type="password"
-              class="form-control"
-              id="newPassword"
-              name="new_password"
-              placeholder="New Password"
-              required
-              minlength="8"
-              pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
-              title="Password must contain at least 8 characters, including UPPERCASE letters and numbers"
-              onkeyup="validatePassword('newPassword', 'password-requirements-change')"
-            />
-            <label for="newPassword">New Password</label>
-            <span class="password-toggle" onclick="togglePasswordVisibility('newPassword', 'new-password-icon')">
-              <i id="new-password-icon" class="fa-regular fa-eye"></i>
-            </span>
-          </div>
+        <!-- Email field -->
+        <p>
+          <strong>Email:</strong> <span id="emailText">{{ user.email }}</span>
+          <input type="text" id="emailInput" class="d-none form-control" name="email" aria-label="Email"
+            value="{{ user.email }}" />
+        </p>
 
-          <!-- Password requirements -->
-          <div id="password-requirements-change" class="mb-3">
-            <p id="length-change" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>At least 8 characters</p>
-            <p id="uppercase-change" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>An uppercase letter</p>
-            <p id="number-change" class="neutral"><i class="fa-solid fa-check me-1"></i>At least one number</p>
-          </div>
-
-          <!-- Confirm New Password input field with floating label -->
-          <div class="form-floating mb-3">
-            <input
-              type="password"
-              class="form-control"
-              id="confirmNewPassword"
-              name="confirm_new_password"
-              placeholder="Confirm New Password"
-              required
-              onkeyup="validateConfirmPassword('newPassword', 'confirmNewPassword')"
-            />
-            <label for="confirmNewPassword">Confirm New Password</label>
-            <span class="password-toggle" onclick="togglePasswordVisibility('confirmNewPassword', 'confirm-new-password-icon')">
-              <i id="confirm-new-password-icon" class="fa-regular fa-eye"></i>
-            </span>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Update Password</button>
-        </form>
-      </div>
-    </div>
-
-    {% if user.role == "admin" %}
-    <!-- Appointment Requests Section -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Appointment Requests</h3>
+        <!-- Additional fields for patients -->
+        {% if user.role == "patient" %}
+        <!-- Gender field -->
+        <p>
+          <strong>Gender:</strong>
+          <span id="genderText">{{ user.gender }}</span>
+        <div class="form-floating d-none" id="genderInputContainer">
+          <select class="form-control" id="genderInput" name="gender" aria-label="Gender">
+            <option value="">Select Gender</option>
+            <option value="male" {% if user.gender=="male" %}selected{% endif %}>Male</option>
+            <option value="female" {% if user.gender=="female" %}selected{% endif %}>Female</option>
+            <option value="other" {% if user.gender=="other" %}selected{% endif %}>Other</option>
+          </select>
+          <label for="genderInput">Gender</label>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover text-center">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Patient Name</th>
-                            <th scope="col">Reason</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for appointment in appointment_requests %}
-                        <tr>
-                            <td>
-                                <a href="{{ url_for('profile', username=appointment.patient_email) }}">
-                                    {{ appointment.patient_name }}
-                                </a>
-                            </td>
-                            <td>{{ appointment.reason }}</td>
-                            <td>
-                                <form method="POST" action="{{ url_for('assign_appointment') }}" style="display: inline">
-                                    <input type="hidden" name="appointment_id" value="{{ appointment._id }}" />
-                                    <select name="doctor_id" required>
-                                        <option value="">Select Doctor</option>
-                                        {% for doctor in doctors %}
-                                        <option value="{{ doctor._id }}">{{ doctor.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <button type="submit" class="btn btn-primary">Assign Doctor</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-   
-    {% if user.role == "doctor" %}
-    <!-- Assigned Patients Section -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Assigned Patients</h3>
-        </div>
-        <div class="card-body">
-            {% if assigned_patients %}
-                <ul class="list-group">
-                    {% for appointment in assigned_patients %}
-                        <li class="list-group-item">
-                            <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}" target="_blank">{{ appointment.patient_name }}</a></p>
-                            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-                            <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
-                            <p><strong>Date Requested:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </p>
 
-                            {% if appointment.status == 'assigned' %}
-                                <form method="POST" action="{{ url_for('accept_appointment') }}">
-                                    <input type="hidden" name="appointment_id" value="{{ appointment._id }}">
-                                    <div class="form-group">
-                                        <label for="appointment_date">Appointment Date:</label>
-                                        <input type="date" name="appointment_date" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="appointment_time">Appointment Time:</label>
-                                        <input type="time" name="appointment_time" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mt-2">Accept and Schedule</button>
-                                </form>
-                            {% else %}
-                                <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                            {% endif %}
-                            
-                            {% if appointment.medical_records %}
-                                <h5>Medical Records:</h5>
-                                <ul>
-                                    {% for record in appointment.medical_records %}
-                                        <li>
-                                            <a href="{{ url_for('medical_record_detail', record_id=record._id) }}" target="_blank">
-                                                {{ record.description }} ({{ record.date.strftime('%Y-%m-%d') }})
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </li>
+        <!-- Date of Birth field -->
+        <p>
+          <strong>Date of Birth:</strong>
+          <span id="dobText">{{ user.dob or 'N/A' }}</span>
+          <input type="date" id="dobInput" class="d-none form-control" name="dob" aria-label="Date of Birth"
+            value="{{ user.dob }}" />
+        </p>
+        {% endif %}
+
+        <!-- Specialty field for doctors -->
+        {% if user.role == "doctor" %}
+        <p>
+          <strong>Specialty:</strong> <span>{{ user.specialty }}</span>
+          <input type="text" class="d-none form-control" name="specialty" aria-label="Specialty"
+            value="{{ user.specialty }}" />
+        </p>
+        {% endif %}
+
+        <!-- Current Password field -->
+        <div id="currentPasswordDiv" class="d-none">
+          <p>
+            <strong>Current Password:</strong>
+            <input type="password" id="currentPasswordInput" class="form-control" name="current_password"
+              aria-label="Current Password" required />
+          </p>
+        </div>
+
+        <!-- Edit, Save, and Cancel buttons -->
+        <div class="d-flex justify-content-start">
+          <button type="button" id="editButton" class="btn btn-primary" aria-label="Edit User Information">
+            Edit
+          </button>
+          <button type="button" id="saveButton" class="btn btn-success d-none ms-2" disabled
+            aria-label="Save User Information">
+            Save
+          </button>
+          <button type="button" id="cancelButton" class="btn btn-danger d-none ms-2" aria-label="Cancel Editing">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Change Password -->
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>Change Password</h3>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <!-- Button to toggle the change password form -->
+      <button type="button" class="btn btn-secondary" id="togglePasswordForm" aria-controls="changePasswordForm"
+        aria-expanded="false">Change Password</button>
+      <!-- Change Password Form -->
+      <form id="changePasswordForm" class="d-none mt-3" method="POST" action="{{ url_for('change_password') }}">
+        <input type="hidden" name="user_id" value="{{ user._id }}">
+
+        <!-- Current Password Field -->
+        <div class="mb-3">
+          <label for="currentPassword" class="form-label">Current Password</label>
+          <input type="password" class="form-control" id="currentPassword" name="current_password"
+            aria-label="Current Password" required>
+        </div>
+
+        <!-- New Password input field with floating label -->
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="newPassword" name="new_password" placeholder="New Password"
+            required minlength="8" pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
+            title="Password must contain at least 8 characters, including UPPERCASE letters and numbers"
+            aria-label="New Password" onkeyup="validatePassword('newPassword', 'password-requirements-change')" />
+          <label for="newPassword">New Password</label>
+          <span class="password-toggle" onclick="togglePasswordVisibility('newPassword', 'new-password-icon')">
+            <i id="new-password-icon" class="fa-regular fa-eye"></i>
+          </span>
+        </div>
+
+        <!-- Password requirements -->
+        <div id="password-requirements-change" class="mb-3">
+          <p id="length-change" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>At least 8 characters</p>
+          <p id="uppercase-change" class="neutral me-3"><i class="fa-solid fa-check me-1"></i>An uppercase letter</p>
+          <p id="number-change" class="neutral"><i class="fa-solid fa-check me-1"></i>At least one number</p>
+        </div>
+
+        <!-- Confirm New Password input field with floating label -->
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="confirmNewPassword" name="confirm_new_password"
+            placeholder="Confirm New Password" required aria-label="Confirm New Password"
+            onkeyup="validateConfirmPassword('newPassword', 'confirmNewPassword')" />
+          <label for="confirmNewPassword">Confirm New Password</label>
+          <span class="password-toggle"
+            onclick="togglePasswordVisibility('confirmNewPassword', 'confirm-new-password-icon')">
+            <i id="confirm-new-password-icon" class="fa-regular fa-eye"></i>
+          </span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" aria-label="Update Password">Update Password</button>
+      </form>
+    </div>
+  </div>
+
+  {% if user.role == "admin" %}
+  <!-- Appointment Requests Section -->
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>Appointment Requests</h3>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover text-center" aria-label="Appointment Requests">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Patient Name</th>
+              <th scope="col">Reason</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through each appointment request -->
+            {% for appointment in appointment_requests %}
+            <tr>
+              <td>
+                <a href="{{ url_for('profile', username=appointment.patient_email) }}"
+                  aria-label="View profile of {{ appointment.patient_name }}">{{ appointment.patient_name
+                  }}</a>
+              </td>
+              <td>{{ appointment.reason }}</td>
+              <td>
+                <form method="POST" action="{{ url_for('assign_appointment') }}" style="display: inline"
+                  aria-label="Assign Doctor Form">
+                  <input type="hidden" name="appointment_id" value="{{ appointment._id }}" />
+                  <select name="doctor_id" aria-label="Select Doctor" required>
+                    <option value="">Select Doctor</option>
+                    <!-- Loop through each doctor -->
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor._id }}">{{ doctor.name }}</option>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p>No assigned patients.</p>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-    <!-- Display Uploaded Files
-    <div class="card mb-3">
-      <div class="card-header">
-          <h3>Uploaded Files</h3>
-      </div>
-      <div class="card-body">
-          <ul class="list-group" id="uploaded-files-list">
-              {% for file in user_files %}
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{{ file.file_url }}" target="_blank">{{ file.file_name }}</a>
-                <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
-                    <input type="hidden" name="file_id" value="{{ file.file_id }}">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </select>
+                  <button type="submit" class="btn btn-primary" aria-label="Assign Doctor">Assign Doctor</button>
                 </form>
-              </li>
-              {% endfor %}
-          </ul>
-          {% if not user_files %}
-          <p id="no-files-message">No files uploaded.</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if user.role == "doctor" %}
+  <!-- Assigned Patients Section -->
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>Assigned Patients</h3>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <!-- Check if there are assigned patients -->
+      {% if assigned_patients %}
+      <ul class="list-group">
+        <!-- Loop through each assigned patient -->
+        {% for appointment in assigned_patients %}
+        <li class="list-group-item">
+          <!-- Link to Patient Profile -->
+          <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}"
+              target="_blank" aria-label="View profile of {{ appointment.patient_name }}">{{ appointment.patient_name
+              }}</a></p>
+          <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+          <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
+          <p><strong>Date Requested:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+
+          <!-- Check if the appointment is assigned -->
+          {% if appointment.status == 'assigned' %}
+          <form method="POST" action="{{ url_for('accept_appointment') }}" style="display: inline"
+            aria-label="Assign Doctor Form">
+            <input type="hidden" name="appointment_id" value="{{ appointment._id }}">
+            <div class="form-group">
+              <label for="appointment_date">Appointment Date:</label>
+              <input type="date" name="appointment_date" aria-label="Appointment Date" required>
+            </div>
+            <div class="form-group">
+              <label for="appointment_time">Appointment Time:</label>
+              <input type="time" name="appointment_time" aria-label="Appointment Time" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2" aria-label="Accept and Schedule Appointment">Accept and
+              Schedule</button>
+          </form>
+          {% else %}
+          <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S')
+            }}</p>
           {% endif %}
-      </div>
-    </div> -->
 
-    <!-- File Upload Section
-    <div class="card mb-3">
-      <div class="card-header">
-        <h3>Upload Documents</h3>
-      </div>
-      <div class="card-body">
-        <form id="uploadForm" enctype="multipart/form-data">
-          <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
-          <div class="mb-3">
-              <label for="fileInput" class="form-label">Upload File</label>
-              <input class="form-control" type="file" id="fileInput" name="file">
-          </div>
-          <div class="mb-3">
-              <label for="fileType" class="form-label">File Type</label>
-              <select class="form-select" id="fileType" name="file_type">
-                  <option value="medical_record">Medical Record</option>
-                  <option value="analysis">Analysis</option>
-                  <option value="profile_picture">Profile Picture</option>
-                  <option value="other">Other</option>
-              </select>
-          </div>
-          <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
-        </form>
-      </div>
-    </div> -->
-  
-    {% if user.role == "admin" %}
-    <div class="d-flex justify-content-center mt-4 mb-4">
-      <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button">All Users</a>
-      <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5">Add Doctor</a>
+          <!-- Check if there are medical records -->
+          {% if appointment.medical_records %}
+          <h3>Medical Records:</h3>
+          <ul>
+            <!-- Loop through each medical record -->
+            {% for record in appointment.medical_records %}
+            <li>
+              <!-- Link to Medical Record Details -->
+              <a href="{{ url_for('medical_record_detail', record_id=record._id) }}" target="_blank"
+                aria-label="View details of {{ record.description }} recorded on {{ record.date.strftime('%Y-%m-%d') }}">
+                {{ record.description }} ({{ record.date.strftime('%Y-%m-%d') }})
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No assigned patients.</p>
+      {% endif %}
     </div>
-    {% endif %}
-  
-    <!-- Medical Records for Patients -->
-    {% if user.role == "patient" %}
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Medical Records</h3>
-        </div>
-        <div class="card-body">
-            {% if medical_records %}
-            <ul class="list-group">
-                {% for record in medical_records %}
-                <li class="list-group-item">
-                    <p><strong>Description:</strong> {{ record.description }}</p>
-                    <p><strong>Treatment:</strong> {{ record.treatment }}</p>
-                    <p><strong>Date:</strong> {{ record.date.strftime('%Y-%m-%d') }}</p>
-                    {% if record.doctor_name %}
-                    <p><strong>Doctor:</strong> <a href="mailto:{{ record.doctor_email }}">{{ record.doctor_name }}</a></p>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No medical records found.</p>
-            {% endif %}
-        </div>
+  </div>
+  {% endif %}
+
+  <!-- Section for admin with navigation buttons to add doctors and view/edit user list -->
+  {% if user.role == "admin" %}
+  <div class="d-flex justify-content-center mt-4 mb-4">
+    <!-- Link to view all users -->
+    <a href="{{ url_for('admin_users') }}" class="btn btn-primary btn-lg square-button" aria-label="View all users">All
+      Users</a>
+    <!-- Link to add a new doctor -->
+    <a href="{{ url_for('add_doctor') }}" class="btn btn-primary btn-lg square-button ms-5"
+      aria-label="Add a new doctor">Add Doctor</a>
+  </div>
+  {% endif %}
+
+  <!-- Medical Records for Patients -->
+  {% if user.role == "patient" %}
+  <div class="card mb-3">
+    <!-- Card Header for Medical Records -->
+    <div class="card-header">
+      <h3>Medical Records</h3>
     </div>
-    {% endif %}
-
-    <!-- Medical Records for Doctors -->
-    {% if user.role == "doctor" %}
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Medical Records</h3>
-        </div>
-        <div class="card-body">
-            {% if doctor_records %}
-            <ul class="list-group">
-                {% for record in doctor_records %}
-                <li class="list-group-item">
-                    <p><strong>Date:</strong> <a href="{{ url_for('edit_medical_record', record_id=record._id) }}">{{ record.date.strftime('%Y-%m-%d') }}</a></p>
-                    <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=record.patient_email) }}">{{ record.patient_name }}</a></p>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No medical records found.</p>
-            {% endif %}
-        </div>
+    <!-- Card Body containing medical records -->
+    <div class="card-body">
+      {% if medical_records %}
+      <ul class="list-group">
+        <!-- Loop through each medical record -->
+        {% for record in medical_records %}
+        <li class="list-group-item">
+          <p><strong>Description:</strong> {{ record.description }}</p>
+          <p><strong>Treatment:</strong> {{ record.treatment }}</p>
+          <p><strong>Date:</strong> {{ record.date.strftime('%Y-%m-%d') }}</p>
+          {% if record.doctor_name %}
+          <p><strong>Doctor:</strong> <a href="mailto:{{ record.doctor_email }}"
+              aria-label="Email {{ record.doctor_name }}"></a>>{{ record.doctor_name }}</a></p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No medical records found.</p>
+      {% endif %}
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
-    <!-- Display Uploaded Files for Patients and Admins -->
-    {% if user.role == "patient" or user.role == "admin" %}
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Uploaded Files</h3>
-        </div>
-        <div class="card-body">
-            <ul class="list-group" id="uploaded-files-list">
-                {% for file in user_files %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{{ file.file_url }}" target="_blank">{{ file.file_name }}</a>
-                    <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
-                        <input type="hidden" name="file_id" value="{{ file.file_id }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-            {% if not user_files %}
-            <p id="no-files-message">No files uploaded.</p>
-            {% endif %}
-        </div>
+  <!-- Medical Records for Doctors and Admins -->
+  {% if user.role == "doctor" or user.role == "admin" %}
+  <div class="card mb-3">
+    <!-- Card Header for Medical Records -->
+    <div class="card-header">
+      <h3>Medical Records</h3>
     </div>
-
-    <!-- File Upload Section for Patients and Admins -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Upload Documents</h3>
-        </div>
-        <div class="card-body">
-            <form id="uploadForm" enctype="multipart/form-data">
-                <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
-                <div class="mb-3">
-                    <label for="fileInput" class="form-label">Upload File</label>
-                    <input class="form-control" type="file" id="fileInput" name="file">
-                </div>
-                <div class="mb-3">
-                    <label for="fileType" class="form-label">File Type</label>
-                    <select class="form-select" id="fileType" name="file_type">
-                        <option value="medical_record">Medical Record</option>
-                        <option value="analysis">Analysis</option>
-                        <option value="profile_picture">Profile Picture</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <button type="button" id="uploadButton" class="btn btn-primary">Upload</button>
-            </form>
-        </div>
+    <!-- Card Body containing medical records -->
+    <div class="card-body">
+      {% if doctor_records %}
+      <ul class="list-group">
+        <!-- Loop through each medical record -->
+        {% for record in doctor_records %}
+        <li class="list-group-item">
+          <p><strong>Date:</strong> <a href="{{ url_for('edit_medical_record', record_id=record._id) }}"
+              aria-label="Edit medical record for date {{ record.date.strftime('%Y-%m-%d') }}">{{
+              record.date.strftime('%Y-%m-%d') }}</a></p>
+          <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=record.patient_email) }}"
+              aria-label="View profile of {{ record.patient_name }}">{{
+              record.patient_name }}</a></p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No medical records found.</p>
+      {% endif %}
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
-    {% if user.role == "doctor" %}
-    <div class="card mb-3">
-      <div class="card-header">
-        <h3>Add Medical Record</h3>
-      </div>
-      <div class="card-body">
-        <form method="POST" action="{{ url_for('add_medical_record') }}">
-          <div class="mb-3">
-            <label for="patient" class="form-label">Patient</label>
-            <select class="form-select" id="patient" name="patient_id" required>
-              <option value="">Select Patient</option>
-              {% for patient in patients %}
-              <option value="{{ patient._id }}">{{ patient.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="record_date" class="form-label">Date</label>
-            <input type="date" class="form-control" id="record_date" name="record_date" required>
-          </div>
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" name="description" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="treatment" class="form-label">Treatment</label>
-            <textarea class="form-control" id="treatment" name="treatment" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Add Record</button>
-        </form>
-      </div>
+  <!-- Display Uploaded Files for Patients and Admins -->
+  {% if user.role == "patient" or user.role == "admin" %}
+  <div class="card mb-3">
+    <!-- Card Header for Uploaded Files -->
+    <div class="card-header">
+      <h3>Uploaded Files</h3>
     </div>
-    {% endif %}
+    <!-- Card Body containing list of uploaded files -->
+    <div class="card-body">
+      <!-- List of uploaded files -->
+      <ul class="list-group" id="uploaded-files-list">
+        <!-- Loop through each file and display it -->
+        {% for file in user_files %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{{ file.file_url }}" target="_blank" aria-label="Download {{ file.file_name }}">{{ file.file_name
+            }}</a>
+          <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
+            <input type="hidden" name="file_id" value="{{ file.file_id }}">
+            <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete File">Delete</button>
+          </form>
+        </li>
+        {% endfor %}
+      </ul>
+      <!-- Message when no files are uploaded -->
+      {% if not user_files %}
+      <p id="no-files-message">No files uploaded.</p>
+      {% endif %}
+    </div>
+  </div>
 
-
-
-    {% if user.role == "patient" %}
-    <!-- Scheduled Appointments Section -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <h3>Scheduled Appointments</h3>
+  <!-- File Upload Section for Patients and Admins -->
+  <div class="card mb-3">
+    <!-- Card Header for File Upload -->
+    <div class="card-header">
+      <h3>Upload Documents</h3>
+    </div>
+    <!-- Card Body containing file upload form -->
+    <div class="card-body">
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
+        <!-- File Input Field -->
+        <div class="mb-3">
+          <label for="fileInput" class="form-label">Upload File</label>
+          <input class="form-control" type="file" id="fileInput" name="file" aria-label="Choose file to upload">
         </div>
-        <div class="card-body">
-            {% if appointments %}
-                <ul class="list-group">
-                    {% for appointment in appointments %}
-                        {% if appointment.status == 'scheduled' %}
-                            <li class="list-group-item">
-                              <p><strong>Doctor:</strong> <a href="mailto:{{ appointment.doctor_email }}">{{ appointment.doctor_name }}</a></p>
-                              <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-                              <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No scheduled appointments.</p>
-            {% endif %}
+        <!-- File Type Selection -->
+        <div class="mb-3">
+          <label for="fileType" class="form-label">File Type</label>
+          <select class="form-select" id="fileType" name="file_type" aria-label="Select file type">
+            <option value="medical_record">Medical Record</option>
+            <option value="analysis">Analysis</option>
+            <option value="profile_picture">Profile Picture</option>
+            <option value="other">Other</option>
+          </select>
         </div>
+        <!-- Upload Button -->
+        <button type="button" id="uploadButton" class="btn btn-primary" aria-label="Upload File">Upload</button>
+      </form>
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 
-    {% if user.role == "patient" %}
-    <!-- Appointment Request Form -->
-    <div class="card mb-3">
-      <div class="card-header">
-        <h3>Request an Appointment</h3>
-      </div>
-      <div class="card-body">
-        <form id="appointmentRequestForm" method="POST" action="{{ url_for('request_appointment') }}">
-          <input type="hidden" name="patient_id" value="{{ user._id }}">
-          <div class="mb-3">
-            <label for="appointmentReason" class="form-label">Reason for Appointment</label>
-            <textarea class="form-control" id="appointmentReason" name="reason" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Request Appointment</button>
-        </form>
-      </div>
+  <!-- Section for adding medical records for doctors -->
+  {% if user.role == "doctor" %}
+  <div class="card mb-3">
+    <!-- Card Header for Adding Medical Record -->
+    <div class="card-header">
+      <h3>Add Medical Record</h3>
     </div>
-    {% endif %}
-  </main>
-  {% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{% endblock %}
+    <!-- Card Body containing the form for adding a medical record -->
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('add_medical_record') }}">
+        <div class="mb-3">
+          <label for="patient" class="form-label" aria-label="Select Patient">Patient</label>
+          <select class="form-select" id="patient" name="patient_id" aria-required="true" required>
+            <option value="">Select Patient</option>
+            <!-- Loop through each patient -->
+            {% for patient in patients %}
+            <option value="{{ patient._id }}">{{ patient.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <!-- Record Date Input -->
+        <div class="mb-3">
+          <label for="record_date" class="form-label" aria-label="Record Date">Date</label>
+          <input type="date" class="form-control" id="record_date" name="record_date" required aria-required="true">
+        </div>
+        <!-- Description Input -->
+        <div class="mb-3">
+          <label for="description" class="form-label" aria-label="Description">Description</label>
+          <textarea class="form-control" id="description" name="description" required aria-required="true"></textarea>
+        </div>
+        <!-- Treatment Input -->
+        <div class="mb-3">
+          <label for="treatment" class="form-label" aria-label="Treatment">Treatment</label>
+          <textarea class="form-control" id="treatment" name="treatment" aria-required="true" required></textarea>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" aria-label="Add Medical Record">Add Record</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Scheduled Appointments Section -->
+  {% if user.role == "patient" %}
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>Scheduled Appointments</h3>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <!-- Check if there are appointments -->
+      {% if appointments %}
+      <ul class="list-group">
+        <!-- Loop through each appointment -->
+        {% for appointment in appointments %}
+        <!-- Only display if the appointment is scheduled -->
+        {% if appointment.status == 'scheduled' %}
+        <li class="list-group-item">
+          <p><strong>Doctor:</strong> <a href="mailto:{{ appointment.doctor_email }}"
+              aria-label="Email {{ appointment.doctor_name }}">{{ appointment.doctor_name }}</a>
+          </p>
+          <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+          <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S')
+            }}</p>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No scheduled appointments.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Requested Appointments Section for Patients -->
+  {% if user.role == "patient" %}
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>Requested Appointments</h3>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <!-- List of requested appointments -->
+      <ul class="list-group">
+        <!-- Loop through each requested appointment -->
+        {% for appointment in patient_requests %}
+        <li class="list-group-item">
+          <p><strong>Date Requested:</strong> {{ appointment.date_requested }}</p>
+          <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+          <p><strong>Status:</strong> {{ appointment.status }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      <!-- Message when no appointment requests are found -->
+      {% if not patient_requests %}
+      <p>No appointment requests found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Appointment Request Form -->
+  <div class="card mb-3">
+    <!-- Card Header -->
+    <div class="card-header">
+      <h3>Request an Appointment</h3>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <!-- Form for requesting an appointment -->
+      <form id="appointmentRequestForm" method="POST" action="{{ url_for('request_appointment') }}">
+        <input type="hidden" name="patient_id" value="{{ user._id }}">
+        <div class="mb-3">
+          <!-- Label and textarea for the reason of appointment -->
+          <label for="appointmentReason" class="form-label">Reason for Appointment</label>
+          <textarea class="form-control" id="appointmentReason" name="reason" aria-label="Reason for Appointment"
+            required></textarea>
+        </div>
+        <!-- Submit button for the form -->
+        <button type="submit" class="btn btn-primary" aria-label="Request Appointment">Request Appointment</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %} {% block footer_content %}{% endblock %} {% block scripts %}{% endblock %}
