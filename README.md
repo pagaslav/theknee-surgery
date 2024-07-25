@@ -42,27 +42,48 @@ User Interface (UI)
 ### Wireframes
 
 - Home Page
-  ![Home Page](static/documentation/wireframes/home-page.webp)
+
+![Home Page](static/documentation/wireframes/home-page.webp)
+
 - Log in Page
-  ![Log in Page](static/documentation/wireframes/login-page.webp)
+
+![Log in Page](static/documentation/wireframes/login-page.webp)
+
 - Sign Up Page
-  ![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+
+![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+
 - Our Doctors Page
-  ![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+
+![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+
 - About Us Page
-  ![About Us Page](static/documentation/wireframes/about-us-page.webp)
+
+![About Us Page](static/documentation/wireframes/about-us-page.webp)
+
 - Privacy Policy Page
-  ![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+
+![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+
 - Profile Page
-  ![Profile Page](static/documentation/wireframes/profile-page.webp)
+
+![Profile Page](static/documentation/wireframes/profile-page.webp)
+
 - Add Doctor Page
-  ![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+
+![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+
 - All Users Page
-  ![All Users Page](static/documentation/wireframes/all-users-page.webp)
+
+![All Users Page](static/documentation/wireframes/all-users-page.webp)
+
 - Medical Records Page
-  ![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
+
+![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
+
 - Map of website
-  ![Map of website](static/documentation/wireframes/map.webp)
+
+![Map of website](static/documentation/wireframes/map.webp)
 
 ### Colour Scheme
 
@@ -95,29 +116,80 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 
 ### Typography
 
-#### Logo Font
+Our website utilises a combination of modern and visually appealing fonts to enhance readability and user experience. We have integrated two main fonts, “Bebas Neue” and “Oswald”, which are imported from Google Fonts. These fonts are selected to create a clean and professional look, making the content easily digestible for our users.
 
-#### Slogan Font
+#### Font Usage:
 
-#### Quote Font
+##### Bebas Neue:
 
-#### Button and Body Text Font
+- **Logo**: The site logo, defined under the .logo-setup and .navbar-brand classes, uses Bebas Neue to create a distinct and bold appearance.
 
-#### Description Font on ... Page
+- **Headings**: Main headings, such as the welcome title on the index page (.welcome-title), utilise Bebas Neue to make a strong visual impact.
+
+##### Oswald:
+
+- **Body Text**: The primary font for body text is Oswald. This includes the general text across the site, defined in the body tag. The font settings ensure a clean and readable design with font-weight: 300 and font-size: 17px.
+- **Subtitles and Minor Headings**: Subtitles and minor headings, such as the welcome subtitle (.welcome-subtitle) and welcome text (.welcome-text), also use Oswald. These elements are styled with specific font sizes and transformations to maintain a cohesive look.
+- **Forms and Buttons**: Text within forms and buttons, such as those on the login and signup pages, use Oswald to ensure readability and consistency throughout the user interface.
+
+By using these fonts strategically, we aim to provide a cohesive and visually appealing user experience that enhances both readability and the overall aesthetic of the website.
 
 ### The Knee surgery Logo
+The logo for The Knee Surgery clinic is designed to be both professional and approachable, reflecting the clinic’s commitment to high-quality care and patient comfort.
 
 ## Features
 
 ### Navigation
+The navigation panel of The Knee Surgery clinic website is designed to provide a user-friendly and intuitive browsing experience.
 
 #### Navbar
+The Navbar section is designed with both aesthetics and functionality in mind. Below is a detailed breakdown of its features:
+
+##### Additional Features
+
+- **Clock and Date Display**: 
+  - Above the navigation panel, you will find a clock and date display. This helps users keep track of the current time while browsing the site.
+
+- **Future Search Bar**: 
+  - As the website grows, a search bar will be added above the navigation panel. This will allow users to search for various information on the site. 
+  - Although we planned to include this feature in the current project, we ran out of time.
+
+##### Navigation Panel
+
+- **Position and Behavior**: 
+  - The navigation panel is located at the top of the page.
+  - For design reasons, it does not remain fixed during scrolling.
+  - As you scroll down, a back-to-top arrow appears in the bottom right corner. This arrow remains dynamically positioned as you scroll, allowing easy navigation back to the top of the page.
+
+##### Layout and Responsiveness
+
+- **Logo Placement**: 
+  - The logo is situated on the left side of the navigation panel.
+
+- **Menu Items**: 
+  - The menu items, which change based on user authentication status, are located on the right side of the panel.
+  - As the screen size decreases, the menu items and the logo first move towards the center. Eventually, the menu items transform into a hamburger menu, thanks to Bootstrap classes.
+
+##### Menu Item Descriptions
+
+- **Intuitive Labels**: 
+  - The pages linked by the menu items are self-explanatory based on their labels.
 
 ##### Desktop View:
 
+![Desktop View](static/documentation/navbar/desktop-navbar.webp)
+
 ##### Responsive Design:
 
+##### Tablet View:
+
+![Tablet View](static/documentation/navbar/tablet-close-navbar.webp)
+![Tablet View](static/documentation/navbar/tablet-open-navbar.webp)
+
 ##### Mobile View:
+
+![Mobile View](static/documentation/navbar/mob-close-navbar.webp)
+![Mobile View](static/documentation/navbar/mob-open-navbar.webp)
 
 ### Footer
 
