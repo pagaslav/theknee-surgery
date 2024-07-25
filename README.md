@@ -42,10 +42,27 @@ User Interface (UI)
 ### Wireframes
 
 - Home Page
-  ![Home Page]()
-  ...
+  ![Home Page](static/documentation/wireframes/home-page.webp)
+- Log in Page
+  ![Log in Page](static/documentation/wireframes/login-page.webp)
+- Sign Up Page
+  ![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+- Our Doctors Page
+  ![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+- About Us Page
+  ![About Us Page](static/documentation/wireframes/about-us-page.webp)
+- Privacy Policy Page
+  ![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+- Profile Page
+  ![Profile Page](static/documentation/wireframes/profile-page.webp)
+- Add Doctor Page
+  ![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+- All Users Page
+  ![All Users Page](static/documentation/wireframes/all-users-page.webp)
+- Medical Records Page
+  ![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
 - Map of website
-  ![Map of website]()
+  ![Map of website](static/documentation/wireframes/map.webp)
 
 ### Colour Scheme
 
