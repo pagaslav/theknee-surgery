@@ -242,7 +242,7 @@ content %}
             <ul class="list-group">
               <!-- Loop through each assigned patient -->
               {% for appointment in assigned_patients %}
-              <li class="list-group-item">
+              <li class="list-group-item" data-id="{{ appointment._id }}">
                 <!-- Link to Patient Profile -->
                 <p><strong>Patient:</strong> <a href="{{ url_for('profile', username=appointment.patient_email) }}"
                     target="_blank" aria-label="View profile of {{ appointment.patient_name }}">{{ appointment.patient_name
@@ -271,6 +271,7 @@ content %}
                 <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S')
                   }}</p>
                 {% endif %}
+                <button class="btn btn-danger delete-button-assigned" aria-label="Delete Patient">Delete</button>
 
                 <!-- Check if there are medical records -->
                 {% if appointment.medical_records %}

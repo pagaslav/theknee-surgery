@@ -227,6 +227,41 @@ $(document).ready(function () {
   $("#togglePasswordForm").click(function () {
     $("#changePasswordForm").toggleClass("d-none")
   })
+
+  /**
+   * Function to handle the deletion of an assigned patient.
+   * This function retrieves the patient ID, confirms the deletion action,
+   * sends an AJAX request to delete the patient, and updates the UI accordingly.
+   */
+  $(".delete-button-assigned").click(function () {
+    // Get the patient ID from the closest list item
+    const patientId = $(this).closest(".list-group-item").data("id")
+    // Confirm the deletion action with the user
+    const confirmation = confirm(
+      "Are you sure you want to delete this patient?"
+    )
+    if (confirmation) {
+      // If confirmed, send an AJAX request to delete the patient
+      $.ajax({
+        url: `/api/deletePatient/${patientId}`,
+        type: "DELETE",
+        // Handle the response from the server
+        success: function (response) {
+          if (response.success) {
+            // Remove the patient element from the DOM if deletion is successful
+            $(`[data-id="${patientId}"]`).remove()
+          } else {
+            // Alert the user if there was an error deleting the patient
+            alert("Error deleting patient")
+          }
+        },
+        // Log an error if the AJAX request fails
+        error: function (xhr, status, error) {
+          console.error("AJAX Error: ", status, error)
+        },
+      })
+    }
+  })
 })
 
 /**

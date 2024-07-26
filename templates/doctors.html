@@ -12,11 +12,7 @@ endblock %} {% block content %}
             <div class="row g-0">
               <div class="col-md-4">
                 <img
-                  src="{{
-                    url_for('static', filename=get_image_path(doctor.image)) 
-                    if doctor.image else
-                    url_for('static', filename='images/default-doctor.webp') 
-                  }}"
+                  src="{{ url_for('static', filename=get_image_path(doctor.image)) if doctor.image else url_for('static', filename='images/doctors/default-doctor.webp') }}"
                   class="img-fluid rounded-start"
                   alt="{{ doctor.name }}">
               </div>

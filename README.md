@@ -35,55 +35,99 @@ Our mission is to provide a platform that not only improves the efficiency of cl
 2. As a returning visitor, I’m looking for a quick way to request a follow-up appointment or update an existing appointment.
 3. As a returning visitor, I want to review and update my personal information to ensure my profile is current and accurate.
 
+### Admin
+
+As the site admin, I have the following capabilities:
+
+1. Accept appointment requests from patients and assign them to specific doctors.
+2. View and edit the profiles and information of any user on the site.
+3. View a list of all users.
+4. Delete users or reset their passwords.
+5. Add new doctors.
+
+### Doctor
+
+As a doctor, I have the following capabilities:
+
+1. Receive appointment requests from the admin for specific patients and schedule these appointments for specific dates and times.
+2. View patient profiles.
+3. Delete patient appointment requests.
+4. Add, edit, and update medical records obtained during appointments with patients.
+
 ## User Experience (UX) &
 
 User Interface (UI)
 
 ### Wireframes
 
-- Home Page
+<details>
+<summary>Home Page</summary>
 
 ![Home Page](static/documentation/wireframes/home-page.webp)
+</details>
 
-- Log in Page
+<details>
+<summary>Log in Page</summary>
 
 ![Log in Page](static/documentation/wireframes/login-page.webp)
+</details>
 
-- Sign Up Page
+<details>
+<summary>Sign Up Page</summary>
 
 ![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+</details>
 
-- Our Doctors Page
+<details>
+<summary>Our Doctors Page</summary>
 
 ![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+</details>
 
-- About Us Page
+<details>
+<summary>About Us Page</summary>
 
 ![About Us Page](static/documentation/wireframes/about-us-page.webp)
+</details>
 
-- Privacy Policy Page
+<details>
+<summary>Privacy Policy Page</summary>
 
 ![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+</details>
 
-- Profile Page
+<details>
+<summary>Profile Page</summary>
 
 ![Profile Page](static/documentation/wireframes/profile-page.webp)
+</details>
 
-- Add Doctor Page
+<details>
+<summary>Add Doctor Page</summary>
 
 ![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+</details>
 
-- All Users Page
+<details>
+<summary>All Users Page</summary>
 
 ![All Users Page](static/documentation/wireframes/all-users-page.webp)
+</details>
 
-- Medical Records Page
+<details>
+<summary> Medical Records Page</summary>
 
 ![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
+</details>
 
-- Map of website
+<details>
+<summary>Map of website</summary>
 
 ![Map of website](static/documentation/wireframes/map.webp)
+
+</details>
+
+
 
 ### Colour Scheme
 
@@ -131,6 +175,8 @@ Our website utilises a combination of modern and visually appealing fonts to enh
 - **Body Text**: The primary font for body text is Oswald. This includes the general text across the site, defined in the body tag. The font settings ensure a clean and readable design with font-weight: 300 and font-size: 17px.
 - **Subtitles and Minor Headings**: Subtitles and minor headings, such as the welcome subtitle (.welcome-subtitle) and welcome text (.welcome-text), also use Oswald. These elements are styled with specific font sizes and transformations to maintain a cohesive look.
 - **Forms and Buttons**: Text within forms and buttons, such as those on the login and signup pages, use Oswald to ensure readability and consistency throughout the user interface.
+
+[**Font Awesome**](https://fontawesome.com/) icons were used throughout the site. These are useful for making buttons, input fields, and links clear for the user.
 
 By using these fonts strategically, we aim to provide a cohesive and visually appealing user experience that enhances both readability and the overall aesthetic of the website.
 
@@ -193,19 +239,195 @@ The Navbar section is designed with both aesthetics and functionality in mind. B
 
 ### Footer
 
+The footer section of our website is designed to provide essential information and easy access to our social media channels. Below is a detailed description of its features and layout across different devices:
+
 ##### Desktop View:
+
+![Desktop View](static/documentation/footer/footer-desktop.webp)
+
+- **Logo and Company Name**: 
+  - Located on the left side of the footer, the company logo and name, "THE KNEE SURGERY," are prominently displayed.
+
+- **Contact Information**: 
+  - In the center, visitors can find our contact details:
+    - **Address**: 456 Side Street, Cardiff, CF19 6FY
+    - **Email**: theknee.surgery@gmail.com
+
+- **Social Media Icons**: 
+  - To the right, icons for Instagram, Facebook, Twitter, and YouTube are displayed, providing quick links to our social media profiles.
+
+- **Copyright and Privacy Policy**:
+  - At the bottom, it states: "© 2024 Artem Bryzh. All rights reserved." 
+  - A link to the Privacy Policy is also provided.
 
 ##### Responsive Design:
 
+##### Tablet View:
+
+![Tablet View](static/documentation/footer/footer-tablet.webp)
+
+- **Logo and Company Name**: 
+  - Located centrally.
+
+- **Contact Information**:
+  - Positioned centrally with the same details as the desktop view.
+
+- **Social Media Icons**:
+  - Aligned below the contact information, allowing easy access.
+
+- **Back to Top Arrow**:
+  - A convenient back-to-top arrow is present, aiding navigation.
+
 ##### Mobile View:
 
+![Mobile View](static/documentation/footer/footer-mob.webp)
+
+- **Logo and Company Name**: 
+  - The company logo and name remain at the top, positioned centrally, ensuring brand visibility.
+
+- **Contact Information**: 
+  - Centrally aligned for easy reading.
+
+- **Social Media Icons**: 
+  - Arranged below the contact information in a horizontal layout.
+
+- **Back to Top Arrow**:
+  - Located at the bottom right corner, this arrow aids in easy navigation back to the top of the page.
+
+The footer is designed to be responsive and user-friendly across all devices, ensuring that visitors can easily find contact information and access our social media channels, no matter the device they are using.
+
 ### Home Page
+Welcome to The Knee Surgery homepage, designed with user experience and functionality in mind. Here’s a breakdown of its features:
 
-#### Quote Feature:
+![Home Page](static/documentation/pages/home-page-full.webp)
 
-#### Main Interactive Buttons:
+- **Introduction Section**: 
+  - Contains a brief overview of our commitment to knee surgery and patient care.
+  - Includes two prominent buttons for easy navigation: "Our Doctors" and "About Us"
 
-### Learn Page
+- **Future Interactive Image**: 
+  - A placeholder image that will be interactive in future updates, enhancing user engagement and providing more information visually.
+
+- **Comprehensive List of Services**:
+  - **Initial Consultation and Diagnosis**: Personalized assessment plans.
+  - **Arthroscopic Surgery**: Minimally invasive procedures.
+  - **Knee Replacement**: Advanced techniques and implants.
+  - **Ligament Reconstruction**: Restoring knee stability.
+  - **Physical Therapy and Rehabilitation**: Customized exercise programs.
+  - **Injection Procedures**: Non-surgical pain management options.
+
+### Log In Page
+The Log In page allows users to access their accounts on The Knee Surgery website. The page includes the following features:
+
+![Log In Page](static/documentation/pages/login-page-full.webp)
+
+1. **Email Input**: Users enter their email address in a floating label input field.
+2. **Password Input**: Users enter their password in a floating label input field.
+3. **Remember Me Checkbox**: Users can choose to stay logged in for 30 days.
+4. **Sign In Button**: Submits the form to log in the user.
+5. **Sign Up Link**: Redirects new users to the sign-up page.
+6. **Forgot Password**: Provides the administrator's email for password reset assistance.
+
+When the "Sign In" button is clicked, the user's credentials are validated on the backend. If the credentials are correct, the user is logged in; otherwise, a flash message indicates incorrect email or password.
+
+![Log In Incorrect](static/documentation/pages/login-page-incorrect.webp)
+
+The "Remember Me" checkbox is processed on the backend. The backend code uses Flask session management to keep the user logged in if the checkbox is selected.
+
+      ```python
+      from flask import session
+
+      # Session configuration
+      app.config["SESSION_PERMANENT"] = False  # Session is not permanent by default
+      app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+
+      if existing_user:
+              # Set session to be permanent if remember me is checked
+              if remember:
+                  # This sets the session to use the permanent lifetime
+                  session.permanent = True
+                  # Set session lifetime to 30 days
+                  app.permanent_session_lifetime = timedelta(days=30)
+
+Clicking on the administrator’s email opens the mail program with the “To” field filled out. 
+
+### Sign Up Page
+The sign-up page allows new users to create an account on The Knee Surgery website. The form includes client-side validation using JavaScript to ensure the password meets the criteria and matches the confirmation password. The backend handles additional validation, password hashing, and user creation.
+
+![Sign Up Page](static/documentation/pages/signup-page-full.webp)
+
+The page includes the following features:
+
+1. **Full Name Input**: Users enter their full name in a floating label input field.
+2. **Gender Selection**: Users select their gender from a dropdown list.
+3. **Date of Birth Input**: Users enter their date of birth in a floating label input field.
+4. **Phone Number Input**: Users enter their phone number, which must be between 9 to 11 digits. JavaScript handles input changes to show or hide a sample text.
+5. **Email Input**: Users enter their email address in a floating label input field.
+6. **Password Input**: Users create a password with requirements displayed below the input field. The password must be at least 8 characters long, contain an uppercase letter, and a number. JavaScript validates the password in real-time. Gray check marks turn green as each requirement is met.
+
+![All marks are neutral](static/documentation/pages/signup-page-password-1.webp)
+
+![One mark is green](static/documentation/pages/signup-page-password-2.webp)
+
+![Two marks are green](static/documentation/pages/signup-page-password-3.webp)
+
+![All marks are green](static/documentation/pages/signup-page-password-4.webp)
+
+7. **Confirm Password Input**: Users confirm their password. JavaScript ensures that both password fields match. Each password field includes a Font Awesome eye icon that toggles password visibility when clicked.
+
+![Visibility](static/documentation/pages/signup-page-password-5.webp)
+
+8. **Terms and Conditions Checkbox**: Users must agree to the terms and conditions. Clicking the link opens a modal with the terms for review.
+
+![Terms and Conditions](static/documentation/pages/signup-page-terms.webp)
+
+Users must agree to the terms and conditions. Without checking this box, users cannot complete the registration.
+
+![Terms and Conditions agree](static/documentation/pages/signup-page-terms-checkbox.webp)
+
+On the backend, the following occurs:
+
+- **Email Validation**: The backend checks if the email is already registered.
+- **Password Validation**: The backend ensures the passwords match and meet the requirements.
+- **Password Hashing**: The password is hashed using `generate_password_hash`.
+- **User Creation**: A new user record is created and saved in the database.
+- **Session Handling**: The user's email is added to the session to log them in automatically.
+
+### Privacy Policy Page
+The Privacy Policy page provides detailed information about how The Knee Surgery website collects, uses, and protects user data. It is a crucial component for informing users about their privacy rights and the measures taken to safeguard their information. 
+
+<details>
+<summary>See Privacy policy Page</summary>
+
+![Privacy Policy Page](static/documentation/pages/policy-page-full.webp)
+</details><br>
+  
+The policy includes sections on:
+
+- **Data Collection**: Explains what personal data is collected, such as email addresses, names, phone numbers, and usage data.
+- **Usage of Data**: Describes how the collected data is used to provide and improve services.
+- **Cookies and Tracking**: Details the use of cookies and other tracking technologies to enhance user experience.
+- **Data Sharing**: Outlines conditions under which user data may be shared with third parties.
+- **Data Security**: Ensures the protection of personal data, though it acknowledges no method is 100% secure.
+- **Children’s Privacy**: States the service does not address users under 13 and the measures taken if such data is inadvertently collected.
+- **External Links**: Advises users to review privacy policies of linked websites not operated by The Knee Surgery.
+- **Policy Changes**: Notifies users that the Privacy Policy may be updated and the process for informing users of changes.
+
+This Privacy Policy was generated and adapted using the [Privacy Policy Generator](https://www.termsfeed.com/privacy-policy-generator/).
+
+### Our Doctors Page
+
+
+
+### About us Page
+
+### Profile Page
+
+### All Users Page
+
+### Add Doctor Page
+
+### Medical Records Page
 
 #### Navigation Controls:
 
@@ -389,129 +611,3 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 ## Acknowledgments
 
 ## Future Improvements
-
----
-
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
-
-Welcome USER_NAME,
-
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
-
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **June 18, 2024**
-
-## Gitpod Reminders
-
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
-
-`python3 -m http.server`
-
-A blue button should appear to click: _Make Public_,
-
-Another blue button should appear to click: _Open Browser_.
-
-To run a backend Python file, type `python3 app.py` if your Python file is named `app.py`, of course.
-
-A blue button should appear to click: _Make Public_,
-
-Another blue button should appear to click: _Open Browser_.
-
-By Default, Gitpod gives you superuser security privileges. Therefore, you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
-
-To log into the Heroku toolbelt CLI:
-
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
-
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you, so do not share it. If you accidentally make it public, you can create a new one with _Regenerate API Key_.
-
-### Connecting your Mongo database
-
-- **Connect to Mongo CLI on a IDE**
-- navigate to your MongoDB Clusters Sandbox
-- click **"Connect"** button
-- select **"Connect with the MongoDB shell"**
-- select **"I have the mongo shell installed"**
-- choose **mongosh (2.0 or later)** for : **"Select your mongo shell version"**
-- choose option: **"Run your connection string in your command line"**
-- in the terminal, paste the copied code `mongo "mongodb+srv://<CLUSTER-NAME>.mongodb.net/<DBname>" --apiVersion 1 --username <USERNAME>`
-  - replace all `<angle-bracket>` keys with your own data
-- enter password _(will not echo **\*\*\*\*** on screen)_
-
----
-
-## Release History
-
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
-
-**June 18, 2024,** Add Mongo back into template
-
-**June 14, 2024,** Temporarily remove Mongo until the key issue is resolved
-
-**May 28 2024:** Fix Mongo and Links installs
-
-**April 26 2024:** Update node version to 16
-
-**September 20 2023:** Update Python version to 3.9.17.
-
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
-
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
-
-**July 2 2021:** Remove extensions that are not available in Open VSX.
-
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
-
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
-
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
-
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
-
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
-
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
-
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
-
----
-
-## FAQ about the uptime script
-
-**Why have you added this script?**
-
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
-
-**How will this affect me?**
-
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
-
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
-
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
-
-**So….?**
-
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
-
-**Can I opt out?**
-
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
-
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
