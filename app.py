@@ -8,7 +8,8 @@ import os
 # render_template: renders HTML templates
 # jsonify, redirect, request, session, url_for: various Flask utilities
 from flask import (
-    Flask, flash, render_template, jsonify, redirect, request, session, url_for
+    Flask, flash, render_template, jsonify, 
+    redirect, request, session, url_for, abort
 )
 
 # PyMongo: used to interact with MongoDB from Flask
@@ -828,6 +829,20 @@ def edit_medical_record(record_id):
     Returns:
         str: Rendered HTML template for the medical record detail.
     """
+    # Get current user's email from session
+    current_email = session.get("user")
+    # Find the current user in the users or doctors collection
+    current_user = mongo.db.users.find_one(
+        {"email": current_email}
+    ) or mongo.db.doctors.find_one(
+        {"email": current_email}
+    )
+
+    # If no user is found or user is not a doctor/admin, return 403 error
+    if not current_user or current_user["role"] not in ["doctor", "admin"]:
+        abort(403)
+
+    # Find the medical record in the database
     record = mongo.db.medical_records.find_one({"_id": ObjectId(record_id)})
     if record:
         # Fetch associated doctor and patient information
