@@ -115,8 +115,7 @@ endblock %} {% block content %}
       {{ record.treatment }}</textarea
                 >
               </div>
-              {% if session.get('user') == doctor.email or current_user['role'] ==
-              'admin' %}
+              {% if session.get('user') == doctor.email or current_user['role'] == 'admin' or viewing_as_admin %}
               <button
                 type="submit"
                 class="btn btn-primary"

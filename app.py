@@ -254,8 +254,7 @@ def add_doctor():
         # Render the add doctor template
         return render_template("add_doctor.html")
     else:
-        flash("You do not have permission to access this page.", "danger")
-        return redirect(url_for("index"))
+        abort(403)
 
 
 def generate_random_password(length=12):
@@ -680,8 +679,7 @@ def profile(username):
                     {"email": current_email}
                 )
             if not current_user:
-                flash("Current user not found.", "danger")
-                return redirect(url_for("index"))
+                abort(403)
             else:
                 print(f"Current user email from session: {current_email}")
 
@@ -863,8 +861,10 @@ def edit_medical_record(record_id):
             {"email": current_email}
         )
         if not current_user:
-            flash("Current user not found.", "danger")
-            return redirect(url_for("index"))
+            abort(403)
+        
+        # Format the record date
+        record_date = record["date"].strftime("%Y-%m-%d")
 
         # Check if the current user is viewing as an admin
         viewing_as_admin = current_user.get("role") == "admin"
@@ -877,7 +877,8 @@ def edit_medical_record(record_id):
             patient=patient,
             current_user=current_user,
             viewing_as_admin=viewing_as_admin,
-            files=files
+            files=files,
+            record_date=record_date
         )
     else:
         flash("Medical record not found.", "danger")
@@ -900,6 +901,11 @@ def update_medical_record(record_id):
         redirect: Redirects to the medical record detail page.
     """
     try:
+        current_email = session.get("user")
+        current_user = mongo.db.users.find_one({"email": current_email}) or mongo.db.doctors.find_one({"email": current_email})
+        if not current_user or current_user["role"] not in ["doctor", "admin"]:
+            abort(403)
+
         # Retrieve form data
         description = request.form['description']
         treatment = request.form['treatment']
@@ -1430,18 +1436,29 @@ def medical_record_detail(record_id):
     Renders the medical record detail template
     or redirects with an error message if not found.
     """
+    # Get current user's email from session
+    current_email = session.get("user")
+    # Find the current user in the users or doctors collection
+    current_user = mongo.db.users.find_one({"email": current_email}) or mongo.db.doctors.find_one({"email": current_email})
+    
+    if not current_user:
+        abort(403)
+
     # Find the medical record in the database
     record = mongo.db.medical_records.find_one({"_id": ObjectId(record_id)})
     if record:
         # Find the associated doctor and patient
         doctor = mongo.db.doctors.find_one({"_id": record["doctor_id"]})
         patient = mongo.db.users.find_one({"_id": record["patient_id"]})
+        if not current_user:
+            abort(403)
         # Render the medical record detail template
         return render_template(
             "medical_record_detail.html",
             record=record,
             doctor=doctor,
-            patient=patient
+            patient=patient,
+            current_user=current_user
         )
     else:
         # Flash an error message if the record is not found
