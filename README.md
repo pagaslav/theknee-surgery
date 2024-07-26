@@ -416,18 +416,249 @@ The policy includes sections on:
 This Privacy Policy was generated and adapted using the [Privacy Policy Generator](https://www.termsfeed.com/privacy-policy-generator/).
 
 ### Our Doctors Page
+The "Our Doctors" page features images and brief information about our doctors, including their specialties and experience. This page dynamically updates with new doctors added by the admin through a for loop, ensuring the latest information is always displayed.
 
+![Our Doctors Page](static/documentation/pages/our-doctors-page-full.webp)
 
+The page layout includes:
+
+- **Doctor Image**: Displays the doctor's image if available; otherwise, a default image is shown.
+- **Doctor Information**: Presents the doctor's name, specialty, description, and additional information.
+
+The page structure is generated automatically from the database entries using the following template code snippet:
+
+      ```html
+      {% for doctor in doctors %}
+      <div class="col-12">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img
+                src="{{
+                  url_for('static', filename=get_image_path(doctor.image)) 
+                  if doctor.image else
+                  url_for('static', filename='images/default-doctor.webp') 
+                }}"
+                class="img-fluid rounded-start"
+                alt="{{ doctor.name }}">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">{{ doctor.name }}</h3>
+                <p class="card-text">{{ doctor.specialty }}</p>
+                <p class="card-text">{{ doctor.description }}</p>
+                <p class="card-text-hide">{{ doctor.additional_info }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
 
 ### About us Page
+The "About Us" page for The Knee Surgery website provides comprehensive information about the clinic, its history, and its commitment to providing high-quality orthopedic care.
+
+- **Introduction**
+  - A welcoming message with a brief history and the clinic's dedication to patient satisfaction and medical excellence.
+
+![About Us Page](static/documentation/pages/about-us-page-full.webp)
+
+- **Carousel Section**
+  - A Bootstrap carousel showcasing four key areas of the clinic:
+    1. **Reception at Our Clinic**: Warm and inviting environment for patients.
+    2. **Our Hospital Corridor**: Modern and convenient clinic facilities.
+    3. **Operating Theatre**: Equipped with the latest medical technology.
+    4. **Hospital Room**: Comfortable and modern environment for patients.
+
+For optimal viewing experience, different images are used for various screen sizes, ensuring clarity and quality on all devices.
+
+**Detailed Descriptions**
+  - **Our Journey**: The history of the clinic and its growth over the past decade.
+  - **Our Commitment to Quality**: Focus on personalized treatment plans and understanding patient needs.
+  - **Patient Satisfaction**: Testimonials and the dedication of the staff to provide excellent care.
+  - **Continuous Improvement**: Ongoing training and certification programs for doctors.
+  - **Our Community**: Involvement in the local community through health fairs and educational seminars.
+  - **Looking to the Future**: Commitment to innovation and expanding services.
+
+As we continue to grow and evolve, we are excited to share that we have plans to enhance our “About Us” page further. In the near future, we aim to include testimonials from our patients, offering firsthand accounts of their experiences and the positive impact our clinic has had on their lives. These testimonials will provide valuable insights and reinforce the trust and satisfaction our patients feel.
+
+Additionally, we will be showcasing our certifications and achievements in the medical field. By highlighting the qualifications and accolades of our dedicated team, we aim to demonstrate our commitment to excellence and continuous improvement. These additions will give visitors a more comprehensive understanding of our clinic’s dedication to providing exceptional orthopedic care.
 
 ### Profile Page
 
+#### Patient Profile Page
+
+The patient profile page on our website offers a comprehensive view of the patient's personal information, medical records, and appointment management. Here is an overview of what the patient can do and see on this page:
+
+![Patient Profile Page](static/documentation/pages/profile-patient-page.webp)
+
+##### Key Sections:
+
+1. **User Information**
+   - **Name:** Displays the patient's name, with an option to edit.
+   - **Role:** Shows the user's role as a patient.
+   - **Phone:** Shows the patient's phone number, with an option to edit.
+   - **Email:** Displays the patient's email, with an option to edit.
+   - **Gender:** Shows the patient's gender.
+   - **Date of Birth:** Displays the patient's date of birth.
+
+2. **Change Password**
+   - Patients can change their password by providing the current password and setting a new one, ensuring it meets security requirements.
+
+3. **Medical Records**
+   - **List of Medical Records:** Displays detailed information about the patient's medical history, including descriptions, treatments, dates, and the attending doctor's details.
+   - **Download and Delete Files:** Patients can view, download, and delete their uploaded files related to their medical records.
+
+4. **Scheduled Appointments**
+   - **View Scheduled Appointments:** Displays the list of upcoming appointments with doctors, including the doctor's name, reason for the visit, and scheduled date and time.
+
+5. **Requested Appointments**
+   - **List of Appointment Requests:** Shows the appointments that the patient has requested, including the reason and current status of each request.
+
+6. **Request an Appointment**
+   - **Form to Request Appointments:** Allows patients to request new appointments by providing the reason for the visit.
+
+This page is designed to be user-friendly, providing patients with easy access to their medical information and appointment management tools.
+
+#### Admin Profile Page
+
+The admin profile page on our website is designed to provide a comprehensive set of tools for managing user information, medical records, and appointments. Here's a breakdown of the key features and functionalities available to administrators:
+
+![Admin Profile Page](static/documentation/pages/profile-admin-page.webp)
+
+##### Key Sections:
+
+1. **User Information**
+   - **Name:** Displays the admin's name with an option to edit.
+   - **Role:** Shows the user's role as an admin, with the ability to edit.
+   - **Phone:** Displays the admin's phone number, which can be edited.
+   - **Email:** Shows the admin's email address, with an option to update it.
+
+2. **Change Password**
+   - Admins can securely change their password by entering the current password and setting a new one, ensuring it meets security requirements.
+
+3. **Appointment Requests**
+   - **List of Appointment Requests:** Displays all pending appointment requests from patients, including the patient's name and the reason for the appointment.
+   - **Assign Doctor:** Allows admins to assign doctors to specific appointment requests, facilitating efficient scheduling and management.
+
+4. **Admin-Specific Actions**
+   - **View All Users:** A button that navigates to a page where admins can view and manage all users and doctors in the system.
+   - **Add a New Doctor:** A button that links to a form where admins can add new doctors, expanding the clinic's team.
+
+5. **Uploaded Files**
+   - **Manage Files:** Admins can view, download, and delete uploaded files related to patient records, ensuring all relevant documents are easily accessible.
+   - **Upload Documents:** Provides a form for uploading new documents, with options to categorize the file type (e.g., medical record, analysis, profile picture, or other).
+
+The admin profile page is designed to give administrators full control over the system, ensuring efficient management of user information, medical records, and appointments. This comprehensive toolset helps maintain the high standards of care and service at our clinic.
+
+#### Doctor Profile Page
+
+The doctor profile page on our website is designed to provide doctors with the tools and information they need to manage their patient interactions, appointments, and medical records efficiently. Here's a detailed overview of the key features and functionalities available to doctors:
+
+![Doctor Profile Page](static/documentation/pages/profile-doctor-page.webp)
+
+##### Key Sections:
+
+1. **User Information**
+   - **Name:** Displays the doctor's name with an option to edit.
+   - **Role:** Shows the user's role as a doctor.
+   - **Phone:** Displays the doctor's phone number, which can be edited.
+   - **Email:** Shows the doctor's email address, with an option to update it.
+   - **Specialty:** Displays the doctor's specialty, which can be updated to reflect their expertise.
+
+2. **Change Password**
+   - Doctors can securely change their password by entering the current password and setting a new one, ensuring it meets security requirements.
+
+3. **Assigned Patients**
+   - **List of Assigned Patients:** Displays all patients assigned to the doctor, including patient names, reasons for appointments, and symptoms.
+   - **Accept and Schedule Appointments:** Allows doctors to accept and schedule appointments, providing fields for the appointment date and time.
+   - **Medical Records:** Doctors can view and access the medical records of their assigned patients, ensuring they have all the necessary information for consultations.
+
+4. **Medical Records Management**
+   - **View Medical Records:** Provides detailed information about patients' medical records, including descriptions, treatments, and dates.
+   - **Add Medical Record:** Doctors can add new medical records for their patients, documenting treatments, descriptions, and dates.
+
+The doctor profile page is designed to give doctors full control over their interactions with patients, ensuring efficient management of patient information, medical records, and appointments. This comprehensive toolset helps maintain the high standards of care and service at our clinic.
+
 ### All Users Page
+The "All Users" page is an administrative tool that provides a detailed overview of all users registered on the website. This page is accessible exclusively to administrators and serves as a central hub for user management. Below is a detailed description of the features and functionalities available on the All Users page:
+
+![All Users Page](static/documentation/pages/admin-users-page.webp)
+
+#### Key Features:
+
+1. **User List Overview:**
+   - **Sorted Display:** The page displays all users in a sorted order, starting with administrators, followed by doctors, and then patients. This helps in quickly identifying and managing users based on their roles.
+   - **User Information:** Each entry includes the user's full name and role, with a link to view their profile for more detailed information.
+
+2. **Flash Messages:**
+   - **Notifications:** The page includes a section for flash messages to notify the admin of the success or failure of various actions, such as password resets or user deletions.
+
+3. **User Actions:**
+   - **Reset Password:** Administrators can reset a user's password by generating a new random password, which is hashed and updated in the database. The new password is displayed to the admin for further communication to the user. This feature is particularly useful if a user forgets their password and requests access recovery.
+   - **Delete User:** Administrators have the ability to delete any user from the system. This action requires confirmation to prevent accidental deletions.
+
+#### User Management Workflow:
+
+- **Accessing the Page:** The "All Users" page is linked from the admin's profile page, making it easily accessible for user management tasks.
+- **Viewing Profiles:** Admins can click on a user's name to view their detailed profile, which provides more context and information about the user.
+- **Performing Actions:** Admins can reset passwords or delete users directly from the All Users page, with appropriate confirmation prompts to ensure deliberate actions.
 
 ### Add Doctor Page
+The "Add Doctor" page is a crucial tool for administrators to manage the medical staff at The Knee Surgery clinic. This page is exclusively accessible through the admin's profile and allows the admin to add new doctors to the database. Once added, these doctors are automatically displayed on the "Our Doctors" page.
+
+![Add Doctor Page](static/documentation/pages/add-doctor-page.webp)
+
+1. **Bootstrap Form:**
+   - **User-Friendly Design:** The page features a Bootstrap form designed to be intuitive and user-friendly, ensuring that admins can quickly and easily add new doctors.
+
+2. **Form Fields:**
+   - **Full Name:** A required input field for the doctor's full name.
+   - **Specialty:** A required input field for the doctor's specialty.
+   - **Description:** A required textarea for a brief description of the doctor's role and activities.
+   - **Additional Information:** An optional textarea for more detailed information about the doctor. This section is hidden on screens smaller than 600 pixels to ensure a clean and responsive design.
+   - **Email:** A required input field for the doctor's email address.
+   - **Password:** A required input field for setting the doctor's password.
+
+3. **Backend Integration:**
+   - **Form Submission:** When the form is submitted, the backend processes the input data. This includes validating the entries, hashing the password for security, and generating an image name based on the doctor's full name.
+   - **Database Update:** The new doctor's information is saved to the MongoDB database, and the doctor is immediately added to the "Our Doctors" page.
+
+4. **Security and Permissions:**
+   - **Admin-Only Access:** The page and its functionalities are restricted to users with admin privileges. Non-admin users attempting to access the page are redirected with a permission error message.
 
 ### Medical Records Page
+The Medical Record page is a comprehensive tool designed for doctors and admin users to manage and update patient medical records efficiently. This page provides a detailed view of the patient's medical history and allows for the upload and management of associated documents.
+
+![Medical Record Page](static/documentation/pages/medical-record-page.webp)
+
+### Key Features:
+
+1. **Flash Messages:**
+   - **User Notifications:** At the top of the page, flash messages are displayed to inform users about the success or failure of their actions, such as updates or deletions.
+
+2. **Medical Record Details:**
+   - **Patient Information:** The patient's name is displayed in a read-only format.
+   - **Record Date:** An input field for the date of the medical record.
+   - **Description:** A textarea for the description of the medical record, pre-filled with existing data.
+   - **Treatment:** A textarea for the treatment details, pre-filled with existing data.
+   - **Update Button:** If the logged-in user is either the doctor assigned to the record or an admin, they can update the medical record.
+
+3. **Uploaded Files Section:**
+   - **List of Files:** Displays all files uploaded related to the medical record. Each file has a download link and a delete button.
+   - **Delete Functionality:** Admins and the assigned doctor can delete any file associated with the medical record.
+
+4. **Upload Document Section:**
+   - **File Upload:** Allows users to upload new documents related to the medical record.
+   - **Form Submission:** The form supports file uploads and sends the data to the backend for processing and storage.
+
+### Page Workflow:
+
+- **Viewing Medical Records:** The page displays detailed information about a patient's medical history, including dates, descriptions, and treatments.
+- **Uploading Files:** Users can upload new documents, such as test results or additional notes, to be associated with the medical record.
+- **Updating Records:** Authorized users can update the medical record's details to reflect new information or changes in treatment.
+- **Managing Files:** Users can view, download, or delete files that have been uploaded to the medical record.
+
 
 #### Navigation Controls:
 
@@ -526,7 +757,7 @@ When a user updates their email address in the profile settings, the user remain
     •	A “User not found” notification appears at the top of the profile page upon returning.
 
 **Screenshot:**
-![Bug 3, User not found Message](static/documentation/bugs/1/bug-3-1.webp)
+![Bug 3, User not found Message](static/documentation/bugs/3/bug-3-1.webp)
 
 **Cause:**
 The issue was caused by the Flask application not correctly updating the session and redirecting after an email change. Although the session email was updated, the redirection logic did not reflect the new session state, leading to the user being treated as unauthenticated or non-existent in subsequent requests.
@@ -558,7 +789,7 @@ Ensure the JavaScript handles the success response correctly:
 
 After implementing the above solution, the email change functionality works as expected, keeping the user authenticated with the new email address and displaying the appropriate success message on the profile page.
 
-![Bug 3, Result](static/documentation/bugs/1/bug-3-2.webp)
+![Bug 3, Result](static/documentation/bugs/3/bug-3-2.webp)
 
 ### Unsolved Bugs
 
