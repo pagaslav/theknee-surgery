@@ -615,7 +615,12 @@ def utility_processor():
         Returns:
             str: The full path to the doctor's image.
         """
-        return f"images/doctors/{image_name}-600.webp"
+        image_path = f'images/doctors/{image_name}-600.webp'
+        if image_name:
+            return image_path
+        else:
+            return 'images/doctors/default-doctor.webp'
+
     return dict(get_image_path=get_image_path)
 
 
@@ -918,6 +923,44 @@ def update_medical_record(record_id):
         flash(str(e), 'danger')
 
     return redirect(url_for('medical_record_detail', record_id=record_id))
+
+
+# Route to delete an assigned patient, accessible to doctors and admins
+@app.route('/api/deletePatient/<patient_id>', methods=['DELETE'])
+def delete_patient(patient_id):
+    """
+    Handle the deletion of a patient from the assigned list.
+    This route is accessible to users with roles 'doctor' or 'admin',
+    or those viewing as admin.
+    """
+    # Check if the user is logged in
+    if "user" in session:
+        # Get the current user's email from the session
+        current_email = session["user"]
+        # Find the current user in either users or doctors collections
+        current_user = mongo.db.users.find_one(
+            {"email": current_email}
+        ) or mongo.db.doctors.find_one({"email": current_email})
+        
+        # Check if the current user has the appropriate role
+        if current_user and current_user["role"] in [
+            'doctor', 'admin'
+        ] or (
+            current_user["role"] == "admin" and session.get("viewing_as_admin")
+        ):
+            # Find the patient by ID and delete
+            patient = mongo.db.appointments.find_one(
+                {"_id": ObjectId(patient_id)}
+            )
+            if patient:
+                mongo.db.appointments.delete_one({"_id": ObjectId(patient_id)})
+                return jsonify({'success': True})
+            else:
+                return jsonify({'success': False, 'message': 'Patient not found'}), 404
+        else:
+            return jsonify({'success': False, 'message': 'Insufficient permissions'}), 403
+    else:
+        return jsonify({'success': False, 'message': 'User not authenticated'}), 403
 
 
 # Route to upload a file to a specific medical record
@@ -1334,7 +1377,6 @@ def add_medical_record():
         description = request.form.get('description')
         treatment = request.form.get('treatment')
         record_date = request.form.get('record_date')
-        patient_email = request.form.get('patient_email')
 
         # Check for the presence of all required data
         if not all(
@@ -1343,8 +1385,7 @@ def add_medical_record():
                 doctor_id,
                 description,
                 treatment,
-                record_date,
-                patient_email
+                record_date
             ]
         ):
             raise Exception("Missing required fields.")
@@ -1359,7 +1400,7 @@ def add_medical_record():
         })
 
         flash('Medical record added successfully', 'success')
-        return redirect(url_for('profile', username=patient_email))
+        return redirect(url_for('profile', username=session.get('user')))
     except Exception as e:
         flash(str(e), 'danger')
         return redirect(url_for('profile', username=session.get('user')))
