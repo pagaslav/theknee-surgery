@@ -451,6 +451,8 @@ This Privacy Policy was generated and adapted using the [Privacy Policy Generato
 
 ### Compatibility
 
+### Manual Testing
+
 ### Bugs
 
 #### SSL
