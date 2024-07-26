@@ -1432,6 +1432,26 @@ def medical_record_detail(record_id):
         # Flash an error message if the record is not found
         flash("Medical record not found.", "danger")
         return redirect(url_for("index"))
+    
+
+# Error handler for 403 Forbidden
+@app.errorhandler(403)
+def forbidden(error):
+    """
+    Error handler for 403 Forbidden.
+    Renders the 403.html template when a 403 error occurs.
+    """
+    return render_template('403.html'), 403
+
+
+# Error handler for 404 Page Not Found
+@app.errorhandler(404)
+def page_not_found(error):
+    """
+    Error handler for 404 Page Not Found.
+    Renders the 404.html template when a 404 error occurs.
+    """
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":
