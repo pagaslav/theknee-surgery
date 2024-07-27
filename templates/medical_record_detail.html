@@ -77,15 +77,15 @@ endblock %} {% block content %}
                   value="{{ patient.name }}"
                   readonly>
               </div>
-              {% if record %}
+              {% if record.date %}
               <div class="mb-3">
-                <label for="date" class="form-label" aria-label="Record Date"
+                <label for="record_date" class="form-label" aria-label="Record Date"
                   >Date</label
                 >
                 <input
                   type="date"
                   class="form-control"
-                  id="edit_date"
+                  id="record_date"
                   name="record_date"
                   value="{{ record.date.strftime('%Y-%m-%d') }}"
                   required>
