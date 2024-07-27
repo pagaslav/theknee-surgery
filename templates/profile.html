@@ -63,6 +63,7 @@ content %}
               <p>
                 <strong>Gender:</strong>
                 <span id="genderText">{{ user.gender }}</span>
+              </p>
               <div class="form-floating d-none" id="genderInputContainer">
                 <select class="form-control" id="genderInput" name="gender" aria-label="Gender">
                   <option value="">Select Gender</option>
@@ -72,7 +73,6 @@ content %}
                 </select>
                 <label for="genderInput">Gender</label>
               </div>
-              </p>
 
               <!-- Date of Birth field -->
               <p>
@@ -330,7 +330,7 @@ content %}
                 <p><strong>Date:</strong> {{ record.date.strftime('%Y-%m-%d') }}</p>
                 {% if record.doctor_name %}
                 <p><strong>Doctor:</strong> <a href="mailto:{{ record.doctor_email }}"
-                    aria-label="Email {{ record.doctor_name }}"></a>>{{ record.doctor_name }}</a></p>
+                    aria-label="Email {{ record.doctor_name }}">{{ record.doctor_name }}</a></p>
                 {% endif %}
               </li>
               {% endfor %}
