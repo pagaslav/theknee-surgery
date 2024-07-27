@@ -974,19 +974,19 @@ Doctor
 <details>
 <summary>Add Doctor Page</summary>
 
-![Add Doctor Page](static/documentation/pages/responsiv/add-doctor-page-responsive.webp)
+![Add Doctor Page](static/documentation/validator/add-doctor-page-valid.webp)
 </details>
 
 <details>
 <summary>All Users Page</summary>
 
-![All Users Page](static/documentation/pages/responsiv/all-users-page-responsive.webp)
+![All Users Page](static/documentation/validator/all-users-page-valid.webp)
 </details>
 
 <details>
 <summary> Medical Records Page</summary>
 
-![Medical Records Page](static/documentation/pages/responsiv/medical-record-page-responsive.webp)
+![Medical Records Page](static/documentation/validator/medical-records-page-valid.webp)
 </details>
 
 <details>
