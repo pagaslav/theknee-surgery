@@ -128,7 +128,7 @@ content %}
           <div class="card-body">
             <!-- Button to toggle the change password form -->
             <button type="button" class="btn btn-secondary" id="togglePasswordForm" aria-controls="changePasswordForm"
-              aria-expanded="false">Change Password</button>
+              aria-expanded="false" aria-label="Change Password">Change Password</button>
             <!-- Change Password Form -->
             <form id="changePasswordForm" class="d-none mt-3" method="POST" action="{{ url_for('change_password') }}">
               <input type="hidden" name="user_id" value="{{ user._id }}">

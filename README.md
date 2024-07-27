@@ -992,18 +992,22 @@ Doctor
 <details>
 <summary> 404 Page</summary>
 
-![404 Page](static/documentation/pages/responsiv/404-page-responsive.webp)
+![404 Page](static/documentation/validator/404-page-valid.webp)
 </details>
 
 <details>
 <summary> 403 Page</summary>
 
-![403 Page](static/documentation/pages/responsiv/403-page-responsive.webp)
+![403 Page](static/documentation/validator/403-page-valid.webp)
 </details>
 
 #### CSS
+I have used the recommended [CSS Jigsaw Validator](https://jigsaw.w3.org/css-validator/) to validate my CSS code.
+
+![CSS Validation](static/documentation/validator/css.webp)
 
 #### JavaScript
+I have used the recommended [JShint Validator](https://jshint.com/) to validate my JS file.
 
 ### LightHouse report
 
@@ -1011,7 +1015,7 @@ Doctor
 
 ### Manual Testing
 
-For testing documentation, please continue to [TEST_suite.md](TEST_suite.md)
+For testing documentation, please continue to [TEST_SUITE.md](TEST_SUITE.md)
 
 ### Bugs
 
