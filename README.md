@@ -580,6 +580,92 @@ The doctor profile page on our website is designed to provide doctors with the t
 
 The doctor profile page is designed to give doctors full control over their interactions with patients, ensuring efficient management of patient information, medical records, and appointments. This comprehensive toolset helps maintain the high standards of care and service at our clinic.
 
+### Appointment Request and Scheduling Workflow on Profile Page
+This section describes the complete workflow for requesting and scheduling an appointment within the Knee Surgery application. It details the steps from a patient requesting an appointment to a doctor scheduling it, including the roles of the patient, admin, and doctor.
+
+#### Step-by-Step Process:
+
+1. **Patient Requests an Appointment:**
+   - **Action:** The patient fills out the "Request an Appointment" form, specifying the reason for the appointment.
+
+   ![Request an Appointment](static/documentation/pages/appointment/request-patient-1.webp)
+
+   - **Interface:** The patient clicks the "Request Appointment" button.
+
+   ![Click the button](static/documentation/pages/appointment/request-patient-2.webp)
+
+2. **Page Reload and Confirmation:**
+   - **Action:** Upon clicking the button, the page reloads.
+   - **Interface:** The requested appointment appears in the patient's profile under the "Requested Appointments" section.
+
+   ![Requested Appointments](static/documentation/pages/appointment/requested-patient.webp)
+
+3. **Database Update:**
+   - **Action:** The appointment request is added to the `theknee_surgery.appointments` collection in MongoDB.
+   - **Details:** The new appointment entry includes a status of `pending`.
+
+   ![MongoDB status of `pending`](static/documentation/pages/appointment/request-mongo-1.webp)
+
+4. **Admin Views Appointment Request:**
+   - **Action:** In the admin profile, the new appointment request is visible under the "Appointment Requests" section.
+   - **Interface:** The request includes the patient's name, reason for the appointment, and an option to assign a doctor.
+
+   ![Appointment Requests for admin](static/documentation/pages/appointment/request-admin.webp)
+
+5. **Admin Assigns a Doctor:**
+   - **Action:** The admin selects a doctor from a dropdown menu and clicks the "Assign Doctor" button.
+
+   ![Assigns a Doctor](static/documentation/pages/appointment/assign-admin.webp)
+
+   - **Database Update:** The status of the appointment in MongoDB changes from `pending` to `assigned`.
+
+   ![MongoDB status of `assigned`](static/documentation/pages/appointment/assign-mongo.webp)
+
+   - **Interface:** The appointment request is removed from the admin's "Appointment Requests" section and appears in the assigned doctor's profile under the "Assigned Patients" section.
+
+   ![Assigned Patients for doctor](static/documentation/pages/appointment/assigned-doctor-1.webp)
+
+6. **Doctor Schedules the Appointment:**
+   - **Action:** The doctor selects a date and time for the appointment and clicks the "Accept and Schedule" button.
+
+   ![Accept and Schedule](static/documentation/pages/appointment/assigned-doctor-2.webp)
+
+   - **Database Update:** The status of the appointment in MongoDB changes to `scheduled`.
+
+   ![MongoDB status of `scheduled`](static/documentation/pages/appointment/sheduled-mongo.webp)
+
+7. **Updated Views for Doctor and Patient:**
+   - **Doctor's Profile:**
+   - **Interface:** The scheduled appointment remains in the "Assigned Patients" section.
+
+   ![Assigned Patients](static/documentation/pages/appointment/assigned-doctor-3.webp)
+
+   - **Patient's Profile:**
+   - **Interface:** The appointment is moved from the "Requested Appointments" section to the "Scheduled Appointments" section with the assigned date and time.
+
+   ![Scheduled Appointments](static/documentation/pages/appointment/sheduled-patient.webp)
+
+### Database Collections:
+
+- **Collection:** `theknee_surgery.appointments`
+  - **Fields:**
+    - `patient_id`: Reference to the patient requesting the appointment.
+    - `doctor_id`: Reference to the doctor assigned to the appointment.
+    - `reason`: Reason for the appointment.
+    - `status`: Status of the appointment (`pending`, `assigned`, `scheduled`).
+    - `appointment_datetime`: Date and time when the appointment is scheduled (added during the scheduling step).
+
+### Workflow Summary:
+
+1. **Patient Action:** Requests an appointment.
+2. **System Action:** Adds request to database with status `pending`.
+3. **Admin Action:** Assigns a doctor, changing status to `assigned`.
+4. **Doctor Action:** Schedules the appointment, changing status to `scheduled`.
+5. **Patient and Doctor Views:** Updated to reflect the current status and details of the appointment.
+
+This workflow ensures a seamless process for managing appointment requests, assignments, and scheduling within the Knee Surgery application.
+
+
 ### All Users Page
 The "All Users" page is an administrative tool that provides a detailed overview of all users registered on the website. This page is accessible exclusively to administrators and serves as a central hub for user management. Below is a detailed description of the features and functionalities available on the All Users page:
 
@@ -632,7 +718,7 @@ The Medical Record page is a comprehensive tool designed for doctors and admin u
 
 ![Medical Record Page](static/documentation/pages/medical-record-page.webp)
 
-### Key Features:
+#### Key Features:
 
 1. **Flash Messages:**
    - **User Notifications:** At the top of the page, flash messages are displayed to inform users about the success or failure of their actions, such as updates or deletions.
@@ -652,23 +738,155 @@ The Medical Record page is a comprehensive tool designed for doctors and admin u
    - **File Upload:** Allows users to upload new documents related to the medical record.
    - **Form Submission:** The form supports file uploads and sends the data to the backend for processing and storage.
 
-### Page Workflow:
+#### Page Workflow:
 
 - **Viewing Medical Records:** The page displays detailed information about a patient's medical history, including dates, descriptions, and treatments.
 - **Uploading Files:** Users can upload new documents, such as test results or additional notes, to be associated with the medical record.
 - **Updating Records:** Authorized users can update the medical record's details to reflect new information or changes in treatment.
 - **Managing Files:** Users can view, download, or delete files that have been uploaded to the medical record.
 
+### 404 Page
+The **404 Page Not Found** is a user-friendly error page that is displayed when a user attempts to access a page that does not exist on the website. This page aims to inform users clearly and provide them with an easy way to navigate back to the homepage.
 
-#### Navigation Controls:
+![404 Page](static/documentation/pages/404-page.webp)
 
-#### Content Layout:
+#### Key Features:
+
+1. **Title:**
+   - **Page Title and subtitle:** The title of the page and subtitle is "404 The page you are looking for does not exist." making it immediately clear what the issue is.
+
+2. **Content:**
+   - **Error Code:** The page prominently displays the error code "404" in a large font size to catch the user's attention.
+   - **Message:** A simple message informs the user that the page they are looking for does not exist.
+   - **Navigation Button:** A button is provided to take the user back to the homepage, encouraging them to continue browsing the site.
+
+#### Page Workflow:
+
+- **User Interaction:** When a user lands on this page, they are informed of the error and given a clear option to return to the homepage.
+- **Navigation:** The primary call-to-action is to direct the user back to a familiar place where they can continue their navigation without frustration.
+
+### 403 Page
+The **403 Forbidden** page is shown when a user attempts to access a page or resource they do not have permission to view. This could be due to various reasons, such as insufficient user privileges or restricted content.
+
+![403 Page](static/documentation/pages/403-page.webp)
+
+#### Key Features:
+
+1. **Title:**
+   - **Page Title and subtitle:** The title and subtitle of the page is "403 You do not have permission to access this page." clearly indicating the nature of the access issue.
+
+2. **Content:**
+   - **Error Code:** The error code "403" is displayed prominently in a large font size.
+   - **Message:** A straightforward message informs the user that they do not have permission to access the requested page.
+   - **Navigation Button:** A button is provided to return the user to the homepage, guiding them away from the restricted area.
+
+#### Page Workflow:
+
+- **User Interaction:** Users are immediately informed about the permission issue and are not left wondering why they cannot access the page.
+- **Navigation:** The page encourages users to return to the homepage, providing a positive direction instead of a dead end.
+
 
 ## Technologies Used
+
+- [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) was used as the foundation of the site.
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/css) - was used to add the styles and layout of the site.
+- [Bootstrap](https://getbootstrap.com/docs/5.3) was employed to integrate its styles, facilitating rapid development and
+consistent styling across the pages.
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) was employed to implement dynamic interactions on the site, enabling real-time user feedback and interactive features without needing to reload the page.
+- [Python](https://www.python.org/)  is used as the back-end programming language.
+- [Flask](https://flask.palletsprojects.com/en/3.0.x/) is the Python framework used for the site.
+- [MongoDB](https://www.mongodb.com/) is the non-relational database management I chose to use for storing data.
+- [VSCode](https://code.visualstudio.com/) was used as the main tool to write and edit code.
+- [Git](https://git-scm.com/) was used for the version control of the website.
+- [GitHub](https://github.com/) was used to host the code of the website.
+- [GitHub Pages](https://pages.github.com/) was used for hosting the deployed front-end site.
+- [Heroku](https://dashboard.heroku.com/apps)  is hosting the deployed back-end site.
+- [Balsamiq](https://balsamiq.com/) was used to make wireframes for the website.
+- [Adobe Photoshop](https://www.adobe.com/uk/products/photoshop.html) was used to make and resize images for the website and the
+README file.
+- [ICO Converter](https://www.icoconverter.com/) - for the favicon.
+- [Chrome Developer Tools](https://developer.chrome.com/docs/devtools/) - was used to debug, to test responsiveness and generate Lighthouse reports.
+- [Google Fonts](https://fonts.google.com/) - to import the site font.
+- [Font Awesome](https://fontawesome.com/) - for all the site icons.
+- [W3C HTML Validator](https://validator.w3.org/) - to test HTML code.
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator) - to test the CSS code.
+- [JSHint](https://jshint.com/) is a tool used to detect errors and potential problems in JavaScript code.
 
 ## Testing
 
 ### Responsiveness
+
+<details>
+<summary>Home Page</summary>
+
+![Home Page](static/documentation/wireframes/home-page.webp)
+</details>
+
+<details>
+<summary>Log in Page</summary>
+
+![Log in Page](static/documentation/wireframes/login-page.webp)
+</details>
+
+<details>
+<summary>Sign Up Page</summary>
+
+![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+</details>
+
+<details>
+<summary>Our Doctors Page</summary>
+
+![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+</details>
+
+<details>
+<summary>About Us Page</summary>
+
+![About Us Page](static/documentation/wireframes/about-us-page.webp)
+</details>
+
+<details>
+<summary>Privacy Policy Page</summary>
+
+![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+</details>
+
+<details>
+<summary>Profile Page</summary>
+
+![Profile Page](static/documentation/wireframes/profile-page.webp)
+</details>
+
+<details>
+<summary>Add Doctor Page</summary>
+
+![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+</details>
+
+<details>
+<summary>All Users Page</summary>
+
+![All Users Page](static/documentation/wireframes/all-users-page.webp)
+</details>
+
+<details>
+<summary> Medical Records Page</summary>
+
+![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
+</details>
+
+<details>
+<summary> 404 Page</summary>
+
+![404 Page](static/documentation/wireframes/medical-record-page.webp)
+</details>
+
+<details>
+<summary> 403 Page</summary>
+
+![403 Page](static/documentation/wireframes/medical-record-page.webp)
+</details>
 
 ### Validator testing
 
