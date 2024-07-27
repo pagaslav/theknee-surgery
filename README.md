@@ -925,37 +925,34 @@ I have used the recommended [HTML W3C Validator](https://validator.w3.org/) to v
 </details>
 
 <details>
-<summary>Log in Page</summary>
+<summary>Log in Page, no errors</summary>
 
-![Log in Page](static/documentation/pages/responsiv/login-page-responsive.webp)
+![Log in Page](static/documentation/validator/login-page-valid.webp)
 </details>
 
 <details>
-<summary>Sign Up Page</summary>
+<summary>Sign Up Pag, no errorse</summary>
 
-![Sign Up Page](static/documentation/pages/responsiv/signup-page-responsive.webp)
+![Sign Up Page](static/documentation/validator/signup-page-valid.webp)
 
-With the opened Modal window:
-
-![Sign Up Page with Modal](static/documentation/pages/responsiv/signup-1-page-responsive.webp)
 </details>
 
 <details>
-<summary>Our Doctors Page</summary>
+<summary>Our Doctors Page, no errors</summary>
 
-![Our Doctors Page](static/documentation/pages/responsiv/doctors-page-responsive.webp)
+![Our Doctors Page](static/documentation/validator/doctors-page-valid.webp)
 </details>
 
 <details>
-<summary>About Us Page</summary>
+<summary>About Us Page, no errors</summary>
 
-![About Us Page](static/documentation/pages/responsiv/about-page-responsive.webp)
+![About Us Page](static/documentation/validator/about-page-valid.webp)
 </details>
 
 <details>
-<summary>Privacy Policy Page</summary>
+<summary>Privacy Policy Page, no errors</summary>
 
-![Privacy Policy Page](static/documentation/pages/responsiv/privacy-page-responsive.webp)
+![Privacy Policy Page](static/documentation/validator/policy-page-valid.webp)
 </details>
 
 <details>
@@ -963,15 +960,15 @@ With the opened Modal window:
 
 Patient
 
-![Profile Page Patient](static/documentation/pages/responsiv/profil-patient-page-responsive.webp)
+![Profile Page Patient](static/documentation/validator/profile-patient-page-valid.webp)
 
 Admin
 
-![Profile Page Admin](static/documentation/pages/responsiv/profil-admin-page-responsive.webp)
+![Profile Page Admin](static/documentation/validator/profile-admin-page-valid.webp)
 
 Doctor
 
-![Profile Page Doctor](static/documentation/pages/responsiv/profil-doctor-page-responsive.webp)
+![Profile Page Doctor](static/documentation/validator/profile-doctor-page-valid.webp)
 </details>
 
 <details>
@@ -1013,6 +1010,8 @@ Doctor
 ### Compatibility
 
 ### Manual Testing
+
+For testing documentation, please continue to [TEST_suite.md](TEST_suite.md)
 
 ### Bugs
 
