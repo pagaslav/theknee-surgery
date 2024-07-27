@@ -57,7 +57,7 @@ endblock %} {% block content %}
                     onsubmit="return confirm('Are you sure you want to reset the password for {{ user.name }}?');"
                     aria-label="Reset password for {{ user.name }}"
                   >
-                    <input type="hidden" name="user_id" value="{{ user._id }}" />
+                    <input type="hidden" name="user_id" value="{{ user._id }}">
                     <button type="submit" class="btn btn-warning">
                       Reset Password
                     </button>
