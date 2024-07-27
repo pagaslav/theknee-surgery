@@ -22,27 +22,24 @@ endblock %} {% block content %}
             <ul class="list-group" id="uploaded-files-list">
               {% for file in files %}
               <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-              >
+                class="list-group-item d-flex justify-content-between align-items-center">
                 <a
                   href="{{ file.file_url }}"
                   target="_blank"
                   aria-label="Download {{ file.file_name }}"
-                  >{{ file.file_name }}</a
-                >
+                  >{{ file.file_name }}
+                </a>
                 <form
                   action="{{ url_for('delete_file') }}"
                   method="post"
                   style="display: inline"
                   class="delete-file-form"
-                  aria-label="Delete"
-                >
+                  aria-label="Delete">
                   <input type="hidden" name="file_id" value="{{ file.file_id }}" />
                   <button
                     type="submit"
                     class="btn btn-danger btn-sm"
-                    aria-label="Delete File"
-                  >
+                    aria-label="Delete File">
                     Delete
                   </button>
                 </form>
@@ -64,12 +61,9 @@ endblock %} {% block content %}
             <form
               method="POST"
               action="{{ url_for('update_medical_record', record_id=record._id) }}"
-              enctype="multipart/form-data"
-            >
+              enctype="multipart/form-data">
               <div class="mb-3">
-                <label for="patient" class="form-label" aria-label="Patient Name"
-                  >Patient</label
-                >
+                <label for="patient" class="form-label" aria-label="Patient Name">Patient</label>
                 <input
                   type="text"
                   class="form-control"
@@ -79,9 +73,7 @@ endblock %} {% block content %}
               </div>
               {% if record.date %}
               <div class="mb-3">
-                <label for="record_date" class="form-label" aria-label="Record Date"
-                  >Date</label
-                >
+                <label for="record_date" class="form-label" aria-label="Record Date">Date</label>
                 <input
                   type="date"
                   class="form-control"
@@ -92,37 +84,28 @@ endblock %} {% block content %}
               </div>
               {% endif %}
               <div class="mb-3">
-                <label for="description" class="form-label" aria-label="Description"
-                  >Description</label
-                >
+                <label for="description" class="form-label" aria-label="Description">Description</label>
                 <textarea
                   class="form-control"
                   id="description"
                   name="description"
-                  required
-                >
-      {{ record.description }}</textarea
-                >
+                  required>{{ record.description }}
+                </textarea>
               </div>
               <div class="mb-3">
-                <label for="treatment" class="form-label" aria-label="Treatment"
-                  >Treatment</label
-                >
+                <label for="treatment" class="form-label" aria-label="Treatment">Treatment</label>
                 <textarea
                   class="form-control"
                   id="treatment"
                   name="treatment"
-                  required
-                >
-      {{ record.treatment }}</textarea
-                >
+                  required>{{ record.treatment }}
+                </textarea>
               </div>
               {% if session.get('user') == doctor.email or current_user['role'] == 'admin' or viewing_as_admin %}
               <button
                 type="submit"
                 class="btn btn-primary"
-                aria-label="Update Medical Record"
-              >
+                aria-label="Update Medical Record">
                 Update Record
               </button>
               {% endif %}
@@ -139,8 +122,7 @@ endblock %} {% block content %}
             <form
               method="POST"
               action="{{ url_for('upload_medical_record_file', record_id=record._id) }}"
-              enctype="multipart/form-data"
-            >
+              enctype="multipart/form-data">
               <div class="mb-3">
                 <label for="file" class="form-label">Choose File</label>
                 <input
@@ -148,9 +130,10 @@ endblock %} {% block content %}
                   class="form-control"
                   id="file"
                   name="file"
+                  aria-label="Choose a file to upload"
                   required>
               </div>
-              <button type="submit" class="btn btn-primary">Upload</button>
+              <button type="submit" class="btn btn-primary" aria-label="Upload Button">Upload</button>
             </form>
           </div>
         </div>

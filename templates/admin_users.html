@@ -9,15 +9,14 @@ endblock %} {% block content %}
             {% for category, message in messages %}
             <div
               class="alert alert-{{ category }} alert-dismissible fade show"
-              role="alert"
-            >
+              role="alert">
               {{ message }}
               <button
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
+                aria-label="Close">
+              </button>
             </div>
             {% endfor %}
           </div>
@@ -44,8 +43,7 @@ endblock %} {% block content %}
                   <a
                     href="{{ url_for('profile', username=user.email) }}"
                     aria-label="View profile of {{ user.name }}"
-                    >{{ user.name }}</a
-                  >
+                    >{{ user.name }}</a>
                 </td>
                 <td>{{ user.role }}</td>
                 <td>
@@ -55,8 +53,7 @@ endblock %} {% block content %}
                     action="{{ url_for('reset_password_admin') }}"
                     style="display: inline"
                     onsubmit="return confirm('Are you sure you want to reset the password for {{ user.name }}?');"
-                    aria-label="Reset password for {{ user.name }}"
-                  >
+                    aria-label="Reset password for {{ user.name }}">
                     <input type="hidden" name="user_id" value="{{ user._id }}">
                     <button type="submit" class="btn btn-warning">
                       Reset Password
@@ -68,8 +65,7 @@ endblock %} {% block content %}
                     action="{{ url_for('delete_user') }}"
                     style="display: inline"
                     onsubmit="return confirm('Are you sure you want to delete {{ user.name }}?');"
-                    aria-label="Delete user {{ user.name }}"
-                  >
+                    aria-label="Delete user {{ user.name }}">
                     <input type="hidden" name="user_id" value="{{ user._id }}">
                     <button type="submit" class="btn btn-danger">Delete</button>
                   </form>

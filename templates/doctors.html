@@ -14,7 +14,8 @@ endblock %} {% block content %}
                 <img
                   src="{{ url_for('static', filename=get_image_path(doctor.image)) if doctor.image else url_for('static', filename='images/doctors/default-doctor.webp') }}"
                   class="img-fluid rounded-start"
-                  alt="{{ doctor.name }}">
+                  alt="{{ doctor.name }}"
+                  aria-label="Image of {{ doctor.name }}">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
