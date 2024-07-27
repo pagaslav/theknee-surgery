@@ -8,7 +8,7 @@ import os
 # render_template: renders HTML templates
 # jsonify, redirect, request, session, url_for: various Flask utilities
 from flask import (
-    Flask, flash, render_template, jsonify, 
+    Flask, flash, render_template, jsonify,
     redirect, request, session, url_for, abort
 )
 
@@ -862,7 +862,7 @@ def edit_medical_record(record_id):
         )
         if not current_user:
             abort(403)
-        
+
         # Format the record date
         record_date = record["date"].strftime("%Y-%m-%d")
 
@@ -902,7 +902,9 @@ def update_medical_record(record_id):
     """
     try:
         current_email = session.get("user")
-        current_user = mongo.db.users.find_one({"email": current_email}) or mongo.db.doctors.find_one({"email": current_email})
+        current_user = mongo.db.users.find_one(
+            {"email": current_email}
+        ) or mongo.db.doctors.find_one({"email": current_email})
         if not current_user or current_user["role"] not in ["doctor", "admin"]:
             abort(403)
 
@@ -962,7 +964,7 @@ def delete_patient(patient_id):
         current_user = mongo.db.users.find_one(
             {"email": current_email}
         ) or mongo.db.doctors.find_one({"email": current_email})
-        
+
         # Check if the current user has the appropriate role
         if current_user and current_user["role"] in [
             'doctor', 'admin'
@@ -977,11 +979,17 @@ def delete_patient(patient_id):
                 mongo.db.appointments.delete_one({"_id": ObjectId(patient_id)})
                 return jsonify({'success': True})
             else:
-                return jsonify({'success': False, 'message': 'Patient not found'}), 404
+                return jsonify(
+                    {'success': False, 'message': 'Patient not found'}
+                ), 404
         else:
-            return jsonify({'success': False, 'message': 'Insufficient permissions'}), 403
+            return jsonify(
+                {'success': False, 'message': 'Insufficient permissions'}
+            ), 403
     else:
-        return jsonify({'success': False, 'message': 'User not authenticated'}), 403
+        return jsonify(
+            {'success': False, 'message': 'User not authenticated'}
+        ), 403
 
 
 # Route to upload a file to a specific medical record
@@ -1439,8 +1447,10 @@ def medical_record_detail(record_id):
     # Get current user's email from session
     current_email = session.get("user")
     # Find the current user in the users or doctors collection
-    current_user = mongo.db.users.find_one({"email": current_email}) or mongo.db.doctors.find_one({"email": current_email})
-    
+    current_user = mongo.db.users.find_one(
+        {"email": current_email}
+    ) or mongo.db.doctors.find_one({"email": current_email})
+
     if not current_user:
         abort(403)
 
@@ -1464,7 +1474,7 @@ def medical_record_detail(record_id):
         # Flash an error message if the record is not found
         flash("Medical record not found.", "danger")
         return redirect(url_for("index"))
-    
+
 
 # Error handler for 403 Forbidden
 @app.errorhandler(403)
@@ -1491,5 +1501,4 @@ if __name__ == "__main__":
     # and PORT if environment variables are not set
     host = os.environ.get("IP", "0.0.0.0")
     port = int(os.environ.get("PORT", 5000))
-    # Run the Flask application
-    app.run(host=host, port=port, debug=True)
+    app.run(host=host, port=port, debug=False)

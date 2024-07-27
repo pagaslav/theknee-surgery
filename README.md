@@ -645,7 +645,7 @@ This section describes the complete workflow for requesting and scheduling an ap
 
    ![Scheduled Appointments](static/documentation/pages/appointment/sheduled-patient.webp)
 
-### Database Collections:
+### Database Collection:
 
 - **Collection:** `theknee_surgery.appointments`
   - **Fields:**
@@ -819,73 +819,87 @@ README file.
 <details>
 <summary>Home Page</summary>
 
-![Home Page](static/documentation/wireframes/home-page.webp)
+![Home Page](static/documentation/pages/responsiv/home-page-responsive.webp)
 </details>
 
 <details>
 <summary>Log in Page</summary>
 
-![Log in Page](static/documentation/wireframes/login-page.webp)
+![Log in Page](static/documentation/pages/responsiv/login-page-responsive.webp)
 </details>
 
 <details>
 <summary>Sign Up Page</summary>
 
-![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+![Sign Up Page](static/documentation/pages/responsiv/signup-page-responsive.webp)
+
+With the opened Modal window:
+
+![Sign Up Page with Modal](static/documentation/pages/responsiv/signup-1-page-responsive.webp)
 </details>
 
 <details>
 <summary>Our Doctors Page</summary>
 
-![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+![Our Doctors Page](static/documentation/pages/responsiv/doctors-page-responsive.webp)
 </details>
 
 <details>
 <summary>About Us Page</summary>
 
-![About Us Page](static/documentation/wireframes/about-us-page.webp)
+![About Us Page](static/documentation/pages/responsiv/about-page-responsive.webp)
 </details>
 
 <details>
 <summary>Privacy Policy Page</summary>
 
-![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+![Privacy Policy Page](static/documentation/pages/responsiv/privacy-page-responsive.webp)
 </details>
 
 <details>
 <summary>Profile Page</summary>
 
-![Profile Page](static/documentation/wireframes/profile-page.webp)
+Patient
+
+![Profile Page Patient](static/documentation/pages/responsiv/profil-patient-page-responsive.webp)
+
+Admin
+
+![Profile Page Admin](static/documentation/pages/responsiv/profil-admin-page-responsive.webp)
+
+Doctor
+
+![Profile Page Doctor](static/documentation/pages/responsiv/profil-doctor-page-responsive.webp)
 </details>
 
 <details>
 <summary>Add Doctor Page</summary>
 
-![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+![Add Doctor Page](static/documentation/pages/responsiv/add-doctor-page-responsive.webp)
 </details>
 
 <details>
 <summary>All Users Page</summary>
 
-![All Users Page](static/documentation/wireframes/all-users-page.webp)
+![All Users Page](static/documentation/pages/responsiv/all-users-page-responsive.webp)
 </details>
 
 <details>
 <summary> Medical Records Page</summary>
 
-![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
+![Medical Records Page](static/documentation/pages/responsiv/medical-record-page-responsive.webp)
 </details>
 
 <details>
 <summary> 404 Page</summary>
 
-![404 Page](static/documentation/wireframes/medical-record-page.webp)
+![404 Page](static/documentation/pages/responsiv/404-page-responsive.webp)
 </details>
 
 <details>
 <summary> 403 Page</summary>
 
-![403 Page](static/documentation/wireframes/medical-record-page.webp)
+![403 Page](static/documentation/pages/responsiv/403-page-responsive.webp)
 </details>
 
 ### Validator testing
@@ -1037,27 +1051,27 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 
 #### Index page
 
-1. Doctor Illustrator Design, [License.](documentation/licenses/photos/image-1-license-certificate.txt)
-2. Physiotherapist check X ray, [License.](documentation/licenses/photos/image-2-license-certificate.txt)
-3. Hands operating a patient, [License.](documentation/licenses/photos/image-3-license-certificate.txt)
-4. Knee joint model , [License.](documentation/licenses/photos/image-4-license-certificate.txt)
+1. Doctor Illustrator Design, [License.](static/documentation/images/image-1-license-certificate.txt)
+2. Physiotherapist check X ray, [License.](static/documentation/images/image-2-license-certificate.txt)
+3. Hands operating a patient, [License.](static/documentation/images/image-3-license-certificate.txt)
+4. Knee joint model , [License.](static/documentation/images/image-4-license-certificate.txt)
 5. Ligament Reconstruction image was generated using AI from [ChatGPT](https://www.openai.com/chatgpt)
-6. Bandaging woman's injured knee, [License.](documentation/licenses/photos/image-6-license-certificate.txt)
-7. Injection Procedures, [License.](documentation/licenses/photos/image-7-license-certificate.txt)
+6. Bandaging woman's injured knee, [License.](static/documentation/images/image-6-license-certificate.txt)
+7. Injection Procedures, [License.](static/documentation/images/image-7-license-certificate.txt)
 
 #### Our Doctors page
 
-1. Dr. John Doe photo, [License.](documentation/licenses/photos/image-8-license-certificate.txt)
-2. Dr. Jane Smith photo, [License.](documentation/licenses/photos/image-9-license-certificate.txt)
-3. Dr. Emily Johnson photo, [License.](documentation/licenses/photos/image-10-license-certificate.txt)
-4. Dr. Michael Brown photo, [License.](documentation/licenses/photos/image-11-license-certificate.txt)
+1. Dr. John Doe photo, [License.](static/documentation/images/image-8-license-certificate.txt)
+2. Dr. Jane Smith photo, [License.](static/documentation/images/image-9-license-certificate.txt)
+3. Dr. Emily Johnson photo, [License.](static/documentation/images/image-10-license-certificate.txt)
+4. Dr. Michael Brown photo, [License.](static/documentation/images/image-11-license-certificate.txt)
 
 #### About Us page
 
-1. Hospital reception counter, [License.](documentation/licenses/photos/image-12-license-certificate.txt)
-2. Busy Hospital Corridor, [License.](documentation/licenses/photos/image-13-license-certificate.txt)
-3. Modern operating theatre, [License.](documentation/licenses/photos/image-14-license-certificate.txt)
-4. A room of an hospital, [License.](documentation/licenses/photos/image-15-license-certificate.txt)
+1. Hospital reception counter, [License.](static/documentation/images/image-12-license-certificate.txt)
+2. Busy Hospital Corridor, [License.](static/documentation/images/image-13-license-certificate.txt)
+3. Modern operating theatre, [License.](static/documentation/images/image-14-license-certificate.txt)
+4. A room of an hospital, [License.](static/documentation/images/image-15-license-certificate.txt)
 
 ## Acknowledgments
 
