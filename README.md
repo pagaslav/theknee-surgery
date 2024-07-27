@@ -904,7 +904,105 @@ Doctor
 
 ### Validator testing
 
+#### Python
+
+I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com/) to validate my Python file - app.py.
+
+<details>
+
+<summary> All clear, no errors found. See the screenshot</summary>
+
+![404 Page](static/documentation/validator/ci-python-liner.webp)
+</details>
+
 #### HTML
+I have used the recommended [HTML W3C Validator](https://validator.w3.org/) to validate all of my HTML files.
+
+<details>
+<summary>Home Page, no errors</summary>
+
+![Home Page](static/documentation/validator/home-page-valid.webp)
+</details>
+
+<details>
+<summary>Log in Page</summary>
+
+![Log in Page](static/documentation/pages/responsiv/login-page-responsive.webp)
+</details>
+
+<details>
+<summary>Sign Up Page</summary>
+
+![Sign Up Page](static/documentation/pages/responsiv/signup-page-responsive.webp)
+
+With the opened Modal window:
+
+![Sign Up Page with Modal](static/documentation/pages/responsiv/signup-1-page-responsive.webp)
+</details>
+
+<details>
+<summary>Our Doctors Page</summary>
+
+![Our Doctors Page](static/documentation/pages/responsiv/doctors-page-responsive.webp)
+</details>
+
+<details>
+<summary>About Us Page</summary>
+
+![About Us Page](static/documentation/pages/responsiv/about-page-responsive.webp)
+</details>
+
+<details>
+<summary>Privacy Policy Page</summary>
+
+![Privacy Policy Page](static/documentation/pages/responsiv/privacy-page-responsive.webp)
+</details>
+
+<details>
+<summary>Profile Page</summary>
+
+Patient
+
+![Profile Page Patient](static/documentation/pages/responsiv/profil-patient-page-responsive.webp)
+
+Admin
+
+![Profile Page Admin](static/documentation/pages/responsiv/profil-admin-page-responsive.webp)
+
+Doctor
+
+![Profile Page Doctor](static/documentation/pages/responsiv/profil-doctor-page-responsive.webp)
+</details>
+
+<details>
+<summary>Add Doctor Page</summary>
+
+![Add Doctor Page](static/documentation/pages/responsiv/add-doctor-page-responsive.webp)
+</details>
+
+<details>
+<summary>All Users Page</summary>
+
+![All Users Page](static/documentation/pages/responsiv/all-users-page-responsive.webp)
+</details>
+
+<details>
+<summary> Medical Records Page</summary>
+
+![Medical Records Page](static/documentation/pages/responsiv/medical-record-page-responsive.webp)
+</details>
+
+<details>
+<summary> 404 Page</summary>
+
+![404 Page](static/documentation/pages/responsiv/404-page-responsive.webp)
+</details>
+
+<details>
+<summary> 403 Page</summary>
+
+![403 Page](static/documentation/pages/responsiv/403-page-responsive.webp)
+</details>
 
 #### CSS
 
