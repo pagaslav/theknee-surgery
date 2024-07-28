@@ -249,7 +249,7 @@ content %}
                     }}</a></p>
                 <p><strong>Reason:</strong> {{ appointment.reason }}</p>
                 <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
-                <p><strong>Date Requested:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                <p><strong>Date Requested:</strong> {{ appointment.date_requested.strftime('%Y-%m-%d' + ', ' + '%H:%M') }}</p>
 
                 <!-- Check if the appointment is assigned -->
                 {% if appointment.status == 'assigned' %}
@@ -268,7 +268,7 @@ content %}
                     Schedule</button>
                 </form>
                 {% else %}
-                <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S')
+                <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d' + ', ' + '%H:%M')
                   }}</p>
                 {% endif %}
                 <button class="btn btn-danger delete-button-assigned" aria-label="Delete Patient">Delete</button>
@@ -316,7 +316,7 @@ content %}
         <div class="card mb-3">
           <!-- Card Header for Medical Records -->
           <div class="card-header">
-            <h3>Medical Records</h3>
+            <h3>Medical Records  of {{ user.name }}</h3>
           </div>
           <!-- Card Body containing medical records -->
           <div class="card-body">
@@ -377,7 +377,7 @@ content %}
         <div class="card mb-3">
           <!-- Card Header for Uploaded Files -->
           <div class="card-header">
-            <h3>Uploaded Files</h3>
+            <h3>Uploaded Files  of {{ user.name }}</h3>
           </div>
           <!-- Card Body containing list of uploaded files -->
           <div class="card-body">
@@ -406,7 +406,7 @@ content %}
         <div class="card mb-3">
           <!-- Card Header for File Upload -->
           <div class="card-header">
-            <h3>Upload Documents</h3>
+            <h3>Upload Documents, only png, jpg, jpeg, gif, pdf, doc, docx</h3>
           </div>
           <!-- Card Body containing file upload form -->
           <div class="card-body">
@@ -414,7 +414,7 @@ content %}
               <input type="hidden" id="uploadUserIdInput" name="user_id" value="{{ user._id }}">
               <!-- File Input Field -->
               <div class="mb-3">
-                <label for="fileInput" class="form-label">Upload File</label>
+                <label for="fileInput" class="form-label">Upload File, only png, jpg, jpeg, gif, pdf, doc, docx</label>
                 <input class="form-control" type="file" id="fileInput" name="file" aria-label="Choose file to upload">
               </div>
               <!-- File Type Selection -->
@@ -481,7 +481,7 @@ content %}
         <div class="card mb-3">
           <!-- Card Header -->
           <div class="card-header">
-            <h3>Scheduled Appointments</h3>
+            <h3>Scheduled Appointments for {{ user.name }}</h3>
           </div>
           <!-- Card Body -->
           <div class="card-body">
@@ -497,7 +497,7 @@ content %}
                     aria-label="Email {{ appointment.doctor_name }}">{{ appointment.doctor_name }}</a>
                 </p>
                 <p><strong>Reason:</strong> {{ appointment.reason }}</p>
-                <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d %H:%M:%S')
+                <p><strong>Scheduled Date and Time:</strong> {{ appointment.appointment_datetime.strftime('%Y-%m-%d' + ', ' + '%H:%M')
                   }}</p>
               </li>
               {% endif %}
@@ -515,7 +515,7 @@ content %}
         <div class="card mb-3">
           <!-- Card Header -->
           <div class="card-header">
-            <h3>Requested Appointments</h3>
+            <h3>Requested Appointments for {{ user.name }}</h3>
           </div>
           <!-- Card Body -->
           <div class="card-body">
@@ -541,7 +541,7 @@ content %}
         <div class="card mb-3">
           <!-- Card Header -->
           <div class="card-header">
-            <h3>Request an Appointment</h3>
+            <h3>Request an Appointment for {{ user.name }}</h3>
           </div>
           <!-- Card Body -->
           <div class="card-body">

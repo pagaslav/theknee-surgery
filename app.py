@@ -92,8 +92,10 @@ def signup():
         try:
             dob_date = datetime.strptime(dob, '%Y-%m-%d')
             current_date = datetime.now()
-            min_date = current_date - timedelta(days=6570)  # 18 years ago
-            max_date = current_date - timedelta(days=36525)  # 100 years ago
+            # 18 years ago
+            min_date = current_date - timedelta(days=6570)
+            # 100 years ago
+            max_date = current_date - timedelta(days=36525)
 
             if dob_date < max_date or dob_date > min_date:
                 flash(
@@ -104,7 +106,7 @@ def signup():
         except ValueError:
             flash("Invalid Date of Birth format.", "danger")
             return redirect(url_for("signup"))
-        
+
         # Hash the password
         hashed_password = generate_password_hash(password)
         # Create a new user record to be inserted into the database
@@ -130,7 +132,7 @@ def signup():
     current_date = datetime.now()
     # 18 years ago
     max_date = (current_date - timedelta(days=6570)).strftime('%Y-%m-%d')
-    # 100 years ago 
+    # 100 years ago
     min_date = (current_date - timedelta(days=36525)).strftime('%Y-%m-%d')
 
     # Render the signup template
@@ -652,14 +654,10 @@ def profile(username):
     try:
         # Find the user by email in the users collection
         user = mongo.db.users.find_one({"email": username})
-        if user:
-            print(f"User found in users collection: {user}")
-        else:
-            # If not found, check in the doctors collection
+        # If not found, check in the doctors collection
+        if not user:
             user = mongo.db.doctors.find_one({"email": username})
-            if user:
-                print(f"User found in doctors collection: {user}")
-            else:
+            if not user:
                 flash("User not found", "danger")
                 return redirect(url_for("index"))
 
@@ -673,8 +671,6 @@ def profile(username):
                 )
             if not current_user:
                 abort(403)
-            else:
-                print(f"Current user email from session: {current_email}")
 
             # Determine if the current user is an admin viewing another profile
             viewing_as_admin = (
@@ -768,12 +764,6 @@ def profile(username):
                             mongo.db.medical_records.find(
                                 {"patient_id": patient["_id"]}
                             )
-                        )
-                        print(f"Assigned patient: {appointment}")
-                    else:
-                        print(
-                            f"Patient not found for appointment "
-                            f"{appointment['_id']}"
                         )
 
             # Retrieve the list of patients for doctor selection
@@ -1046,7 +1036,6 @@ def edit_user_ajax():
     """
     if "user" in session:
         current_email = session["user"]
-        print(f"Current user email: {current_email}")  # Debugging statement
         current_user = mongo.db.users.find_one(
             {"email": current_email}
         ) or mongo.db.doctors.find_one(
@@ -1054,7 +1043,6 @@ def edit_user_ajax():
         )
         if current_user:
             user_id = request.json.get("user_id")
-            print(f"Target user ID: {user_id}")  # Debugging statement
             user = mongo.db.users.find_one(
                 {"_id": ObjectId(user_id)}
             ) or mongo.db.doctors.find_one(
@@ -1062,16 +1050,13 @@ def edit_user_ajax():
             )
 
             if user:
-                print(f"Found target user: {user['email']}")  # Debugging s-t
                 if current_user["role"] != "admin":
                     current_password = request.json.get("current_password")
-                    print("Current password provided")  # Debugging statement
 
                     # Verify current password
                     if not check_password_hash(
                         user["password"], current_password
                     ):
-                        print("Incorrect current password")  # Debugging st-t
                         return {
                             "success": False,
                             "message": "Current password is incorrect."
@@ -1136,15 +1121,12 @@ def edit_user_ajax():
                         "redirect": url_for("profile", username=current_email)
                     }
             else:
-                print("User not found")  # Debugging statement
                 return {"success": False, "message": "User not found."}, 404
         else:
-            print("Current user not found")  # Debugging statement
             return (
                 {"success": False, "message": "Current user not found."}, 404
             )
     else:
-        print("Not logged in")  # Debugging statement
         return {
             "success": False,
             "message": "You need to log in to edit user information."
@@ -1230,8 +1212,6 @@ def delete_file():
     if "user" in session:
         # Get the file ID from the form data
         file_id = request.form.get("file_id")
-        # Debugging statement
-        print(f"Received request to delete file with ID: {file_id}")
         if file_id:
             # Attempt to delete the file from Cloudinary
             if delete_from_cloudinary(file_id):
@@ -1243,11 +1223,6 @@ def delete_file():
                     # Delete the file record from the database
                     result = mongo.db.user_files.delete_one(
                         {"file_id": file_id}
-                    )
-                    print(
-                        # Debugging statement
-                        f"Database deletion result: {result.deleted_count} "
-                        f"document(s) deleted."
                     )
                     if result.deleted_count > 0:
                         # Return success response
@@ -1316,11 +1291,8 @@ def delete_from_cloudinary(file_id):
     try:
         # Attempt to delete the file from Cloudinary
         result = cloudinary.uploader.destroy(file_id)
-        print(f"Cloudinary deletion result: {result}")  # Debugging statement
         return result.get("result") == "ok"
     except Exception as error:
-        # Log the error if the deletion fails
-        print(f"An error occurred: {error}")
         return False
 
 
