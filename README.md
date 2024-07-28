@@ -127,8 +127,6 @@ User Interface (UI)
 
 </details>
 
-
-
 ### Colour Scheme
 
 #### Color Palette
@@ -956,7 +954,7 @@ I have used the recommended [HTML W3C Validator](https://validator.w3.org/) to v
 </details>
 
 <details>
-<summary>Profile Page</summary>
+<summary>Profile Page, no errors</summary>
 
 Patient
 
@@ -972,31 +970,31 @@ Doctor
 </details>
 
 <details>
-<summary>Add Doctor Page</summary>
+<summary>Add Doctor Page, no errors</summary>
 
 ![Add Doctor Page](static/documentation/validator/add-doctor-page-valid.webp)
 </details>
 
 <details>
-<summary>All Users Page</summary>
+<summary>All Users Page, no errors</summary>
 
 ![All Users Page](static/documentation/validator/all-users-page-valid.webp)
 </details>
 
 <details>
-<summary> Medical Records Page</summary>
+<summary> Medical Records Page, no errors</summary>
 
 ![Medical Records Page](static/documentation/validator/medical-records-page-valid.webp)
 </details>
 
 <details>
-<summary> 404 Page</summary>
+<summary> 404 Page, no errors</summary>
 
 ![404 Page](static/documentation/validator/404-page-valid.webp)
 </details>
 
 <details>
-<summary> 403 Page</summary>
+<summary> 403 Page, no errors</summary>
 
 ![403 Page](static/documentation/validator/403-page-valid.webp)
 </details>
@@ -1009,13 +1007,235 @@ I have used the recommended [CSS Jigsaw Validator](https://jigsaw.w3.org/css-val
 #### JavaScript
 I have used the recommended [JShint Validator](https://jshint.com/) to validate my JS file.
 
+![JS Validation](static/documentation/validator/js-valid.webp)
+
 ### LightHouse report
 
+#### Home Page
+
+<details>
+<summary>Desktop</summary>
+
+![Home Page Desktop](static/documentation/lighthouse/index-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Home Page Mobile](static/documentation/lighthouse/index-m.webp)
+</details>
+
+#### Log in Page
+
+<details>
+<summary>Desktop</summary>
+
+![Log in Page Desktop](static/documentation/lighthouse/login-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Log in Page Mobile](static/documentation/lighthouse/login-m.webp)
+</details>
+
+#### Sign Up Page
+
+<details>
+<summary>Desktop</summary>
+
+![Sign Up Page Desktop](static/documentation/lighthouse/signup-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Sign Up Page Mobile](static/documentation/lighthouse/signup-d.webp)
+</details>
+
+#### Our Doctors Page
+
+<details>
+<summary>Desktop</summary>
+
+![Our Doctors Page Desktop](static/documentation/lighthouse/doctors-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Our Doctors Page Mobile](static/documentation/lighthouse/doctors-m.webp)
+</details>
+
+#### About Us Page
+
+<details>
+<summary>Desktop</summary>
+
+![About Us Page Desktop](static/documentation/lighthouse/about-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![About Us Page Mobile](static/documentation/lighthouse/about-m.webp)
+</details>
+
+#### Privacy Policy Page
+
+<details>
+<summary>Desktop</summary>
+
+![Privacy Policy Page Desktop](static/documentation/lighthouse/policy-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Privacy Policy Page Mobile](static/documentation/lighthouse/policy-m.webp)
+</details>
+
+#### Profile Page
+
+##### Patient's Profile Page
+
+<details>
+<summary>Desktop</summary>
+
+![Patient Profile Page Desktop](static/documentation/lighthouse/profile-patient-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Patient Profile Page Mobile](static/documentation/lighthouse/profile-patient-m.webp)
+</details>
+
+##### Admin's Profile Page
+
+<details>
+<summary>Desktop</summary>
+
+![Admin Profile Page Desktop](static/documentation/lighthouse/profile-admin-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Admin Profile Page Mobile](static/documentation/lighthouse/profile-admin-m.webp)
+</details>
+
+##### Doctor's Profile Page
+
+<details>
+<summary>Desktop</summary>
+
+![Doctor Profile Page Desktop](static/documentation/lighthouse/profile-doc-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Doctor Profile Page Mobile](static/documentation/lighthouse/profile-doc-m.webp)
+</details>
+
+#### Add Doctor Page
+
+<details>
+<summary>Desktop</summary>
+
+![Add Doctor Page Desktop](static/documentation/lighthouse/add-doc-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Add Doctor Page Mobile](static/documentation/lighthouse/add-doc-m.webp)
+</details>
+
+#### All Users Page
+
+<details>
+<summary>Desktop</summary>
+
+![All Users Page Desktop](static/documentation/lighthouse/all-users-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![All Users Page Mobile](static/documentation/lighthouse/all-users-m.webp)
+</details>
+
+#### Medical Records Page
+
+<details>
+<summary>Desktop</summary>
+
+![Medical Records Page Desktop](static/documentation/lighthouse/med-rec-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![Medical Records Page Mobile](static/documentation/lighthouse/med-rec-m.webp)
+</details>
+
+#### 404 Page
+
+<details>
+<summary>Desktop</summary>
+
+![404 Page Desktop](static/documentation/lighthouse/404-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![404 Page Mobile](static/documentation/lighthouse/404-m.webp)
+</details>
+
+#### 403 Page
+
+<details>
+<summary>Desktop</summary>
+
+![403 Page Desktop](static/documentation/lighthouse/index-d.webp)
+</details>
+<details>
+<summary>Mobile</summary>
+
+![403 Page Mobile](static/documentation/lighthouse/index-m.webp)
+</details>
+
 ### Compatibility
+In order to confirm the correct functionality, responsiveness, and
+appearance:
+
+- The website was tested on the following browsers: Chrome, Firefox,
+Safari.
+
+| Browser tested | Intended appearance | Intended responsiveness |
+| - | - | - |
+| Chrome | Good | Good |
+| FireFox | Good | Good |
+| Safari | Good | Good |
+
+#### Chrome
+
+<details>
+<summary>Home Page Chrome</summary>
+
+![Chrome. Index page](static/documentation/pages/home-page-full.webp)
+</details>
+
+#### Firefox
+
+<details>
+<summary>Home Page Firefox</summary>
+
+![Firefox. Index page](static/documentation/pages/fire-shot-firefox-index-full.webp)
+</details>
+
+#### Safari
+
+<details>
+<summary>Home Page Safari</summary>
+
+![Safari. Index page](static/documentation/pages/safari-index-full.webp)
+</details>
+
 
 ### Manual Testing
 
-For testing documentation, please continue to [TEST_SUITE.md](TEST_SUITE.md)
+For manual testing documentation, please continue to [TEST_SUITE_MANUAL.md](TEST_SUITE_MANUAL.md)
 
 ### Bugs
 
@@ -1129,6 +1349,7 @@ After implementing the above solution, the email change functionality works as e
 ### Mistakes
 
 ## Deployment
+The live site is deployed with Heroku; it can be accessed [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/).
 
 ### Deployment to GitHub Pages
 
