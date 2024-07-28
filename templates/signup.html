@@ -49,7 +49,9 @@ endblock %} {% block content %}
               id="floatingDob"
               name="dob"
               aria-label="Date of Birth"
-              required>
+              required
+              max="{{ max_date }}"
+              min="{{ min_date }}">
             <label for="floatingDob">Date of Birth</label>
           </div>
 
@@ -108,7 +110,7 @@ endblock %} {% block content %}
             <span
               class="password-toggle"
               onclick="togglePasswordVisibility('floatingPasswordRegister', 'password-icon-register')"
-            >
+              >
               <i id="password-icon-register" class="fa-regular fa-eye"></i>
             </span>
           </div>
