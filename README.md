@@ -783,6 +783,118 @@ The **403 Forbidden** page is shown when a user attempts to access a page or res
 - **User Interaction:** Users are immediately informed about the permission issue and are not left wondering why they cannot access the page.
 - **Navigation:** The page encourages users to return to the homepage, providing a positive direction instead of a dead end.
 
+## Database Design
+
+The project uses MongoDB for its database, structured to handle various aspects such as user management, appointments, and medical records. MongoDB's flexible schema is ideal for managing dynamic medical data.
+
+### Collections
+
+#### Users Collection
+
+This collection stores the details of all users registered in the system. By default, all users are patients upon registration. An admin can change a user's role to either doctor or admin.
+
+| Field      | Type     | Description                           |
+|------------|----------|---------------------------------------|
+| `_id`      | ObjectId | Unique identifier for each user       |
+| `name`     | String   | Name of the user                      |
+| `gender`   | String   | Gender of the user                    |
+| `dob`      | Date     | Date of birth                         |
+| `phone`    | String   | Contact number                        |
+| `email`    | String   | Email address                         |
+| `password` | String   | Hashed password                       |
+| `role`     | String   | Role of the user (`patient` or `admin`) |
+
+#### Doctors Collection
+
+This collection stores the details of all doctors registered in the system.
+
+| Field            | Type     | Description                              |
+|------------------|----------|------------------------------------------|
+| `_id`            | ObjectId | Unique identifier for each doctor        |
+| `name`           | String   | Name of the doctor                       |
+| `role`           | String   | Role of the user (`doctor`)              |
+| `specialty`      | String   | Medical specialty                        |
+| `description`    | String   | Description of the doctor's expertise    |
+| `additional_info`| String   | Additional information about the doctor  |
+| `image`          | String   | Image name                               |
+| `password`       | String   | Hashed password                          |
+| `email`          | String   | Email address                            |
+| `dob`            | Date     | Date of birth                            |
+| `gender`         | String   | Gender of the doctor                     |
+| `phone`          | String   | Contact number                           |
+
+#### Appointments Collection
+
+Stores appointment requests and schedules.
+
+| Field                 | Type       | Description                                              |
+|-----------------------|------------|----------------------------------------------------------|
+| `_id`                 | ObjectId   | Unique identifier for each appointment                   |
+| `patient_id`          | ObjectId   | Reference to the patient                                 |
+| `reason`              | String     | Reason for the appointment                               |
+| `status`              | String     | Status of the appointment (`pending`, `assigned`, `scheduled`) |
+| `assigned_doctor_id`  | ObjectId   | Reference to the assigned doctor                         |
+| `date_requested`      | Date       | Date when the appointment was requested                  |
+| `appointment_datetime`| Date       | Scheduled date and time for the appointment              |
+| `doctor_email`        | String     | Email address of the doctor                              |
+| `doctor_name`         | String     | Name of the doctor                                       |
+
+#### Medical Records Collection
+
+Stores medical records associated with patients.
+
+| Field        | Type       | Description                           |
+|--------------|------------|---------------------------------------|
+| `_id`        | ObjectId   | Unique identifier for each record     |
+| `patient_id` | ObjectId   | Reference to the patient              |
+| `doctor_id`  | ObjectId   | Reference to the doctor               |
+| `description`| String     | Description of the medical condition  |
+| `treatment`  | String     | Treatment provided                    |
+| `date`       | Date       | Date of the record                    |
+
+#### Medical Record Files Collection
+
+Stores files associated with medical records.
+
+| Field        | Type       | Description                           |
+|--------------|------------|---------------------------------------|
+| `_id`        | ObjectId   | Unique identifier for each file       |
+| `record_id`  | ObjectId   | Reference to the medical record       |
+| `file_id`    | String     | Cloudinary file ID                    |
+| `file_url`   | String     | URL to access the file                |
+| `file_name`  | String     | Name of the file                      |
+| `uploaded_at`| Date       | Date when the file was uploaded       |
+
+#### User Files Collection
+
+Stores files uploaded by patients and admins.
+
+| Field        | Type       | Description                           |
+|--------------|------------|---------------------------------------|
+| `_id`        | ObjectId   | Unique identifier for each file       |
+| `user_id`    | ObjectId   | Reference to the user                 |
+| `file_id`    | String     | Cloudinary file ID                    |
+| `file_url`   | String     | URL to access the file                |
+| `file_name`  | String     | Name of the file                      |
+| `file_type`  | String     | Type of file (e.g., medical record)   |
+| `uploaded_at`| Date       | Date when the file was uploaded       |
+
+### Reason for Separate File Collections
+
+Separate collections for user-uploaded files and doctor-uploaded files in medical records help in:
+
+1. **Organizational Clarity**: Better organization and management of data by clearly separating user and doctor files.
+2. **Access Control**: Different access permissions can be applied to user files and medical record files.
+3. **Audit and Tracking**: Improved tracking and auditing of file uploads by users and doctors.
+4. **Data Integrity**: Ensures that medical records remain consistent and are not accidentally altered by user uploads.
+
+### User Roles and Registration
+
+- **Patients**: All users are registered as patients by default.
+- **Admins**: Admins can be assigned by directly modifying their role in the database.
+- **Doctors**: Doctors can be assigned by either modifying their role directly in the database or by an admin through the web interface when adding a new doctor.
+
+This database design allows for efficient management of user data, medical records, appointments, and associated files, providing a comprehensive structure for the application.
 
 ## Technologies Used
 
@@ -791,14 +903,15 @@ The **403 Forbidden** page is shown when a user attempts to access a page or res
 - [Bootstrap](https://getbootstrap.com/docs/5.3) was employed to integrate its styles, facilitating rapid development and
 consistent styling across the pages.
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) was employed to implement dynamic interactions on the site, enabling real-time user feedback and interactive features without needing to reload the page.
+- [jQuery](https://jquery.com/) used for user interaction on the site.
 - [Python](https://www.python.org/)  is used as the back-end programming language.
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/) is the Python framework used for the site.
 - [MongoDB](https://www.mongodb.com/) is the non-relational database management I chose to use for storing data.
 - [VSCode](https://code.visualstudio.com/) was used as the main tool to write and edit code.
 - [Git](https://git-scm.com/) was used for the version control of the website.
 - [GitHub](https://github.com/) was used to host the code of the website.
-- [GitHub Pages](https://pages.github.com/) was used for hosting the deployed front-end site.
 - [Heroku](https://dashboard.heroku.com/apps)  is hosting the deployed back-end site.
+- [Cloudinary](https://cloudinary.com/) used for online static file storage.
 - [Balsamiq](https://balsamiq.com/) was used to make wireframes for the website.
 - [Adobe Photoshop](https://www.adobe.com/uk/products/photoshop.html) was used to make and resize images for the website and the
 README file.
@@ -1561,4 +1674,35 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 
 ## Acknowledgments
 
+- [Code Institute](https://codeinstitute.net/) tutors and Slack community members for their support and help.
+  
+- [Iuliia Konovalova](https://github.com/IuliiaKonovalova), my mentor, for her invaluable advice and guidance during our online meetings.
+
+- I am deeply grateful for the experience I had nine years ago when I severely injured my knee while skiing. Unable to walk without assistance for almost a year, the doctors' expertise saved my knee. Today, I am able to run, play sports, and even do a bit of jumping. This life-changing experience inspired me to create this website.
+
+- I also want to express my gratitude to my neighbor, a surgeon who specializes in knees and joints. Despite being one of the most remarkable people I've ever known, his practice does not have a website. My project is dedicated to him. After receiving my evaluation, I plan to offer this project to him, adapting it for his clinic. With some enhancements, which I simply did not have time to implement, this website will truly come to life.
+  
+- [Kevin Powell](https://www.youtube.com/user/KepowOb) for his amazing CSS tutorials.
+  
+- A heartfelt thank you to the creators of [Bootstrap](https://getbootstrap.com/) for providing an
+excellent style framework. Their toolkit not only accelerates the
+development process but also empowers beginners to exceed their own
+capabilities.
+
 ## Future Improvements
+
+Websites with a backend structure similar to this project offer a wide range of opportunities for continuous improvement and modernization. This ongoing evolution is driven not only by advancing technologies but also by the practical experiences of a real working team. As the team uses the site and gains real-world insights, the site can be further customized and adapted to meet the specific needs of the team and business.
+
+Here are a few key improvements planned for the future:
+
+1. **Enhanced Appointment Management System**
+   - Develop a more intuitive appointment management system that simplifies each stage of the process. This includes allowing admins to easily view, edit, and delete appointments as needed. The goal is to make the system as user-friendly and efficient as possible for all users involved.
+
+2. **Addition of Articles and Helpful Materials**
+   - Add articles and useful materials to the site that address issues related to the clinic's profile or prepare patients for various procedures. This will provide valuable information and support to patients, enhancing their experience and knowledge.
+
+3. **Search Functionality**
+   - Implement a search mechanism for the website. This will enable users to search through articles, doctors to search for patients, and admins to search through all users. This feature will enhance the usability and efficiency of the platform.
+
+4. **And Much More**
+   - Continuously add features and improvements as necessary, based on real-world use and feedback from the team and users. This ongoing development will ensure the platform remains relevant and effective in meeting its users' needs.
