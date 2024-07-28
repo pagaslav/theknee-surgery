@@ -9,13 +9,9 @@ $(document).ready(function () {
   const userRole = $("#userRole").val();
   // Check if viewing as admin
   const viewingAsAdmin = $("#viewingAsAdmin").val() === "true";
-  console.log("User Role: ", userRole);
-  console.log("Viewing as Admin: ", viewingAsAdmin);
 
-  // Log error if user role is not defined
-  if (!userRole) {
-    console.error("User role is not defined!");
-  }
+  validateConfirmPassword("password", "confirmPassword");
+  togglePasswordVisibility("password", "toggleIcon");
 
   /**
    * Function to validate password on input event
@@ -79,7 +75,6 @@ $(document).ready(function () {
    * Function to enable editing of user information
    */
   $("#editButton").click(function () {
-    console.log("Edit button clicked");
     $('span[id$="Text"]').addClass("d-none");
     $('input[id$="Input"], div[id$="InputContainer"]').removeClass("d-none");
     $("#currentPasswordDiv").removeClass("d-none");
@@ -88,10 +83,7 @@ $(document).ready(function () {
 
     // If the user is admin, enable the save button immediately
     if (userRole === "admin") {
-      console.log("Admin detected, enabling save button");
       $("#saveButton").removeAttr("disabled");
-    } else {
-      console.log("Not an admin, userRole:", userRole);
     }
   });
 
@@ -338,7 +330,7 @@ function validateConfirmPassword(passwordId, confirmPasswordId) {
   if (password !== confirmPassword) {
     // If they do not match, set a custom validity message
     document
-      .getElementById(confirmPasswordId);
+      .getElementById(confirmPasswordId)
       .setCustomValidity("Passwords do not match");
   } else {
     // If they match, clear the custom validity messag
