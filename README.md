@@ -1351,11 +1351,175 @@ After implementing the above solution, the email change functionality works as e
 ## Deployment
 The live site is deployed with Heroku; it can be accessed [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/).
 
-### Deployment to GitHub Pages
+### MongoDB Non-Relational Database
+
+This project uses [MongoDB](https://www.mongodb.com/) for the Non-Relational Database.
+
+To obtain your own MongoDB Database URI, sign-up on their site, then follow these steps:
+
+#### Database Setup
+
+1. The database in MongoDB should be named `insert-your-database-name-here`.
+2. The necessary collection(s) for this database should be named `insert-your-collection-names-here`.
+
+#### Connecting to MongoDB
+
+1. Click on the name of the Cluster created for the project.
+2. Click the `Connect` button.
+3. Select `Connect Your Application`.
+4. Copy the connection string, replace `<password>` with your actual password, and remove the angle brackets.
 
 ### Deployment to Heroku
 
+1. **Create a New App**
+   - Log into your Heroku Dashboard.
+   - Click `New` in the top-right corner and select `Create new app`.
+   - Enter a unique app name, select a region (EU or USA), and click `Create App`.
+
+2. **Set Environment Variables**
+   - Go to the `Settings` tab of your new app.
+   - Click `Reveal Config Vars` and set the following variables:
+
+   | Key                      | Value                  |
+   | ------------------------ | ---------------------- |
+   | IP                       | 0.0.0.0                |
+   | PORT                     | 5000                   |
+   | SECRET_KEY               | your_secret_key        |
+   | MONGO_URI                | your_mongo_uri         |
+   | MONGO_DBNAME             | your_mongo_dbname      |
+   | CLOUDINARY_CLOUD_NAME    | your_cloudinary_cloud_name |
+   | CLOUDINARY_API_KEY       | your_cloudinary_api_key |
+   | CLOUDINARY_API_SECRET    | your_cloudinary_api_secret |
+
+**Heroku requires three additional files for deployment**:
+
+- `requirements.txt`
+- `Procfile`
+- `runtime.txt`
+
+3. **Prepare Files for Heroku**
+
+   - Create a `Procfile`:
+
+     ```sh
+     echo web: python app.py > Procfile
+     ```
+
+     Replace `app.py` with the name of your main Flask app file.
+
+4. **Install Project Requirements**
+
+   - Ensure all required packages are listed in `requirements.txt`:
+
+     ```sh
+     pip3 freeze --local > requirements.txt
+
+
+5. **Deploying to Heroku**
+
+   **Option 1: Automatic Deployment**
+
+   - From your Heroku app dashboard, select the option for Automatic Deployment and follow the instructions.
+
+   **Option 2: Manual Deployment via Terminal**
+
+   - Log in to Heroku:
+
+     ```sh
+     heroku login -i
+     ```
+
+   - Set the Heroku remote repository:
+
+     ```sh
+     heroku git:remote -a your_app_name
+     ```
+
+   - Deploy your code:
+
+     ```sh
+     git push heroku main
+     ```
+
+Your project should now be connected and deployed to Heroku.
+
+### Integrating Cloudinary for File Upload and Deletion
+
+To add file upload and deletion functionality, we used Cloudinary. Among other services like Google and Amazon, Cloudinary stood out as the simplest to integrate.
+
+#### Obtaining Cloudinary API and Integrating with Flask
+
+##### 1. Sign Up and Get API Credentials
+- **Sign Up** at [Cloudinary](https://cloudinary.com) and verify your email.
+- **Log In** to your Cloudinary account.
+- **Find Your API Credentials** (Cloud name, API Key, and API Secret) in the dashboard.
+
+##### 2. Install Cloudinary Python SDK
+- Run the following command to install:
+  ```sh
+  pip3 install cloudinary
+
+#### 3. Add Your Cloudinary API Key to Your `env.py`
+
+    ```python
+    os.environ.setdefault("CLOUDINARY_URL", "cloudinary://<api_key>:<api_secret>@<cloud_name>")
+
+#### 4. Configure Cloudinary in Your Python Application
+
+Use the `CLOUDINARY_URL` stored in your `env.py` file to configure Cloudinary in your Python application.
+
+      ```python
+      if os.path.exists("env.py"):
+          import env
+      app.config["CLOUDINARY_URL"] = os.environ.get("CLOUDINARY_URL")
+
+#### 5. Configure Cloudinary in Your Python Application
+
+      ```python
+      @app.route('/upload', methods=['POST'])
+      def upload_file():
+        file = request.files["file"]
+        result = cloudinary.uploader.upload(file)
+        file_url = result['secure_url']
+
 ### Local Deployment
+This project can be cloned or forked in order to make a local copy on your own system.
+
+For either method, you will need to install any applicable packages found within the requirements.txt file.
+
+pip3 install -r requirements.txt
+
+You will need to create a new file called env.py at the root-level, and include the same environment variables listed above from the Heroku deployment steps, plus a few extras.
+
+#### Cloning
+
+You can clone the repository by following these steps:
+
+- In the [GitHub repository](https://github.com/pagaslav/theknee-surgery), locate the Code button above the list of files and click it.
+
+- Select if you prefer to clone using HTTPS, SSH, or GitHub CLI and click the copy button to copy the URL to your clipboard.
+
+- Open Git shell or Terminal.
+
+- Change the current working directory to the one where you want the cloned directory.
+
+- In your IDE Terminal, type the following command to clone my repository:
+
+  - git clone https://github.com/pagaslav/theknee-surgery.git
+
+- Press Enter to create your local clone.
+
+#### Forking
+
+By forking the GitHub Repository, we make a copy of the original repository on our GitHub account to view and/or make changes without affecting the original owner's repository. You can fork this repository by using the following steps:
+
+- Log in to GitHub and locate the [GitHub repository](https://github.com/pagaslav/theknee-surgery).
+
+- At the top of the Repository (not top of page) just above the "Settings" Button on the menu, locate the "Fork" Button.
+
+- Once clicked, you should now have a copy of the original repository in your own GitHub account.
+
+There is no difference between the local version and the deployed version.
 
 ## Credits
 
