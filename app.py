@@ -1,54 +1,21 @@
 # Import necessary modules and packages for the Flask application
-
-# Provides a way of using operating system dependent functionality
 import os
-
-# Flask: main class for creating a Flask application
-# flash: used to send messages to the next request
-# render_template: renders HTML templates
-# jsonify, redirect, request, session, url_for: various Flask utilities
 from flask import (
     Flask, flash, render_template, jsonify,
     redirect, request, session, url_for, abort
 )
-
-# PyMongo: used to interact with MongoDB from Flask
 from flask_pymongo import PyMongo
-
-# ObjectId: used to work with MongoDB's unique IDs
 from bson.objectid import ObjectId
-
-# Used to handle SSL certificates for secure connections
 import certifi
-
-# Utilities for hashing passwords
 from werkzeug.security import generate_password_hash, check_password_hash
-
-# Utility to secure file names
 from werkzeug.utils import secure_filename
-
-# datetime utilities for handling date and time
 from datetime import timedelta, datetime, timezone
-
-# Cloudinary library for image and file management in the cloud
 import cloudinary
-
-# Cloudinary uploader for handling file uploads
 import cloudinary.uploader
-
-# Cloudinary API for interacting with cloud resources
 import cloudinary.api
-
-# Provides secure random number generator and functions
 import secrets
-
-# Provides string constants and utilities
 import string
-
-# Provides regular expression matching operations
 import re
-
-# Checking if env.py file exists for environment variables
 if os.path.exists("env.py"):
     import env
 
@@ -121,6 +88,23 @@ def signup():
             )
             return redirect(url_for("signup"))
 
+        # Validate date of birth
+        try:
+            dob_date = datetime.strptime(dob, '%Y-%m-%d')
+            current_date = datetime.now()
+            min_date = current_date - timedelta(days=6570)  # 18 years ago
+            max_date = current_date - timedelta(days=36525)  # 100 years ago
+
+            if dob_date < max_date or dob_date > min_date:
+                flash(
+                    "Date of Birth must be between 18 and 100 years ago.",
+                    "danger"
+                )
+                return redirect(url_for("signup"))
+        except ValueError:
+            flash("Invalid Date of Birth format.", "danger")
+            return redirect(url_for("signup"))
+        
         # Hash the password
         hashed_password = generate_password_hash(password)
         # Create a new user record to be inserted into the database
@@ -142,8 +126,17 @@ def signup():
 
         return redirect(url_for("profile", username=email))
 
+    # Calculate date range for date of birth
+    current_date = datetime.now()
+    # 18 years ago
+    max_date = (current_date - timedelta(days=6570)).strftime('%Y-%m-%d')
+    # 100 years ago 
+    min_date = (current_date - timedelta(days=36525)).strftime('%Y-%m-%d')
+
     # Render the signup template
-    return render_template("signup.html")
+    return render_template("signup.html", max_date=max_date, min_date=min_date)
+    # Render the signup template
+    # return render_template("signup.html")
 
 
 # Route to handle user login
