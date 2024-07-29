@@ -1469,7 +1469,27 @@ After implementing the above solution, the email change functionality works as e
 
 ### Unsolved Bugs
 
+To the best of my knowledge, there are no unresolved bugs at the
+moment.
+
 ### Mistakes
+
+- As I reached the end of this project, I realized the immense benefits of incorporating Agile methodologies for large-scale projects. Agile's iterative approach, flexibility, and focus on collaboration can significantly enhance project management and delivery.
+
+- I plan to dive deeper into Agile practices starting today, right after I submit this project. By adopting Agile techniques, I aim to improve my workflow and better handle complex projects in the future.
+
+- Initially, failed to document encountered bugs promptly during the coding process.
+- Realised the importance of documenting bugs in real-time for better tracking and resolution.
+
+- In future projects, I commit to maintaining a detailed log of encountered bugs and their resolution steps throughout the development process.
+
+## Commit Conventions
+This project uses [Commitizen](https://github.com/commitizen/cz-cli) to standardize commit messages. The majority of the commits have been made using `git cz`, which helps in maintaining a consistent commit history.
+
+To make a commit using Commitizen, run:
+```bash
+git cz
+```
 
 ## Deployment
 The live site is deployed with Heroku; it can be accessed [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/).
