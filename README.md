@@ -535,6 +535,7 @@ The admin profile page on our website is designed to provide a comprehensive set
    - **Role:** Shows the user's role as an admin, with the ability to edit.
    - **Phone:** Displays the admin's phone number, which can be edited.
    - **Email:** Shows the admin's email address, with an option to update it.
+Administrators have enhanced privileges within the system. They can edit any information in their own profile or in any profile they view without needing to input the current password.
 
 2. **Change Password**
    - Admins can securely change their password by entering the current password and setting a new one, ensuring it meets security requirements.
