@@ -1402,7 +1402,7 @@ When a user clicks the "Log Out" link and confirms the logout, the user is redir
             </script>
             ```
 
-        After implementing the above solution, the logout functionality works as expected, with the user being properly logged out and the navigation menu updating correctly to reflect the logged-out state.
+After implementing the above solution, the logout functionality works as expected, with the user being properly logged out and the navigation menu updating correctly to reflect the logged-out state.
 
 #### User Email Update Issue
 
