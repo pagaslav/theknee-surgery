@@ -348,6 +348,7 @@ The "Remember Me" checkbox is processed on the backend. The backend code uses Fl
                   session.permanent = True
                   # Set session lifetime to 30 days
                   app.permanent_session_lifetime = timedelta(days=30)
+      ```
 
 Clicking on the administrator’s email opens the mail program with the “To” field filled out. 
 
@@ -454,6 +455,7 @@ The page structure is generated automatically from the database entries using th
         </div>
       </div>
       {% endfor %}
+      ```
 
 ### About us Page
 The "About Us" page for The Knee Surgery website provides comprehensive information about the clinic, its history, and its commitment to providing high-quality orthopedic care.
@@ -1446,6 +1448,7 @@ Ensure that after updating the email in the session, the user is redirected corr
       else:
           flash("Your information has been updated.", "success")
           return {"success": True, "message": "Your information has been updated.", "redirect": url_for("profile", username=current_email)}
+      ```
 
 Ensure the JavaScript handles the success response correctly:
 
@@ -1458,6 +1461,7 @@ Ensure the JavaScript handles the success response correctly:
           alert(response.message);
         }
       }
+      ```
 
 After implementing the above solution, the email change functionality works as expected, keeping the user authenticated with the new email address and displaying the appropriate success message on the profile page.
 
@@ -1532,6 +1536,7 @@ To obtain your own MongoDB Database URI, sign-up on their site, then follow thes
 
      ```sh
      pip3 freeze --local > requirements.txt
+     ```
 
 
 5. **Deploying to Heroku**
@@ -1577,11 +1582,13 @@ To add file upload and deletion functionality, we used Cloudinary. Among other s
 - Run the following command to install:
   ```sh
   pip3 install cloudinary
+  ```
 
 #### 3. Add Your Cloudinary API Key to Your `env.py`
 
     ```python
     os.environ.setdefault("CLOUDINARY_URL", "cloudinary://<api_key>:<api_secret>@<cloud_name>")
+    ```
 
 #### 4. Configure Cloudinary in Your Python Application
 
@@ -1591,6 +1598,7 @@ Use the `CLOUDINARY_URL` stored in your `env.py` file to configure Cloudinary in
       if os.path.exists("env.py"):
           import env
       app.config["CLOUDINARY_URL"] = os.environ.get("CLOUDINARY_URL")
+      ```
 
 #### 5. Configure Cloudinary in Your Python Application
 
@@ -1600,6 +1608,7 @@ Use the `CLOUDINARY_URL` stored in your `env.py` file to configure Cloudinary in
         file = request.files["file"]
         result = cloudinary.uploader.upload(file)
         file_url = result['secure_url']
+      ```
 
 ### Local Deployment
 This project can be cloned or forked in order to make a local copy on your own system.
