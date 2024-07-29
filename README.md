@@ -1,6 +1,6 @@
 # The Knee surgery README
 
-![Responsive Mockup](static/documentation/respons-knee.webp)
+![Responsive Mockup](documentation/respons-knee.webp)
 
 View the live site [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/)
 
@@ -9,7 +9,7 @@ Welcome to The Knee Surgery Clinic, your trusted destination for expert knee car
 
 ### Mindmap of The Knee Surgery
 
-![Mindmap](static/documentation/mindmap.webp)
+![Mindmap](documentation/mindmap.webp)
 
 ## Project Goals
 The primary goal of The Knee Surgery Clinic website is to streamline the process of knee care for both patients and medical professionals. Our objectives include:
@@ -65,67 +65,67 @@ As a doctor, I have the following capabilities:
 <details>
 <summary>Home Page</summary>
 
-![Home Page](static/documentation/wireframes/home-page.webp)
+![Home Page](documentation/wireframes/home-page.webp)
 </details>
 
 <details>
 <summary>Log in Page</summary>
 
-![Log in Page](static/documentation/wireframes/login-page.webp)
+![Log in Page](documentation/wireframes/login-page.webp)
 </details>
 
 <details>
 <summary>Sign Up Page</summary>
 
-![Sign Up Page](static/documentation/wireframes/signup-page.webp)
+![Sign Up Page](documentation/wireframes/signup-page.webp)
 </details>
 
 <details>
 <summary>Our Doctors Page</summary>
 
-![Our Doctors Page](static/documentation/wireframes/our-doctors-page.webp)
+![Our Doctors Page](documentation/wireframes/our-doctors-page.webp)
 </details>
 
 <details>
 <summary>About Us Page</summary>
 
-![About Us Page](static/documentation/wireframes/about-us-page.webp)
+![About Us Page](documentation/wireframes/about-us-page.webp)
 </details>
 
 <details>
 <summary>Privacy Policy Page</summary>
 
-![Privacy Policy Page](static/documentation/wireframes/privacy-polisy-page.webp)
+![Privacy Policy Page](documentation/wireframes/privacy-polisy-page.webp)
 </details>
 
 <details>
 <summary>Profile Page</summary>
 
-![Profile Page](static/documentation/wireframes/profile-page.webp)
+![Profile Page](documentation/wireframes/profile-page.webp)
 </details>
 
 <details>
 <summary>Add Doctor Page</summary>
 
-![Add Doctor Page](static/documentation/wireframes/add-doctor-page.webp)
+![Add Doctor Page](documentation/wireframes/add-doctor-page.webp)
 </details>
 
 <details>
 <summary>All Users Page</summary>
 
-![All Users Page](static/documentation/wireframes/all-users-page.webp)
+![All Users Page](documentation/wireframes/all-users-page.webp)
 </details>
 
 <details>
 <summary> Medical Records Page</summary>
 
-![Medical Records Page](static/documentation/wireframes/medical-record-page.webp)
+![Medical Records Page](documentation/wireframes/medical-record-page.webp)
 </details>
 
 <details>
 <summary>Map of website</summary>
 
-![Map of website](static/documentation/wireframes/map.webp)
+![Map of website](documentation/wireframes/map.webp)
 
 </details>
 
@@ -149,7 +149,7 @@ The chosen color palette for The Knee Surgery is designed to evoke a sense of ca
 - **Soft Orange (`#ffb74d`)**: Adding a touch of warmth and friendliness, soft orange will be used for call-to-action buttons, drawing attention without being too aggressive.
 - **Grey (`#9e9e9e`)**: This neutral color provides balance and stability. It will be used for less prominent text, ensuring that primary content stands out without distraction.
 
-![Colour Palette](static/documentation/color-palette.jpg)
+![Colour Palette](documentation/color-palette.jpg)
 
 #### Visual Harmony and Accessibility
 
@@ -223,19 +223,19 @@ The Navbar section is designed with both aesthetics and functionality in mind. B
 
 ##### Desktop View:
 
-![Desktop View](static/documentation/navbar/desktop-navbar.webp)
+![Desktop View](documentation/navbar/desktop-navbar.webp)
 
 ##### Responsive Design:
 
 ##### Tablet View:
 
-![Tablet View](static/documentation/navbar/tablet-close-navbar.webp)
-![Tablet View](static/documentation/navbar/tablet-open-navbar.webp)
+![Tablet View](documentation/navbar/tablet-close-navbar.webp)
+![Tablet View](documentation/navbar/tablet-open-navbar.webp)
 
 ##### Mobile View:
 
-![Mobile View](static/documentation/navbar/mob-close-navbar.webp)
-![Mobile View](static/documentation/navbar/mob-open-navbar.webp)
+![Mobile View](documentation/navbar/mob-close-navbar.webp)
+![Mobile View](documentation/navbar/mob-open-navbar.webp)
 
 ### Footer
 
@@ -243,7 +243,7 @@ The footer section of our website is designed to provide essential information a
 
 ##### Desktop View:
 
-![Desktop View](static/documentation/footer/footer-desktop.webp)
+![Desktop View](documentation/footer/footer-desktop.webp)
 
 - **Logo and Company Name**: 
   - Located on the left side of the footer, the company logo and name, "THE KNEE SURGERY," are prominently displayed.
@@ -264,7 +264,7 @@ The footer section of our website is designed to provide essential information a
 
 ##### Tablet View:
 
-![Tablet View](static/documentation/footer/footer-tablet.webp)
+![Tablet View](documentation/footer/footer-tablet.webp)
 
 - **Logo and Company Name**: 
   - Located centrally.
@@ -280,7 +280,7 @@ The footer section of our website is designed to provide essential information a
 
 ##### Mobile View:
 
-![Mobile View](static/documentation/footer/footer-mob.webp)
+![Mobile View](documentation/footer/footer-mob.webp)
 
 - **Logo and Company Name**: 
   - The company logo and name remain at the top, positioned centrally, ensuring brand visibility.
@@ -299,7 +299,7 @@ The footer is designed to be responsive and user-friendly across all devices, en
 ### Home Page
 Welcome to The Knee Surgery homepage, designed with user experience and functionality in mind. Here’s a breakdown of its features:
 
-![Home Page](static/documentation/pages/home-page-full.webp)
+![Home Page](documentation/pages/home-page-full.webp)
 
 - **Introduction Section**: 
   - Contains a brief overview of our commitment to knee surgery and patient care.
@@ -319,7 +319,7 @@ Welcome to The Knee Surgery homepage, designed with user experience and function
 ### Log In Page
 The Log In page allows users to access their accounts on The Knee Surgery website. The page includes the following features:
 
-![Log In Page](static/documentation/pages/login-page-full.webp)
+![Log In Page](documentation/pages/login-page-full.webp)
 
 1. **Email Input**: Users enter their email address in a floating label input field.
 2. **Password Input**: Users enter their password in a floating label input field.
@@ -330,7 +330,7 @@ The Log In page allows users to access their accounts on The Knee Surgery websit
 
 When the "Sign In" button is clicked, the user's credentials are validated on the backend. If the credentials are correct, the user is logged in; otherwise, a flash message indicates incorrect email or password.
 
-![Log In Incorrect](static/documentation/pages/login-page-incorrect.webp)
+![Log In Incorrect](documentation/pages/login-page-incorrect.webp)
 
 The "Remember Me" checkbox is processed on the backend. The backend code uses Flask session management to keep the user logged in if the checkbox is selected.
 
@@ -355,7 +355,7 @@ Clicking on the administrator’s email opens the mail program with the “To”
 ### Sign Up Page
 The sign-up page allows new users to create an account on The Knee Surgery website. The form includes client-side validation using JavaScript to ensure the password meets the criteria and matches the confirmation password. The backend handles additional validation, password hashing, and user creation.
 
-![Sign Up Page](static/documentation/pages/signup-page-full.webp)
+![Sign Up Page](documentation/pages/signup-page-full.webp)
 
 The page includes the following features:
 
@@ -366,25 +366,25 @@ The page includes the following features:
 5. **Email Input**: Users enter their email address in a floating label input field.
 6. **Password Input**: Users create a password with requirements displayed below the input field. The password must be at least 8 characters long, contain an uppercase letter, and a number. JavaScript validates the password in real-time. Gray check marks turn green as each requirement is met.
 
-![All marks are neutral](static/documentation/pages/signup-page-password-1.webp)
+![All marks are neutral](documentation/pages/signup-page-password-1.webp)
 
-![One mark is green](static/documentation/pages/signup-page-password-2.webp)
+![One mark is green](documentation/pages/signup-page-password-2.webp)
 
-![Two marks are green](static/documentation/pages/signup-page-password-3.webp)
+![Two marks are green](documentation/pages/signup-page-password-3.webp)
 
-![All marks are green](static/documentation/pages/signup-page-password-4.webp)
+![All marks are green](documentation/pages/signup-page-password-4.webp)
 
 7. **Confirm Password Input**: Users confirm their password. JavaScript ensures that both password fields match. Each password field includes a Font Awesome eye icon that toggles password visibility when clicked.
 
-![Visibility](static/documentation/pages/signup-page-password-5.webp)
+![Visibility](documentation/pages/signup-page-password-5.webp)
 
 8. **Terms and Conditions Checkbox**: Users must agree to the terms and conditions. Clicking the link opens a modal with the terms for review.
 
-![Terms and Conditions](static/documentation/pages/signup-page-terms.webp)
+![Terms and Conditions](documentation/pages/signup-page-terms.webp)
 
 Users must agree to the terms and conditions. Without checking this box, users cannot complete the registration.
 
-![Terms and Conditions agree](static/documentation/pages/signup-page-terms-checkbox.webp)
+![Terms and Conditions agree](documentation/pages/signup-page-terms-checkbox.webp)
 
 On the backend, the following occurs:
 
@@ -400,7 +400,7 @@ The Privacy Policy page provides detailed information about how The Knee Surgery
 <details>
 <summary>See Privacy policy Page</summary>
 
-![Privacy Policy Page](static/documentation/pages/policy-page-full.webp)
+![Privacy Policy Page](documentation/pages/policy-page-full.webp)
 </details><br>
   
 The policy includes sections on:
@@ -419,7 +419,7 @@ This Privacy Policy was generated and adapted using the [Privacy Policy Generato
 ### Our Doctors Page
 The "Our Doctors" page features images and brief information about our doctors, including their specialties and experience. This page dynamically updates with new doctors added by the admin through a for loop, ensuring the latest information is always displayed.
 
-![Our Doctors Page](static/documentation/pages/our-doctors-page-full.webp)
+![Our Doctors Page](documentation/pages/our-doctors-page-full.webp)
 
 The page layout includes:
 
@@ -463,7 +463,7 @@ The "About Us" page for The Knee Surgery website provides comprehensive informat
 - **Introduction**
   - A welcoming message with a brief history and the clinic's dedication to patient satisfaction and medical excellence.
 
-![About Us Page](static/documentation/pages/about-us-page-full.webp)
+![About Us Page](documentation/pages/about-us-page-full.webp)
 
 - **Carousel Section**
   - A Bootstrap carousel showcasing four key areas of the clinic:
@@ -492,7 +492,7 @@ Additionally, we will be showcasing our certifications and achievements in the m
 
 The patient profile page on our website offers a comprehensive view of the patient's personal information, medical records, and appointment management. Here is an overview of what the patient can do and see on this page:
 
-![Patient Profile Page](static/documentation/pages/profile-patient-page.webp)
+![Patient Profile Page](documentation/pages/profile-patient-page.webp)
 
 ##### Key Sections:
 
@@ -526,7 +526,7 @@ This page is designed to be user-friendly, providing patients with easy access t
 
 The admin profile page on our website is designed to provide a comprehensive set of tools for managing user information, medical records, and appointments. Here's a breakdown of the key features and functionalities available to administrators:
 
-![Admin Profile Page](static/documentation/pages/profile-admin-page.webp)
+![Admin Profile Page](documentation/pages/profile-admin-page.webp)
 
 ##### Key Sections:
 
@@ -557,7 +557,7 @@ The admin profile page is designed to give administrators full control over the 
 
 The doctor profile page on our website is designed to provide doctors with the tools and information they need to manage their patient interactions, appointments, and medical records efficiently. Here's a detailed overview of the key features and functionalities available to doctors:
 
-![Doctor Profile Page](static/documentation/pages/profile-doctor-page.webp)
+![Doctor Profile Page](documentation/pages/profile-doctor-page.webp)
 
 ##### Key Sections:
 
@@ -590,62 +590,62 @@ This section describes the complete workflow for requesting and scheduling an ap
 1. **Patient Requests an Appointment:**
    - **Action:** The patient fills out the "Request an Appointment" form, specifying the reason for the appointment.
 
-   ![Request an Appointment](static/documentation/pages/appointment/request-patient-1.webp)
+   ![Request an Appointment](documentation/pages/appointment/request-patient-1.webp)
 
    - **Interface:** The patient clicks the "Request Appointment" button.
 
-   ![Click the button](static/documentation/pages/appointment/request-patient-2.webp)
+   ![Click the button](documentation/pages/appointment/request-patient-2.webp)
 
 2. **Page Reload and Confirmation:**
    - **Action:** Upon clicking the button, the page reloads.
    - **Interface:** The requested appointment appears in the patient's profile under the "Requested Appointments" section.
 
-   ![Requested Appointments](static/documentation/pages/appointment/requested-patient.webp)
+   ![Requested Appointments](documentation/pages/appointment/requested-patient.webp)
 
 3. **Database Update:**
    - **Action:** The appointment request is added to the `theknee_surgery.appointments` collection in MongoDB.
    - **Details:** The new appointment entry includes a status of `pending`.
 
-   ![MongoDB status of `pending`](static/documentation/pages/appointment/request-mongo-1.webp)
+   ![MongoDB status of `pending`](documentation/pages/appointment/request-mongo-1.webp)
 
 4. **Admin Views Appointment Request:**
    - **Action:** In the admin profile, the new appointment request is visible under the "Appointment Requests" section.
    - **Interface:** The request includes the patient's name, reason for the appointment, and an option to assign a doctor.
 
-   ![Appointment Requests for admin](static/documentation/pages/appointment/request-admin.webp)
+   ![Appointment Requests for admin](documentation/pages/appointment/request-admin.webp)
 
 5. **Admin Assigns a Doctor:**
    - **Action:** The admin selects a doctor from a dropdown menu and clicks the "Assign Doctor" button.
 
-   ![Assigns a Doctor](static/documentation/pages/appointment/assign-admin.webp)
+   ![Assigns a Doctor](documentation/pages/appointment/assign-admin.webp)
 
    - **Database Update:** The status of the appointment in MongoDB changes from `pending` to `assigned`.
 
-   ![MongoDB status of `assigned`](static/documentation/pages/appointment/assign-mongo.webp)
+   ![MongoDB status of `assigned`](documentation/pages/appointment/assign-mongo.webp)
 
    - **Interface:** The appointment request is removed from the admin's "Appointment Requests" section and appears in the assigned doctor's profile under the "Assigned Patients" section.
 
-   ![Assigned Patients for doctor](static/documentation/pages/appointment/assigned-doctor-1.webp)
+   ![Assigned Patients for doctor](documentation/pages/appointment/assigned-doctor-1.webp)
 
 6. **Doctor Schedules the Appointment:**
    - **Action:** The doctor selects a date and time for the appointment and clicks the "Accept and Schedule" button.
 
-   ![Accept and Schedule](static/documentation/pages/appointment/assigned-doctor-2.webp)
+   ![Accept and Schedule](documentation/pages/appointment/assigned-doctor-2.webp)
 
    - **Database Update:** The status of the appointment in MongoDB changes to `scheduled`.
 
-   ![MongoDB status of `scheduled`](static/documentation/pages/appointment/sheduled-mongo.webp)
+   ![MongoDB status of `scheduled`](documentation/pages/appointment/sheduled-mongo.webp)
 
 7. **Updated Views for Doctor and Patient:**
    - **Doctor's Profile:**
    - **Interface:** The scheduled appointment remains in the "Assigned Patients" section.
 
-   ![Assigned Patients](static/documentation/pages/appointment/assigned-doctor-3.webp)
+   ![Assigned Patients](documentation/pages/appointment/assigned-doctor-3.webp)
 
    - **Patient's Profile:**
    - **Interface:** The appointment is moved from the "Requested Appointments" section to the "Scheduled Appointments" section with the assigned date and time.
 
-   ![Scheduled Appointments](static/documentation/pages/appointment/sheduled-patient.webp)
+   ![Scheduled Appointments](documentation/pages/appointment/sheduled-patient.webp)
 
 ### Database Collection:
 
@@ -671,7 +671,7 @@ This workflow ensures a seamless process for managing appointment requests, assi
 ### All Users Page
 The "All Users" page is an administrative tool that provides a detailed overview of all users registered on the website. This page is accessible exclusively to administrators and serves as a central hub for user management. Below is a detailed description of the features and functionalities available on the All Users page:
 
-![All Users Page](static/documentation/pages/admin-users-page.webp)
+![All Users Page](documentation/pages/admin-users-page.webp)
 
 #### Key Features:
 
@@ -695,7 +695,7 @@ The "All Users" page is an administrative tool that provides a detailed overview
 ### Add Doctor Page
 The "Add Doctor" page is a crucial tool for administrators to manage the medical staff at The Knee Surgery clinic. This page is exclusively accessible through the admin's profile and allows the admin to add new doctors to the database. Once added, these doctors are automatically displayed on the "Our Doctors" page.
 
-![Add Doctor Page](static/documentation/pages/add-doctor-page.webp)
+![Add Doctor Page](documentation/pages/add-doctor-page.webp)
 
 1. **Bootstrap Form:**
    - **User-Friendly Design:** The page features a Bootstrap form designed to be intuitive and user-friendly, ensuring that admins can quickly and easily add new doctors.
@@ -718,7 +718,7 @@ The "Add Doctor" page is a crucial tool for administrators to manage the medical
 ### Medical Records Page
 The Medical Record page is a comprehensive tool designed for doctors and admin users to manage and update patient medical records efficiently. This page provides a detailed view of the patient's medical history and allows for the upload and management of associated documents.
 
-![Medical Record Page](static/documentation/pages/medical-record-page.webp)
+![Medical Record Page](documentation/pages/medical-record-page.webp)
 
 #### Key Features:
 
@@ -750,7 +750,7 @@ The Medical Record page is a comprehensive tool designed for doctors and admin u
 ### 404 Page
 The **404 Page Not Found** is a user-friendly error page that is displayed when a user attempts to access a page that does not exist on the website. This page aims to inform users clearly and provide them with an easy way to navigate back to the homepage.
 
-![404 Page](static/documentation/pages/404-page.webp)
+![404 Page](documentation/pages/404-page.webp)
 
 #### Key Features:
 
@@ -770,7 +770,7 @@ The **404 Page Not Found** is a user-friendly error page that is displayed when 
 ### 403 Page
 The **403 Forbidden** page is shown when a user attempts to access a page or resource they do not have permission to view. This could be due to various reasons, such as insufficient user privileges or restricted content.
 
-![403 Page](static/documentation/pages/403-page.webp)
+![403 Page](documentation/pages/403-page.webp)
 
 #### Key Features:
 
@@ -902,7 +902,7 @@ This database design allows for efficient management of user data, medical recor
 
 ### Entity Relationship Diagram
 
-![ERD My DB](static/documentation/erd-mongodb.webp)
+![ERD My DB](documentation/erd-mongodb.webp)
 
 ## Technologies Used
 
@@ -938,41 +938,41 @@ README file.
 <details>
 <summary>Home Page</summary>
 
-![Home Page](static/documentation/pages/responsiv/home-page-responsive.webp)
+![Home Page](documentation/pages/responsiv/home-page-responsive.webp)
 </details>
 
 <details>
 <summary>Log in Page</summary>
 
-![Log in Page](static/documentation/pages/responsiv/login-page-responsive.webp)
+![Log in Page](documentation/pages/responsiv/login-page-responsive.webp)
 </details>
 
 <details>
 <summary>Sign Up Page</summary>
 
-![Sign Up Page](static/documentation/pages/responsiv/signup-page-responsive.webp)
+![Sign Up Page](documentation/pages/responsiv/signup-page-responsive.webp)
 
 With the opened Modal window:
 
-![Sign Up Page with Modal](static/documentation/pages/responsiv/signup-1-page-responsive.webp)
+![Sign Up Page with Modal](documentation/pages/responsiv/signup-1-page-responsive.webp)
 </details>
 
 <details>
 <summary>Our Doctors Page</summary>
 
-![Our Doctors Page](static/documentation/pages/responsiv/doctors-page-responsive.webp)
+![Our Doctors Page](documentation/pages/responsiv/doctors-page-responsive.webp)
 </details>
 
 <details>
 <summary>About Us Page</summary>
 
-![About Us Page](static/documentation/pages/responsiv/about-page-responsive.webp)
+![About Us Page](documentation/pages/responsiv/about-page-responsive.webp)
 </details>
 
 <details>
 <summary>Privacy Policy Page</summary>
 
-![Privacy Policy Page](static/documentation/pages/responsiv/privacy-page-responsive.webp)
+![Privacy Policy Page](documentation/pages/responsiv/privacy-page-responsive.webp)
 </details>
 
 <details>
@@ -980,45 +980,45 @@ With the opened Modal window:
 
 Patient
 
-![Profile Page Patient](static/documentation/pages/responsiv/profil-patient-page-responsive.webp)
+![Profile Page Patient](documentation/pages/responsiv/profil-patient-page-responsive.webp)
 
 Admin
 
-![Profile Page Admin](static/documentation/pages/responsiv/profil-admin-page-responsive.webp)
+![Profile Page Admin](documentation/pages/responsiv/profil-admin-page-responsive.webp)
 
 Doctor
 
-![Profile Page Doctor](static/documentation/pages/responsiv/profil-doctor-page-responsive.webp)
+![Profile Page Doctor](documentation/pages/responsiv/profil-doctor-page-responsive.webp)
 </details>
 
 <details>
 <summary>Add Doctor Page</summary>
 
-![Add Doctor Page](static/documentation/pages/responsiv/add-doctor-page-responsive.webp)
+![Add Doctor Page](documentation/pages/responsiv/add-doctor-page-responsive.webp)
 </details>
 
 <details>
 <summary>All Users Page</summary>
 
-![All Users Page](static/documentation/pages/responsiv/all-users-page-responsive.webp)
+![All Users Page](documentation/pages/responsiv/all-users-page-responsive.webp)
 </details>
 
 <details>
 <summary> Medical Records Page</summary>
 
-![Medical Records Page](static/documentation/pages/responsiv/medical-record-page-responsive.webp)
+![Medical Records Page](documentation/pages/responsiv/medical-record-page-responsive.webp)
 </details>
 
 <details>
 <summary> 404 Page</summary>
 
-![404 Page](static/documentation/pages/responsiv/404-page-responsive.webp)
+![404 Page](documentation/pages/responsiv/404-page-responsive.webp)
 </details>
 
 <details>
 <summary> 403 Page</summary>
 
-![403 Page](static/documentation/pages/responsiv/403-page-responsive.webp)
+![403 Page](documentation/pages/responsiv/403-page-responsive.webp)
 </details>
 
 ### Validator testing
@@ -1031,7 +1031,7 @@ I have used the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com
 
 <summary> All clear, no errors found. See the screenshot</summary>
 
-![404 Page](static/documentation/validator/ci-python-liner.webp)
+![404 Page](documentation/validator/ci-python-liner.webp)
 </details>
 
 #### HTML
@@ -1040,38 +1040,38 @@ I have used the recommended [HTML W3C Validator](https://validator.w3.org/) to v
 <details>
 <summary>Home Page, no errors</summary>
 
-![Home Page](static/documentation/validator/home-page-valid.webp)
+![Home Page](documentation/validator/home-page-valid.webp)
 </details>
 
 <details>
 <summary>Log in Page, no errors</summary>
 
-![Log in Page](static/documentation/validator/login-page-valid.webp)
+![Log in Page](documentation/validator/login-page-valid.webp)
 </details>
 
 <details>
 <summary>Sign Up Pag, no errorse</summary>
 
-![Sign Up Page](static/documentation/validator/signup-page-valid.webp)
+![Sign Up Page](documentation/validator/signup-page-valid.webp)
 
 </details>
 
 <details>
 <summary>Our Doctors Page, no errors</summary>
 
-![Our Doctors Page](static/documentation/validator/doctors-page-valid.webp)
+![Our Doctors Page](documentation/validator/doctors-page-valid.webp)
 </details>
 
 <details>
 <summary>About Us Page, no errors</summary>
 
-![About Us Page](static/documentation/validator/about-page-valid.webp)
+![About Us Page](documentation/validator/about-page-valid.webp)
 </details>
 
 <details>
 <summary>Privacy Policy Page, no errors</summary>
 
-![Privacy Policy Page](static/documentation/validator/policy-page-valid.webp)
+![Privacy Policy Page](documentation/validator/policy-page-valid.webp)
 </details>
 
 <details>
@@ -1079,56 +1079,56 @@ I have used the recommended [HTML W3C Validator](https://validator.w3.org/) to v
 
 Patient
 
-![Profile Page Patient](static/documentation/validator/profile-patient-page-valid.webp)
+![Profile Page Patient](documentation/validator/profile-patient-page-valid.webp)
 
 Admin
 
-![Profile Page Admin](static/documentation/validator/profile-admin-page-valid.webp)
+![Profile Page Admin](documentation/validator/profile-admin-page-valid.webp)
 
 Doctor
 
-![Profile Page Doctor](static/documentation/validator/profile-doctor-page-valid.webp)
+![Profile Page Doctor](documentation/validator/profile-doctor-page-valid.webp)
 </details>
 
 <details>
 <summary>Add Doctor Page, no errors</summary>
 
-![Add Doctor Page](static/documentation/validator/add-doctor-page-valid.webp)
+![Add Doctor Page](documentation/validator/add-doctor-page-valid.webp)
 </details>
 
 <details>
 <summary>All Users Page, no errors</summary>
 
-![All Users Page](static/documentation/validator/all-users-page-valid.webp)
+![All Users Page](documentation/validator/all-users-page-valid.webp)
 </details>
 
 <details>
 <summary> Medical Records Page, no errors</summary>
 
-![Medical Records Page](static/documentation/validator/medical-records-page-valid.webp)
+![Medical Records Page](documentation/validator/medical-records-page-valid.webp)
 </details>
 
 <details>
 <summary> 404 Page, no errors</summary>
 
-![404 Page](static/documentation/validator/404-page-valid.webp)
+![404 Page](documentation/validator/404-page-valid.webp)
 </details>
 
 <details>
 <summary> 403 Page, no errors</summary>
 
-![403 Page](static/documentation/validator/403-page-valid.webp)
+![403 Page](documentation/validator/403-page-valid.webp)
 </details>
 
 #### CSS
 I have used the recommended [CSS Jigsaw Validator](https://jigsaw.w3.org/css-validator/) to validate my CSS code.
 
-![CSS Validation](static/documentation/validator/css.webp)
+![CSS Validation](documentation/validator/css.webp)
 
 #### JavaScript
 I have used the recommended [JShint Validator](https://jshint.com/) to validate my JS file.
 
-![JS Validation](static/documentation/validator/js-valid.webp)
+![JS Validation](documentation/validator/js-valid.webp)
 
 ### LightHouse report
 
@@ -1137,12 +1137,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Home Page Desktop](static/documentation/lighthouse/index-d.webp)
+![Home Page Desktop](documentation/lighthouse/index-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Home Page Mobile](static/documentation/lighthouse/index-m.webp)
+![Home Page Mobile](documentation/lighthouse/index-m.webp)
 </details>
 
 #### Log in Page
@@ -1150,12 +1150,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Log in Page Desktop](static/documentation/lighthouse/login-d.webp)
+![Log in Page Desktop](documentation/lighthouse/login-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Log in Page Mobile](static/documentation/lighthouse/login-m.webp)
+![Log in Page Mobile](documentation/lighthouse/login-m.webp)
 </details>
 
 #### Sign Up Page
@@ -1163,12 +1163,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Sign Up Page Desktop](static/documentation/lighthouse/signup-d.webp)
+![Sign Up Page Desktop](documentation/lighthouse/signup-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Sign Up Page Mobile](static/documentation/lighthouse/signup-d.webp)
+![Sign Up Page Mobile](documentation/lighthouse/signup-d.webp)
 </details>
 
 #### Our Doctors Page
@@ -1176,12 +1176,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Our Doctors Page Desktop](static/documentation/lighthouse/doctors-d.webp)
+![Our Doctors Page Desktop](documentation/lighthouse/doctors-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Our Doctors Page Mobile](static/documentation/lighthouse/doctors-m.webp)
+![Our Doctors Page Mobile](documentation/lighthouse/doctors-m.webp)
 </details>
 
 #### About Us Page
@@ -1189,12 +1189,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![About Us Page Desktop](static/documentation/lighthouse/about-d.webp)
+![About Us Page Desktop](documentation/lighthouse/about-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![About Us Page Mobile](static/documentation/lighthouse/about-m.webp)
+![About Us Page Mobile](documentation/lighthouse/about-m.webp)
 </details>
 
 #### Privacy Policy Page
@@ -1202,12 +1202,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Privacy Policy Page Desktop](static/documentation/lighthouse/policy-d.webp)
+![Privacy Policy Page Desktop](documentation/lighthouse/policy-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Privacy Policy Page Mobile](static/documentation/lighthouse/policy-m.webp)
+![Privacy Policy Page Mobile](documentation/lighthouse/policy-m.webp)
 </details>
 
 #### Profile Page
@@ -1217,12 +1217,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Patient Profile Page Desktop](static/documentation/lighthouse/profile-patient-d.webp)
+![Patient Profile Page Desktop](documentation/lighthouse/profile-patient-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Patient Profile Page Mobile](static/documentation/lighthouse/profile-patient-m.webp)
+![Patient Profile Page Mobile](documentation/lighthouse/profile-patient-m.webp)
 </details>
 
 ##### Admin's Profile Page
@@ -1230,12 +1230,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Admin Profile Page Desktop](static/documentation/lighthouse/profile-admin-d.webp)
+![Admin Profile Page Desktop](documentation/lighthouse/profile-admin-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Admin Profile Page Mobile](static/documentation/lighthouse/profile-admin-m.webp)
+![Admin Profile Page Mobile](documentation/lighthouse/profile-admin-m.webp)
 </details>
 
 ##### Doctor's Profile Page
@@ -1243,12 +1243,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Doctor Profile Page Desktop](static/documentation/lighthouse/profile-doc-d.webp)
+![Doctor Profile Page Desktop](documentation/lighthouse/profile-doc-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Doctor Profile Page Mobile](static/documentation/lighthouse/profile-doc-m.webp)
+![Doctor Profile Page Mobile](documentation/lighthouse/profile-doc-m.webp)
 </details>
 
 #### Add Doctor Page
@@ -1256,12 +1256,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Add Doctor Page Desktop](static/documentation/lighthouse/add-doc-d.webp)
+![Add Doctor Page Desktop](documentation/lighthouse/add-doc-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Add Doctor Page Mobile](static/documentation/lighthouse/add-doc-m.webp)
+![Add Doctor Page Mobile](documentation/lighthouse/add-doc-m.webp)
 </details>
 
 #### All Users Page
@@ -1269,12 +1269,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![All Users Page Desktop](static/documentation/lighthouse/all-users-d.webp)
+![All Users Page Desktop](documentation/lighthouse/all-users-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![All Users Page Mobile](static/documentation/lighthouse/all-users-m.webp)
+![All Users Page Mobile](documentation/lighthouse/all-users-m.webp)
 </details>
 
 #### Medical Records Page
@@ -1282,12 +1282,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![Medical Records Page Desktop](static/documentation/lighthouse/med-rec-d.webp)
+![Medical Records Page Desktop](documentation/lighthouse/med-rec-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![Medical Records Page Mobile](static/documentation/lighthouse/med-rec-m.webp)
+![Medical Records Page Mobile](documentation/lighthouse/med-rec-m.webp)
 </details>
 
 #### 404 Page
@@ -1295,12 +1295,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![404 Page Desktop](static/documentation/lighthouse/404-d.webp)
+![404 Page Desktop](documentation/lighthouse/404-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![404 Page Mobile](static/documentation/lighthouse/404-m.webp)
+![404 Page Mobile](documentation/lighthouse/404-m.webp)
 </details>
 
 #### 403 Page
@@ -1308,12 +1308,12 @@ I have used the recommended [JShint Validator](https://jshint.com/) to validate 
 <details>
 <summary>Desktop</summary>
 
-![403 Page Desktop](static/documentation/lighthouse/index-d.webp)
+![403 Page Desktop](documentation/lighthouse/index-d.webp)
 </details>
 <details>
 <summary>Mobile</summary>
 
-![403 Page Mobile](static/documentation/lighthouse/index-m.webp)
+![403 Page Mobile](documentation/lighthouse/index-m.webp)
 </details>
 
 ### Compatibility
@@ -1334,7 +1334,7 @@ Safari.
 <details>
 <summary>Home Page Chrome</summary>
 
-![Chrome. Index page](static/documentation/pages/home-page-full.webp)
+![Chrome. Index page](documentation/pages/home-page-full.webp)
 </details>
 
 #### Firefox
@@ -1342,7 +1342,7 @@ Safari.
 <details>
 <summary>Home Page Firefox</summary>
 
-![Firefox. Index page](static/documentation/pages/fire-shot-firefox-index-full.webp)
+![Firefox. Index page](documentation/pages/fire-shot-firefox-index-full.webp)
 </details>
 
 #### Safari
@@ -1350,7 +1350,7 @@ Safari.
 <details>
 <summary>Home Page Safari</summary>
 
-![Safari. Index page](static/documentation/pages/safari-index-full.webp)
+![Safari. Index page](documentation/pages/safari-index-full.webp)
 </details>
 
 
@@ -1364,15 +1364,15 @@ For manual testing documentation, please continue to [TEST_SUITE_MANUAL.md](TEST
 
 **SSL Certificate Verification Failed When Connecting to MongoDB:** Encountered an SSL certificate verification error (SSL: CERTIFICATE_VERIFY_FAILED) when trying to connect to MongoDB.
 
-![Bug 1, code](static/documentation/bugs/1/bug-1.jpg)
-![Bug 1, Error Message](static/documentation/bugs/1/bug-1-1.jpg)
+![Bug 1, code](documentation/bugs/1/bug-1.jpg)
+![Bug 1, Error Message](documentation/bugs/1/bug-1-1.jpg)
 
 **Solution:** Resolved the issue by adding the certifi library (import certifi) and modifying the PyMongo initialization line to specify the tlsCAFile parameter.
 
 **Code Changes and Result:**
 
-![Bug 1, Code Changes](static/documentation/bugs/1/bug-1-2.jpg)
-![Bug 1, Result](static/documentation/bugs/1/bug-1-3.jpg)
+![Bug 1, Code Changes](documentation/bugs/1/bug-1-2.jpg)
+![Bug 1, Result](documentation/bugs/1/bug-1-3.jpg)
 
 #### Logout Issue
 
@@ -1431,7 +1431,7 @@ When a user updates their email address in the profile settings, the user remain
     •	A “User not found” notification appears at the top of the profile page upon returning.
 
 **Screenshot:**
-![Bug 3, User not found Message](static/documentation/bugs/3/bug-3-1.webp)
+![Bug 3, User not found Message](documentation/bugs/3/bug-3-1.webp)
 
 **Cause:**
 The issue was caused by the Flask application not correctly updating the session and redirecting after an email change. Although the session email was updated, the redirection logic did not reflect the new session state, leading to the user being treated as unauthenticated or non-existent in subsequent requests.
@@ -1465,7 +1465,7 @@ Ensure the JavaScript handles the success response correctly:
 
 After implementing the above solution, the email change functionality works as expected, keeping the user authenticated with the new email address and displaying the appropriate success message on the profile page.
 
-![Bug 3, Result](static/documentation/bugs/3/bug-3-2.webp)
+![Bug 3, Result](documentation/bugs/3/bug-3-2.webp)
 
 ### Unsolved Bugs
 
@@ -1665,27 +1665,27 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 
 #### Index page
 
-1. Doctor Illustrator Design, [License.](static/documentation/images/image-1-license-certificate.txt)
-2. Physiotherapist check X ray, [License.](static/documentation/images/image-2-license-certificate.txt)
-3. Hands operating a patient, [License.](static/documentation/images/image-3-license-certificate.txt)
-4. Knee joint model , [License.](static/documentation/images/image-4-license-certificate.txt)
+1. Doctor Illustrator Design, [License.](documentation/images/image-1-license-certificate.txt)
+2. Physiotherapist check X ray, [License.](documentation/images/image-2-license-certificate.txt)
+3. Hands operating a patient, [License.](documentation/images/image-3-license-certificate.txt)
+4. Knee joint model , [License.](documentation/images/image-4-license-certificate.txt)
 5. Ligament Reconstruction image was generated using AI from [ChatGPT](https://www.openai.com/chatgpt)
-6. Bandaging woman's injured knee, [License.](static/documentation/images/image-6-license-certificate.txt)
-7. Injection Procedures, [License.](static/documentation/images/image-7-license-certificate.txt)
+6. Bandaging woman's injured knee, [License.](documentation/images/image-6-license-certificate.txt)
+7. Injection Procedures, [License.](documentation/images/image-7-license-certificate.txt)
 
 #### Our Doctors page
 
-1. Dr. John Doe photo, [License.](static/documentation/images/image-8-license-certificate.txt)
-2. Dr. Jane Smith photo, [License.](static/documentation/images/image-9-license-certificate.txt)
-3. Dr. Emily Johnson photo, [License.](static/documentation/images/image-10-license-certificate.txt)
-4. Dr. Michael Brown photo, [License.](static/documentation/images/image-11-license-certificate.txt)
+1. Dr. John Doe photo, [License.](documentation/images/image-8-license-certificate.txt)
+2. Dr. Jane Smith photo, [License.](documentation/images/image-9-license-certificate.txt)
+3. Dr. Emily Johnson photo, [License.](documentation/images/image-10-license-certificate.txt)
+4. Dr. Michael Brown photo, [License.](documentation/images/image-11-license-certificate.txt)
 
 #### About Us page
 
-1. Hospital reception counter, [License.](static/documentation/images/image-12-license-certificate.txt)
-2. Busy Hospital Corridor, [License.](static/documentation/images/image-13-license-certificate.txt)
-3. Modern operating theatre, [License.](static/documentation/images/image-14-license-certificate.txt)
-4. A room of an hospital, [License.](static/documentation/images/image-15-license-certificate.txt)
+1. Hospital reception counter, [License.](documentation/images/image-12-license-certificate.txt)
+2. Busy Hospital Corridor, [License.](documentation/images/image-13-license-certificate.txt)
+3. Modern operating theatre, [License.](documentation/images/image-14-license-certificate.txt)
+4. A room of an hospital, [License.](documentation/images/image-15-license-certificate.txt)
 
 ## Acknowledgments
 
