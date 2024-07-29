@@ -10,9 +10,6 @@ $(document).ready(function () {
   // Check if viewing as admin
   const viewingAsAdmin = $("#viewingAsAdmin").val() === "true";
 
-  validateConfirmPassword("password", "confirmPassword");
-  togglePasswordVisibility("password", "toggleIcon");
-
   /**
    * Function to validate password on input event
    */
