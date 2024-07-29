@@ -1732,13 +1732,16 @@ Websites with a backend structure similar to this project offer a wide range of 
 Here are a few key improvements planned for the future:
 
 1. **Enhanced Appointment Management System**
-   - Develop a more intuitive appointment management system that simplifies each stage of the process. This includes allowing admins to easily view, edit, and delete appointments as needed. The goal is to make the system as user-friendly and efficient as possible for all users involved.
+  - Develop a more intuitive appointment management system that simplifies each stage of the process. This includes allowing admins to easily view, edit, and delete appointments as needed. The goal is to make the system as user-friendly and efficient as possible for all users involved.
 
 2. **Addition of Articles and Helpful Materials**
-   - Add articles and useful materials to the site that address issues related to the clinic's profile or prepare patients for various procedures. This will provide valuable information and support to patients, enhancing their experience and knowledge.
+  - Add articles and useful materials to the site that address issues related to the clinic's profile or prepare patients for various procedures. This will provide valuable information and support to patients, enhancing their experience and knowledge.
 
 3. **Search Functionality**
-   - Implement a search mechanism for the website. This will enable users to search through articles, doctors to search for patients, and admins to search through all users. This feature will enhance the usability and efficiency of the platform.
+  - Implement a search mechanism for the website. This will enable users to search through articles, doctors to search for patients, and admins to search through all users. This feature will enhance the usability and efficiency of the platform.
 
-4. **And Much More**
-   - Continuously add features and improvements as necessary, based on real-world use and feedback from the team and users. This ongoing development will ensure the platform remains relevant and effective in meeting its users' needs.
+4. **Interactive Image**
+  - The main page of this project was designed to include an interactive image feature. However, due to time constraints, this feature was not implemented in the current version. I plan to add this interactive element in future updates to enhance the user experience and functionality of the site.
+
+5. **And Much More**
+  - Continuously add features and improvements as necessary, based on real-world use and feedback from the team and users. This ongoing development will ensure the platform remains relevant and effective in meeting its users' needs.
