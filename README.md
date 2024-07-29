@@ -7,6 +7,10 @@ View the live site [here](https://theknee-surgery-f5b49706e9d6.herokuapp.com/)
 ## Introduction
 Welcome to The Knee Surgery Clinic, your trusted destination for expert knee care and surgery. Our website is designed to offer patients a seamless experience, from registration to recovery. As a patient, you can easily register, request appointments, and communicate with our dedicated clinic staff. Our team is here to approve your requests, assign you to the right doctor, and schedule your appointments based on your specific needs. Doctors can review patient information, set exact dates and times for consultations, and update medical records to ensure you receive the best possible care. We are committed to providing a user-friendly platform that connects you with our skilled medical professionals and supports you throughout your knee surgery journey. Join us at The Knee Surgery Clinic and take the first step towards a healthier, pain-free life.
 
+### Mindmap of The Knee Surgery
+
+![Mindmap](static/documentation/mindmap.webp)
+
 ## Project Goals
 The primary goal of The Knee Surgery Clinic website is to streamline the process of knee care for both patients and medical professionals. Our objectives include:
 
@@ -54,9 +58,7 @@ As a doctor, I have the following capabilities:
 3. Delete patient appointment requests.
 4. Add, edit, and update medical records obtained during appointments with patients.
 
-## User Experience (UX) &
-
-User Interface (UI)
+## User Experience (UX) & User Interface (UI)
 
 ### Wireframes
 
@@ -895,6 +897,10 @@ Separate collections for user-uploaded files and doctor-uploaded files in medica
 - **Doctors**: Doctors can be assigned by either modifying their role directly in the database or by an admin through the web interface when adding a new doctor.
 
 This database design allows for efficient management of user data, medical records, appointments, and associated files, providing a comprehensive structure for the application.
+
+### Entity Relationship Diagram
+
+![ERD My DB](static/documentation/erd-mongodb.webp)
 
 ## Technologies Used
 
