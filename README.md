@@ -1716,11 +1716,12 @@ The Privacy Policy was also generated using [TermsFeed](https://www.termsfeed.co
 - I am deeply grateful for the experience I had nine years ago when I severely injured my knee while skiing. Unable to walk without assistance for almost a year, the doctors' expertise saved my knee. Today, I am able to run, play sports, and even do a bit of jumping. This life-changing experience inspired me to create this website.
 
 - I also want to express my gratitude to my neighbor, a surgeon who specializes in knees and joints. Despite being one of the most remarkable people I've ever known, his practice does not have a website. My project is dedicated to him. After receiving my evaluation, I plan to offer this project to him, adapting it for his clinic. With some enhancements, which I simply did not have time to implement, this website will truly come to life.
+
+- [Stack Overflow](https://stackoverflow.com/): For being an indispensable resource for troubleshooting and problem-solving. The community's expertise and willingness to help have been critical to overcoming many technical challenges.
   
 - [Kevin Powell](https://www.youtube.com/user/KepowOb) for his amazing CSS tutorials.
   
-- A heartfelt thank you to the creators of [Bootstrap](https://getbootstrap.com/) for providing an
-excellent style framework. Their toolkit not only accelerates the
+- A heartfelt thank you to the creators of [Bootstrap](https://getbootstrap.com/) for providing an excellent style framework. Their toolkit not only accelerates the
 development process but also empowers beginners to exceed their own
 capabilities.
 
