@@ -585,7 +585,7 @@ def logout():
 # Route to display the list of doctors
 @app.route("/doctors")
 def doctors():
-    """ 
+    """
     Fetches the list of doctors from DB
     and renders the doctors template.
     """
