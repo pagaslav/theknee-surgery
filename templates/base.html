@@ -41,8 +41,11 @@
     <!-- Favicon -->
     <link
       rel="icon"
-      href="{{ url_for('static', filename='images/favicon.ico') }}"
+      href="favicon.svg"
       type="image/x-icon">
+    
+    <!-- FavIvon -->
+    <link rel="shortcut icon" type='image/x-icon' href="{{ url_for('static', filename='favicon.ico') }}">
 
     <!-- Title -->
     <title>{% block title %}Default Title{% endblock %}</title>
