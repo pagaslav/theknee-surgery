@@ -41,9 +41,7 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
 # Render the 'index.html' template to display the main page
 @app.route("/")
 def index():
-    """
-    Render the main index page.
-    """
+    """Render the main index page."""
     return render_template('index.html')
 
 
@@ -587,8 +585,9 @@ def logout():
 # Route to display the list of doctors
 @app.route("/doctors")
 def doctors():
-    """
-    Fetches the list of doctors from DB and renders the doctors template.
+    """ 
+    Fetches the list of doctors from DB
+    and renders the doctors template.
     """
     doctors_list = mongo.db.doctors.find()
     return render_template("doctors.html", doctors=doctors_list)
@@ -597,9 +596,7 @@ def doctors():
 # Context processor to provide utility functions to all templates
 @app.context_processor
 def utility_processor():
-    """
-    Adds utility functions to the Jinja2 context for all templates.
-    """
+    """Adds utility functions to the Jinja2 context for all templates."""
     def get_image_path(image_name):
         """
         Constructs the image path for a doctor based on their image name.
@@ -622,18 +619,14 @@ def utility_processor():
 # Route to display the privacy policy page
 @app.route("/policy")
 def policy():
-    """
-    Renders the privacy policy template.
-    """
+    """Renders the privacy policy template."""
     return render_template("policy.html")
 
 
 # Route to display the about page
 @app.route("/about")
 def about():
-    """
-    Renders the about template.
-    """
+    """Renders the about template."""
     return render_template("about.html")
 
 
