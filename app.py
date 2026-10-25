@@ -827,9 +827,10 @@ def profile(username):
                 doctor_records = []
 
             # Retrieve the user's appointments
-            appointments = list(
-                mongo.db.appointments.find({"patient_id": user["_id"]})
-            )
+            appointment_filter = {"patient_id": user["_id"]}
+            if current_user["role"] == "doctor":
+                appointment_filter["assigned_doctor_id"] = current_user["_id"]
+            appointments = list(mongo.db.appointments.find(appointment_filter))
             for appointment in appointments:
                 if appointment.get("assigned_doctor_id"):
                     doctor = mongo.db.doctors.find_one(
@@ -882,10 +883,18 @@ def profile(username):
                         )
 
             # Retrieve the list of patients for doctor selection
-            patients = (
-                list(mongo.db.users.find({"role": "patient"}))
-                if current_user["role"] in ("doctor", "admin") else []
-            )
+            if current_user["role"] == "admin":
+                patients = list(mongo.db.users.find({"role": "patient"}))
+            elif current_user["role"] == "doctor":
+                assigned = mongo.db.appointments.find(
+                    {"assigned_doctor_id": current_user["_id"]}
+                )
+                patient_ids = list({item["patient_id"] for item in assigned})
+                patients = list(mongo.db.users.find(
+                    {"_id": {"$in": patient_ids}, "role": "patient"}
+                ))
+            else:
+                patients = []
             doctors = list(mongo.db.doctors.find())
             return render_template(
                 "profile.html",
