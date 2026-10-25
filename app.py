@@ -92,6 +92,7 @@ def protect_medical_routes():
         "update_medical_record", "upload_medical_record_file",
         "request_appointment", "accept_appointment", "delete_patient",
         "edit_user_ajax", "upload_file_ajax", "delete_file", "add_medical_record",
+        "change_password",
     }
     if route not in protected:
         return
@@ -133,6 +134,9 @@ def protect_medical_routes():
         if actor.get("role") != "doctor" or not mongo.db.appointments.find_one({
             "patient_id": patient_id, "assigned_doctor_id": actor["_id"]
         }):
+            abort(403)
+    elif route == "change_password":
+        if _id_or_404(request.form.get("user_id")) != actor["_id"]:
             abort(403)
     elif route == "edit_user_ajax":
         value = (request.get_json(silent=True) or {}).get("user_id")
@@ -182,7 +186,8 @@ def signup():
         confirm_password = request.form.get("confirm_password")
 
         # Check if the email already exists
-        existing_user = mongo.db.users.find_one({"email": email})
+        existing_user = (mongo.db.users.find_one({"email": email})
+                         or mongo.db.doctors.find_one({"email": email}))
         if existing_user:
             # If email exists, show error message and redirect to signup page
             flash(
@@ -241,6 +246,7 @@ def signup():
         flash("Registration successful!", "success")
 
         # Log the user in by adding their email to the session
+        session.clear()
         session["user"] = email
 
         return redirect(url_for("profile", username=email))
@@ -281,6 +287,7 @@ def login():
             # Check if the password matches
             if check_password_hash(existing_user["password"], password):
                 # If password matches, set the session for the user
+                session.clear()
                 session["user"] = email
                 flash("Welcome, {}".format(existing_user["name"]), "success")
 
@@ -333,7 +340,9 @@ def add_doctor():
     ):
         if request.method == "POST":
             name = request.form.get("name")
-            email = request.form.get("email")
+            email = (request.form.get("email") or "").strip().lower()
+            if not email or mongo.db.users.find_one({"email": email}) or mongo.db.doctors.find_one({"email": email}):
+                abort(409)
             specialty = request.form.get("specialty")
             description = request.form.get("description")
             additional_info = request.form.get("additional_info")
@@ -1196,7 +1205,13 @@ def edit_user_ajax():
                 gender = request.json.get("gender")
                 dob = request.json.get("dob")
                 phone = request.json.get("phone")
-                new_email = request.json.get("email").lower()
+                new_email = (request.json.get("email") or "").strip().lower()
+                if not new_email:
+                    abort(400)
+                # Session identity uses email: never let an edit adopt another account.
+                for collection in (mongo.db.users, mongo.db.doctors):
+                    if collection.find_one({"email": new_email, "_id": {"$ne": user["_id"]}}):
+                        abort(409)
 
                 # Update data dictionary
                 update_data = {
@@ -1596,3 +1611,4 @@ if __name__ == "__main__":
     host = os.environ.get("IP", "0.0.0.0")
     port = int(os.environ.get("PORT", 5000))
     app.run(host=host, port=port, debug=False)
+
