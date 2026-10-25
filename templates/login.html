@@ -4,6 +4,7 @@ endblock %} {% block content %}
       <!-- Bootstrap Login Form -->
       <section class="form-sign">
         <form method="POST" action="{{ url_for('login') }}">
+<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
           <!-- Display flashed messages -->
           {% with messages = get_flashed_messages(with_categories=true) %} {% if
           messages %}

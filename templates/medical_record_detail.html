@@ -35,6 +35,7 @@ endblock %} {% block content %}
                   style="display: inline"
                   class="delete-file-form"
                   aria-label="Delete">
+<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                   <input type="hidden" name="file_id" value="{{ file.file_id }}" />
                   <button
                     type="submit"
@@ -62,6 +63,7 @@ endblock %} {% block content %}
               method="POST"
               action="{{ url_for('update_medical_record', record_id=record._id) }}"
               enctype="multipart/form-data">
+<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
               <div class="mb-3">
                 <label for="patient" class="form-label" aria-label="Patient Name">Patient</label>
                 <input
@@ -123,6 +125,7 @@ endblock %} {% block content %}
               method="POST"
               action="{{ url_for('upload_medical_record_file', record_id=record._id) }}"
               enctype="multipart/form-data">
+<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
               <div class="mb-3">
                 <label for="file" class="form-label">Choose File</label>
                 <input

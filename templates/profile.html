@@ -131,6 +131,7 @@ content %}
               aria-expanded="false" aria-label="Change Password">Change Password</button>
             <!-- Change Password Form -->
             <form id="changePasswordForm" class="d-none mt-3" method="POST" action="{{ url_for('change_password') }}">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
               <input type="hidden" name="user_id" value="{{ user._id }}">
 
               <!-- Current Password Field -->
@@ -208,6 +209,7 @@ content %}
                     <td>
                       <form method="POST" action="{{ url_for('assign_appointment') }}" style="display: inline"
                         aria-label="Assign Doctor Form">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
                         <input type="hidden" name="appointment_id" value="{{ appointment._id }}">
                         <select name="doctor_id" aria-label="Select Doctor" required>
                           <option value="">Select Doctor</option>
@@ -255,6 +257,7 @@ content %}
                 {% if appointment.status == 'assigned' %}
                 <form method="POST" action="{{ url_for('accept_appointment') }}" style="display: inline"
                   aria-label="Assign Doctor Form">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
                   <input type="hidden" name="appointment_id" value="{{ appointment._id }}">
                   <div class="form-group">
                     <label for="appointment_date">Appointment Date:</label>
@@ -389,6 +392,7 @@ content %}
                 <a href="{{ file.file_url }}" target="_blank" aria-label="Download {{ file.file_name }}">{{ file.file_name
                   }}</a>
                 <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
                   <input type="hidden" name="file_id" value="{{ file.file_id }}">
                   <button type="submit" class="btn btn-danger btn-sm" aria-label="Delete File">Delete</button>
                 </form>
@@ -444,6 +448,7 @@ content %}
           <!-- Card Body containing the form for adding a medical record -->
           <div class="card-body">
             <form method="POST" action="{{ url_for('add_medical_record') }}">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
               <div class="mb-3">
                 <label for="patient" class="form-label" aria-label="Select Patient">Patient</label>
                 <select class="form-select" id="patient" name="patient_id" aria-required="true" required>
@@ -547,6 +552,7 @@ content %}
           <div class="card-body">
             <!-- Form for requesting an appointment -->
             <form id="appointmentRequestForm" method="POST" action="{{ url_for('request_appointment') }}">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
               <input type="hidden" name="patient_id" value="{{ user._id }}">
               <div class="mb-3">
                 <!-- Label and textarea for the reason of appointment -->

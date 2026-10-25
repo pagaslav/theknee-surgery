@@ -38,6 +38,129 @@ app.config["SESSION_PERMANENT"] = False  # Session is not permanent by default
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
 
 
+# Centralized deny-by-default checks for routes handling personal medical data.
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("ALLOW_INSECURE_LOCAL_HTTP") != "1"
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
+
+def csrf_token():
+    token = session.get("_csrf_token")
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["_csrf_token"] = token
+    return token
+
+@app.context_processor
+def security_template_context():
+    return {"csrf_token": csrf_token}
+
+def _id_or_404(value):
+    if value is None or not ObjectId.is_valid(str(value)):
+        abort(404)
+    return ObjectId(str(value))
+
+def _current_actor():
+    email = session.get("user")
+    if not email:
+        abort(403)
+    actor = mongo.db.users.find_one({"email": email})
+    if actor is None:
+        actor = mongo.db.doctors.find_one({"email": email})
+    if actor is None:
+        abort(403)
+    return actor
+
+def _can_access_medical_record(actor, record, write=False):
+    if actor.get("role") == "admin":
+        return True
+    if actor.get("role") == "doctor" and record.get("doctor_id") == actor["_id"]:
+        return True
+    return not write and actor.get("role") == "patient" and record.get("patient_id") == actor["_id"]
+
+@app.before_request
+def protect_medical_routes():
+    if request.method in {"POST", "PUT", "PATCH", "DELETE"}:
+        expected = session.get("_csrf_token")
+        received = request.form.get("_csrf_token") or request.headers.get("X-CSRF-Token")
+        if not expected or not received or not secrets.compare_digest(expected, received):
+            abort(403)
+
+    route = request.endpoint
+    protected = {
+        "profile", "medical_record_detail", "edit_medical_record",
+        "update_medical_record", "upload_medical_record_file",
+        "request_appointment", "accept_appointment", "delete_patient",
+        "edit_user_ajax", "upload_file_ajax", "delete_file", "add_medical_record",
+        "change_password",
+    }
+    if route not in protected:
+        return
+    actor = _current_actor()
+    args = request.view_args or {}
+    if route == "profile":
+        target = mongo.db.users.find_one({"email": args.get("username")})
+        if target is None:
+            target = mongo.db.doctors.find_one({"email": args.get("username")})
+        if target is None:
+            abort(404)
+        if target["_id"] != actor["_id"] and actor.get("role") != "admin":
+            assigned = actor.get("role") == "doctor" and target.get("role") == "patient" and mongo.db.appointments.find_one({
+                "patient_id": target["_id"], "assigned_doctor_id": actor["_id"]
+            })
+            if not assigned:
+                abort(403)
+    elif route in {"medical_record_detail", "edit_medical_record", "update_medical_record", "upload_medical_record_file"}:
+        record = mongo.db.medical_records.find_one({"_id": _id_or_404(args.get("record_id"))})
+        if record is None:
+            abort(404)
+        write = route != "medical_record_detail"
+        if not _can_access_medical_record(actor, record, write=write):
+            abort(403)
+    elif route == "request_appointment":
+        if actor.get("role") != "patient" or _id_or_404(request.form.get("patient_id")) != actor["_id"]:
+            abort(403)
+    elif route in {"accept_appointment", "delete_patient"}:
+        value = request.form.get("appointment_id") if route == "accept_appointment" else args.get("patient_id")
+        appointment = mongo.db.appointments.find_one({"_id": _id_or_404(value)})
+        if appointment is None:
+            abort(404)
+        if actor.get("role") != "admin" and not (
+            actor.get("role") == "doctor" and appointment.get("assigned_doctor_id") == actor["_id"]
+        ):
+            abort(403)
+    elif route == "add_medical_record":
+        patient_id = _id_or_404(request.form.get("patient_id"))
+        if actor.get("role") != "doctor" or not mongo.db.appointments.find_one({
+            "patient_id": patient_id, "assigned_doctor_id": actor["_id"]
+        }):
+            abort(403)
+    elif route == "change_password":
+        if _id_or_404(request.form.get("user_id")) != actor["_id"]:
+            abort(403)
+    elif route == "edit_user_ajax":
+        value = (request.get_json(silent=True) or {}).get("user_id")
+        if _id_or_404(value) != actor["_id"] and actor.get("role") != "admin":
+            abort(403)
+    elif route == "upload_file_ajax":
+        if _id_or_404(request.form.get("user_id")) != actor["_id"] and actor.get("role") != "admin":
+            abort(403)
+    elif route == "delete_file":
+        file_data = mongo.db.user_files.find_one({"file_id": request.form.get("file_id")})
+        if file_data is None:
+            abort(404)
+        if file_data.get("user_id") != actor["_id"] and actor.get("role") != "admin":
+            abort(403)
+
+@app.after_request
+def prevent_personal_data_caching(response):
+    if session.get("user") and request.endpoint != "static":
+        response.headers["Cache-Control"] = "private, no-store"
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    return response
+
+
 # Render the 'index.html' template to display the main page
 @app.route("/")
 def index():
@@ -63,7 +186,8 @@ def signup():
         confirm_password = request.form.get("confirm_password")
 
         # Check if the email already exists
-        existing_user = mongo.db.users.find_one({"email": email})
+        existing_user = (mongo.db.users.find_one({"email": email})
+                         or mongo.db.doctors.find_one({"email": email}))
         if existing_user:
             # If email exists, show error message and redirect to signup page
             flash(
@@ -122,6 +246,7 @@ def signup():
         flash("Registration successful!", "success")
 
         # Log the user in by adding their email to the session
+        session.clear()
         session["user"] = email
 
         return redirect(url_for("profile", username=email))
@@ -162,6 +287,7 @@ def login():
             # Check if the password matches
             if check_password_hash(existing_user["password"], password):
                 # If password matches, set the session for the user
+                session.clear()
                 session["user"] = email
                 flash("Welcome, {}".format(existing_user["name"]), "success")
 
@@ -214,7 +340,9 @@ def add_doctor():
     ):
         if request.method == "POST":
             name = request.form.get("name")
-            email = request.form.get("email")
+            email = (request.form.get("email") or "").strip().lower()
+            if not email or mongo.db.users.find_one({"email": email}) or mongo.db.doctors.find_one({"email": email}):
+                abort(409)
             specialty = request.form.get("specialty")
             description = request.form.get("description")
             additional_info = request.form.get("additional_info")
@@ -672,7 +800,10 @@ def profile(username):
 
             # Retrieve the user's medical records
             medical_records = list(
-                mongo.db.medical_records.find({"patient_id": user["_id"]})
+                mongo.db.medical_records.find({
+                    "patient_id": user["_id"],
+                    **({"doctor_id": current_user["_id"]} if current_user["role"] == "doctor" else {})
+                })
             )
             for record in medical_records:
                 doctor = mongo.db.doctors.find_one(
@@ -705,9 +836,10 @@ def profile(username):
                 doctor_records = []
 
             # Retrieve the user's appointments
-            appointments = list(
-                mongo.db.appointments.find({"patient_id": user["_id"]})
-            )
+            appointment_filter = {"patient_id": user["_id"]}
+            if current_user["role"] == "doctor":
+                appointment_filter["assigned_doctor_id"] = current_user["_id"]
+            appointments = list(mongo.db.appointments.find(appointment_filter))
             for appointment in appointments:
                 if appointment.get("assigned_doctor_id"):
                     doctor = mongo.db.doctors.find_one(
@@ -755,12 +887,23 @@ def profile(username):
                         appointment["patient_email"] = patient["email"]
                         appointment["medical_records"] = list(
                             mongo.db.medical_records.find(
-                                {"patient_id": patient["_id"]}
+                                {"patient_id": patient["_id"], "doctor_id": user["_id"]}
                             )
                         )
 
             # Retrieve the list of patients for doctor selection
-            patients = list(mongo.db.users.find({"role": "patient"}))
+            if current_user["role"] == "admin":
+                patients = list(mongo.db.users.find({"role": "patient"}))
+            elif current_user["role"] == "doctor":
+                assigned = mongo.db.appointments.find(
+                    {"assigned_doctor_id": current_user["_id"]}
+                )
+                patient_ids = list({item["patient_id"] for item in assigned})
+                patients = list(mongo.db.users.find(
+                    {"_id": {"$in": patient_ids}, "role": "patient"}
+                ))
+            else:
+                patients = []
             doctors = list(mongo.db.doctors.find())
             return render_template(
                 "profile.html",
@@ -768,7 +911,9 @@ def profile(username):
                 medical_records=medical_records,
                 appointments=appointments,
                 user_files=list(
-                    mongo.db.user_files.find({"user_id": user["_id"]})
+                    mongo.db.user_files.find({
+                        "user_id": user["_id"] if current_user["role"] == "admin" or current_user["_id"] == user["_id"] else None
+                    })
                 ),
                 role=(
                     current_user["role"] if viewing_as_admin else user["role"]
@@ -1060,7 +1205,13 @@ def edit_user_ajax():
                 gender = request.json.get("gender")
                 dob = request.json.get("dob")
                 phone = request.json.get("phone")
-                new_email = request.json.get("email").lower()
+                new_email = (request.json.get("email") or "").strip().lower()
+                if not new_email:
+                    abort(400)
+                # Session identity uses email: never let an edit adopt another account.
+                for collection in (mongo.db.users, mongo.db.doctors):
+                    if collection.find_one({"email": new_email, "_id": {"$ne": user["_id"]}}):
+                        abort(409)
 
                 # Update data dictionary
                 update_data = {
@@ -1460,3 +1611,4 @@ if __name__ == "__main__":
     host = os.environ.get("IP", "0.0.0.0")
     port = int(os.environ.get("PORT", 5000))
     app.run(host=host, port=port, debug=False)
+

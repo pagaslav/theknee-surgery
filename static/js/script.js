@@ -5,6 +5,15 @@
  * Function to handle document ready event
  */
 $(document).ready(function () {
+  // Same-origin CSRF token for AJAX writes, including DELETE requests.
+  const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (csrf && !/^(GET|HEAD|OPTIONS)$/i.test(settings.type || "GET")) {
+        xhr.setRequestHeader("X-CSRF-Token", csrf);
+      }
+    }
+  });
   // Get user role value
   const userRole = $("#userRole").val();
   // Check if viewing as admin
