@@ -404,6 +404,14 @@ class MedicalAccessTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.render.call_args.kwargs['user']['_id'], self.patient['_id'])
 
+    def test_real_login_route_enforces_shared_budget_before_password_check(self):
+        self.login_as(None)
+        with patch.object(self.module, 'check_password_hash', return_value=False) as verify:
+            for _ in range(10):
+                self.assertEqual(self.post('/login', data={'email':self.patient['email'], 'password':'wrong'}).status_code, 302)
+            self.assertEqual(self.post('/login', data={'email':self.patient['email'], 'password':'wrong'}).status_code, 429)
+            self.assertEqual(verify.call_count, 10)
+
 
 if __name__ == '__main__':
     unittest.main()

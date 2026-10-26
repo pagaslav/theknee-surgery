@@ -20,6 +20,7 @@ from urllib.parse import urlsplit
 import secrets
 import string
 import re
+from security_login import enforce_login_limits
 if os.path.exists("env.py"):
     import env
 
@@ -400,6 +401,9 @@ def login():
         email = (request.form.get("email") or "").strip().lower()
         password = request.form.get("password")
         remember = request.form.get("remember")
+        enforce_login_limits(app, mongo, email)
+        if not email or len(email) > 254 or not password or len(password) > 1024:
+            abort(400)
         matches = _email_accounts(email)
         collection, existing_user = matches[0] if len(matches) == 1 else (None, None)
 
