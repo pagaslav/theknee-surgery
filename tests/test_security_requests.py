@@ -22,7 +22,7 @@ class MedicalAccessTests(unittest.TestCase):
         self.app = self.module.app
         self.app.config.update(TESTING=True)
         self.render = patch.object(self.module, "render_template", return_value="rendered").start()
-        self.cloud = patch.object(self.module.cloudinary.uploader, "upload", return_value={"public_id": "test", "secure_url": "https://example.invalid/test"}).start()
+        self.cloud = patch.object(self.module.cloudinary.uploader, "upload", side_effect=lambda file, **options: {"public_id": options["public_id"], "secure_url": "https://example.invalid/never-disclose", "type": "authenticated", "resource_type": "raw"}).start()
         self.addCleanup(patch.stopall)
         self.patient = {"_id": ObjectId(), "email": "a@example.invalid", "role": "patient", "name": "A", "password": generate_password_hash("TestPassword1")}
         self.other = {"_id": ObjectId(), "email": "b@example.invalid", "role": "patient", "name": "B"}
@@ -187,6 +187,209 @@ class MedicalAccessTests(unittest.TestCase):
             self.assertNotIn('actor_id', session)
             self.assertNotIn('actor_collection', session)
             self.assertNotIn('user', session)
+
+    def private_document(self, kind='record'):
+        document = {'file_id': 'medical/synthetic.pdf', 'file_name': 'test.pdf', 'delivery_type': 'authenticated', 'resource_type': 'raw'}
+        collection = self.db.medical_record_files if kind == 'record' else self.db.user_files
+        document['record_id' if kind == 'record' else 'user_id'] = self.record['_id'] if kind == 'record' else self.patient['_id']
+        collection.insert_one(document)
+        return document, f'/files/{kind}/{document["_id"]}'
+
+    def mock_download(self, chunks=(b'synthetic private file',), status=200, headers=None):
+        from unittest.mock import MagicMock
+        remote = MagicMock()
+        remote.status_code = status
+        remote.headers = headers or {}
+        remote.iter_content.return_value = iter(chunks)
+        remote.__enter__.return_value = remote
+        sign = patch.object(self.module.cloudinary.utils, 'private_download_url', return_value='https://api.cloudinary.com/v1_1/test/raw/download?signature=synthetic').start()
+        get = patch.object(self.module.requests, 'get', return_value=remote).start()
+        return sign, get, remote
+
+    def test_all_upload_paths_use_authenticated_raw_storage_and_no_provider_url(self):
+        self.login_as(self.doctor)
+        self.post(f'/upload_medical_record_file/{self.record["_id"]}', data={'file': (io.BytesIO(b'one'), 'report.pdf')})
+        self.post(f'/update_medical_record/{self.record["_id"]}', data={'description': 'synthetic', 'treatment': 'synthetic', 'record_date': '2026-10-26', 'file': (io.BytesIO(b'two'), 'report.pdf')})
+        self.login_as(self.patient)
+        response = self.post('/upload_file_ajax', data={'user_id': str(self.patient['_id']), 'file': (io.BytesIO(b'three'), 'report.pdf')})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json['file_url'].startswith('/files/user/'))
+        self.assertNotIn('example.invalid', response.get_data(as_text=True))
+        self.assertEqual(self.cloud.call_count, 3)
+        public_ids = set()
+        for call in self.cloud.call_args_list:
+            self.assertEqual(call.kwargs['type'], 'authenticated')
+            self.assertEqual(call.kwargs['resource_type'], 'raw')
+            self.assertFalse(call.kwargs['overwrite'])
+            self.assertFalse(call.kwargs['use_filename'])
+            self.assertNotIn('report', call.kwargs['public_id'])
+            public_ids.add(call.kwargs['public_id'])
+        self.assertEqual(len(public_ids), 3)
+        documents = list(self.db.user_files.find()) + list(self.db.medical_record_files.find())
+        self.assertEqual(len(documents), 3)
+        for document in documents:
+            self.assertNotIn('file_url', document)
+            self.assertEqual(document['delivery_type'], 'authenticated')
+
+    def test_unconfirmed_storage_response_is_not_persisted_or_disclosed(self):
+        self.cloud.side_effect = None
+        self.cloud.return_value = {'type': 'upload', 'resource_type': 'raw', 'secure_url': 'https://example.invalid/public'}
+        self.login_as(self.patient)
+        response = self.post('/upload_file_ajax', data={'user_id': str(self.patient['_id']), 'file': (io.BytesIO(b'test'), 'report.pdf')})
+        self.assertEqual(response.status_code, 502)
+        self.assertNotIn('example.invalid', response.get_data(as_text=True))
+        self.assertEqual(self.db.user_files.count_documents({}), 0)
+
+    def test_empty_or_disallowed_uploads_do_not_call_provider(self):
+        self.login_as(self.patient)
+        for content, filename in [(b'', 'empty.pdf'), (b'code', 'script.html')]:
+            self.post('/upload_file_ajax', data={'user_id': str(self.patient['_id']), 'file': (io.BytesIO(content), filename)})
+        self.cloud.assert_not_called()
+        self.assertEqual(self.db.user_files.count_documents({}), 0)
+
+    def test_record_file_read_permissions_and_revocation(self):
+        document, url = self.private_document()
+        outsider = {'_id': ObjectId(), 'email': 'outside@example.invalid', 'role': 'doctor'}
+        self.db.doctors.insert_one(outsider)
+        for actor, expected in [(None,403),(self.other,403),(outsider,403),(self.patient,200),(self.doctor,200),(self.admin,200)]:
+            with self.subTest(actor=actor and actor['email']):
+                self.login_as(actor)
+                sign, get, remote = self.mock_download()
+                self.assertEqual(self.client.get(url).status_code, expected)
+                if expected != 200:
+                    sign.assert_not_called()
+                    get.assert_not_called()
+        self.login_as(self.doctor)
+        self.db.medical_records.update_one({'_id': self.record['_id']}, {'$set': {'doctor_id': outsider['_id']}})
+        sign, get, _ = self.mock_download()
+        self.assertEqual(self.client.get(url).status_code, 403)
+        get.assert_not_called()
+        sign.assert_not_called()
+
+    def test_user_file_only_owner_and_admin_can_download(self):
+        _, url = self.private_document('user')
+        for actor, expected in [(None,403),(self.other,403),(self.doctor,403),(self.patient,200),(self.admin,200)]:
+            self.login_as(actor)
+            sign, get, _ = self.mock_download()
+            self.assertEqual(self.client.get(url).status_code, expected)
+            if expected != 200:
+                sign.assert_not_called()
+                get.assert_not_called()
+
+    def test_download_keeps_signature_server_side_and_forces_safe_headers(self):
+        _, url = self.private_document()
+        self.login_as(self.patient)
+        sign, get, remote = self.mock_download()
+        with patch.object(self.module, 'time', SimpleNamespace(time=lambda: 2000000000)):
+            result = self.client.get(url)
+        self.assertEqual(result.data, b'synthetic private file')
+        self.assertNotIn('Location', result.headers)
+        self.assertEqual(result.content_type, 'application/octet-stream')
+        self.assertEqual(result.headers['Cache-Control'], 'private, no-store')
+        self.assertEqual(result.headers['Referrer-Policy'], 'no-referrer')
+        self.assertEqual(result.headers['X-Content-Type-Options'], 'nosniff')
+        self.assertIn('attachment', result.headers['Content-Disposition'])
+        self.assertEqual(sign.call_args.kwargs['expires_at'], 2000000060)
+        self.assertEqual(sign.call_args.kwargs['type'], 'authenticated')
+        self.assertEqual(sign.call_args.kwargs['resource_type'], 'raw')
+        self.assertFalse(get.call_args.kwargs['allow_redirects'])
+        self.assertEqual(get.call_args.kwargs['timeout'], (3, 10))
+        remote.__exit__.assert_called_once()
+
+    def test_legacy_files_fail_closed_without_using_stored_url(self):
+        result = self.db.user_files.insert_one({'user_id': self.patient['_id'], 'file_url': 'http://127.0.0.1/private', 'file_id': 'legacy'})
+        self.login_as(self.patient)
+        sign, get, _ = self.mock_download()
+        self.assertEqual(self.client.get(f'/files/user/{result.inserted_id}').status_code, 410)
+        sign.assert_not_called()
+        get.assert_not_called()
+        self.assertEqual(self.db.user_files.count_documents({}), 1)
+
+    def test_download_rejects_redirects_errors_and_oversized_streams(self):
+        _, url = self.private_document()
+        self.login_as(self.patient)
+        self.app.config['MAX_CONTENT_LENGTH'] = 16
+        for chunks, status, headers in [((b'body',),302,{'Location':'http://localhost/'}),((b'body',),500,{}),((b'x'*17,),200,{}),((b'body',),200,{'Content-Length':'100'}),((b'body',),200,{'Content-Length':'invalid'})]:
+            with self.subTest(status=status, headers=headers):
+                self.mock_download(chunks, status, headers)
+                self.assertEqual(self.client.get(url).status_code, 502)
+
+    def test_download_never_requests_untrusted_signing_hosts(self):
+        _, url = self.private_document()
+        self.login_as(self.patient)
+        sign, get, _ = self.mock_download()
+        for unsafe in ['http://api.cloudinary.com/private', 'https://localhost/private', 'https://api.cloudinary.com.evil.invalid/private', 'https://user@api.cloudinary.com/private']:
+            sign.return_value = unsafe
+            self.assertEqual(self.client.get(url).status_code, 502)
+        get.assert_not_called()
+
+    def test_download_timeout_does_not_disclose_provider_url(self):
+        _, url = self.private_document()
+        self.login_as(self.patient)
+        sign, get, _ = self.mock_download()
+        get.side_effect = self.module.requests.Timeout('signature=synthetic-must-not-leak')
+        result = self.client.get(url)
+        self.assertEqual(result.status_code, 502)
+        self.assertNotIn(b'synthetic-must-not-leak', result.data)
+
+    def test_record_file_delete_requires_writer_csrf_and_confirmed_provider_success(self):
+        document, _ = self.private_document()
+        url = f'/medical_record_files/{document["_id"]}/delete'
+        with patch.object(self.module.cloudinary.uploader, 'destroy', return_value={'result':'ok'}) as destroy:
+            for actor in (None,self.patient,self.other):
+                self.login_as(actor)
+                self.assertEqual(self.post(url).status_code, 403)
+            self.login_as(self.doctor)
+            self.assertEqual(self.client.get(url).status_code, 405)
+            self.assertEqual(self.client.post(url).status_code, 403)
+            destroy.assert_not_called()
+            destroy.return_value = {'result': 'error'}
+            self.assertEqual(self.post(url).status_code, 502)
+            self.assertIsNotNone(self.db.medical_record_files.find_one({'_id':document['_id']}))
+            destroy.return_value = {'result':'ok'}
+            self.assertEqual(self.post(url).status_code, 302)
+            destroy.assert_called_with(document['file_id'], invalidate=True, type='authenticated', resource_type='raw')
+            self.assertIsNone(self.db.medical_record_files.find_one({'_id':document['_id']}))
+
+    def test_private_user_file_delete_uses_authenticated_resource_type(self):
+        document, _ = self.private_document('user')
+        self.login_as(self.patient)
+        with patch.object(self.module.cloudinary.uploader, 'destroy', return_value={'result':'ok'}) as destroy:
+            self.assertEqual(self.post('/delete_file', data={'file_id':document['file_id']}).status_code, 200)
+            destroy.assert_called_once_with(document['file_id'], invalidate=True, type='authenticated', resource_type='raw')
+            self.assertEqual(self.db.user_files.count_documents({}), 0)
+
+    def test_invalid_or_missing_file_ids_do_not_contact_provider(self):
+        self.login_as(self.patient)
+        _, get, _ = self.mock_download()
+        for url in ['/files/user/invalid', f'/files/user/{ObjectId()}', f'/files/unknown/{ObjectId()}']:
+            self.assertEqual(self.client.get(url).status_code, 404)
+        get.assert_not_called()
+
+    def test_real_sdk_generates_signed_raw_download_without_a_format(self):
+        from urllib.parse import urlsplit, parse_qs
+        config = self.module.cloudinary.config()
+        with patch.object(config, 'cloud_name', 'synthetic-cloud'), patch.object(config, 'api_key', 'synthetic-key'), patch.object(config, 'api_secret', 'synthetic-secret'):
+            url = self.module.cloudinary.utils.private_download_url('medical/synthetic.pdf', None, resource_type='raw', type='authenticated', expires_at=2000000060, attachment=True, secure=True)
+        parsed = urlsplit(url)
+        self.assertEqual(parsed.scheme, 'https')
+        self.assertEqual(parsed.hostname, 'api.cloudinary.com')
+        self.assertIn('/raw/download', parsed.path)
+        query = parse_qs(parsed.query)
+        self.assertEqual(query['public_id'], ['medical/synthetic.pdf'])
+        self.assertEqual(query['type'], ['authenticated'])
+        self.assertEqual(query['expires_at'], ['2000000060'])
+        self.assertIn('signature', query)
+        self.assertNotIn('format', query)
+        self.assertNotIn('synthetic-secret', url)
+
+    def test_attachment_templates_render_only_application_download_links(self):
+        document, url = self.private_document()
+        with self.app.test_request_context('/'):
+            html = self.app.jinja_env.get_template('medical_record_detail.html').render(files=[document], record=self.record, patient=self.patient, doctor=self.doctor, current_user=self.doctor, csrf_token=lambda:'test-token')
+        self.assertIn(url, html)
+        self.assertNotIn('file.file_url', html)
+        self.assertNotIn('res.cloudinary.com', html)
 
     def test_profile_target_is_bound_before_a_concurrent_email_reassignment(self):
         self.login_as(self.patient)

@@ -389,7 +389,7 @@ content %}
               <!-- Loop through each file and display it -->
               {% for file in user_files %}
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{{ file.file_url }}" target="_blank" aria-label="Download {{ file.file_name }}">{{ file.file_name
+                <a href="{{ url_for('download_confidential_file', kind='user', document_id=file._id|string) }}" target="_blank" aria-label="Download {{ file.file_name }}">{{ file.file_name
                   }}</a>
                 <form action="{{ url_for('delete_file') }}" method="post" style="display:inline;" class="delete-file-form">
 <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">

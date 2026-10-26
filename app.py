@@ -2,7 +2,7 @@
 import os
 from flask import (
     Flask, flash, render_template, jsonify,
-    redirect, request, session, url_for, abort, g
+    redirect, request, session, url_for, abort, g, Response
 )
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -13,6 +13,10 @@ from datetime import timedelta, datetime, timezone
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import cloudinary.utils
+import requests
+import time
+from urllib.parse import urlsplit
 import secrets
 import string
 import re
@@ -177,11 +181,109 @@ def protect_medical_routes():
 
 @app.after_request
 def prevent_personal_data_caching(response):
-    if session.get("user") and request.endpoint != "static":
+    if request.endpoint == "download_confidential_file" or (session.get("user") and request.endpoint != "static"):
         response.headers["Cache-Control"] = "private, no-store"
     response.headers.setdefault("X-Content-Type-Options", "nosniff")
     response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
     return response
+
+
+
+def _save_confidential_file(file, collection, **metadata):
+    filename = secure_filename(file.filename or "")
+    if not filename or not allowed_file(filename) or not file.stream.read(1):
+        abort(400)
+    file.stream.seek(0)
+    extension = filename.rsplit(".", 1)[1].lower()
+    result = cloudinary.uploader.upload(
+        file, resource_type="raw", type="authenticated",
+        public_id="medical/" + secrets.token_hex(24) + "." + extension,
+        overwrite=False, use_filename=False,
+    )
+    # Never persist or disclose a provider delivery URL, even a signed one.
+    if result.get("type") != "authenticated" or result.get("resource_type") != "raw":
+        raise ValueError("The upload provider did not confirm private storage")
+    document = dict(metadata, file_id=result["public_id"], file_name=filename,
+                    delivery_type="authenticated", resource_type="raw",
+                    uploaded_at=datetime.now(timezone.utc))
+    mongo.db[collection].insert_one(document)
+    return document
+
+def _authorized_file(kind, document_id, write=False):
+    actor = _current_actor()
+    collection = {"user": "user_files", "record": "medical_record_files"}.get(kind)
+    if collection is None:
+        abort(404)
+    document = mongo.db[collection].find_one({"_id": _id_or_404(document_id)})
+    if document is None:
+        abort(404)
+    if kind == "user":
+        allowed = actor.get("role") == "admin" or document.get("user_id") == actor["_id"]
+    else:
+        record = mongo.db.medical_records.find_one({"_id": document.get("record_id")})
+        allowed = record is not None and _can_access_medical_record(actor, record, write=write)
+    if not allowed:
+        abort(403)
+    return collection, document
+
+@app.route("/files/<kind>/<document_id>")
+def download_confidential_file(kind, document_id):
+    _, document = _authorized_file(kind, document_id)
+    if document.get("delivery_type") != "authenticated" or document.get("resource_type") != "raw":
+        # Existing public assets require an explicitly approved storage migration.
+        abort(410, description="This file requires a private-storage migration.")
+    signed_url = cloudinary.utils.private_download_url(
+        document["file_id"], None, resource_type="raw", type="authenticated",
+        expires_at=int(time.time()) + 60, attachment=True, secure=True,
+    )
+    address = urlsplit(signed_url)
+    if address.scheme != "https" or address.hostname not in {
+        "api.cloudinary.com", "api-eu.cloudinary.com", "api-ap.cloudinary.com"
+    } or address.port not in {None, 443} or address.username or address.password:
+        abort(502)
+    maximum = app.config["MAX_CONTENT_LENGTH"]
+    content = bytearray()
+    try:
+        # Keep the signed URL on the server; authorize every application request.
+        with requests.get(signed_url, stream=True, timeout=(3, 10), allow_redirects=False) as upstream:
+            if upstream.status_code != 200:
+                abort(502)
+            length = upstream.headers.get("Content-Length")
+            if length is not None and (not length.isdigit() or int(length) > maximum):
+                abort(502)
+            for chunk in upstream.iter_content(chunk_size=64 * 1024):
+                if len(content) + len(chunk) > maximum:
+                    abort(502)
+                content.extend(chunk)
+    except requests.RequestException:
+        abort(502)
+    response = Response(bytes(content), content_type="application/octet-stream")
+    filename = secure_filename(document.get("file_name", "")) or "document"
+    response.headers.set("Content-Disposition", "attachment", filename=filename)
+    response.headers["Cache-Control"] = "private, no-store"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Content-Security-Policy"] = "default-src 'none'; sandbox"
+    return response
+
+@app.route("/medical_record_files/<document_id>/delete", methods=["POST"])
+def delete_medical_record_file(document_id):
+    collection, document = _authorized_file("record", document_id, write=True)
+    if not _destroy_confidential_file(document):
+        abort(502)
+    mongo.db[collection].delete_one({"_id": document["_id"]})
+    return redirect(url_for("medical_record_detail", record_id=str(document["record_id"])))
+
+def _destroy_confidential_file(document):
+    options = {"invalidate": True}
+    if document.get("delivery_type") == "authenticated" and document.get("resource_type") == "raw":
+        options.update(type="authenticated", resource_type="raw")
+    elif document.get("delivery_type"):
+        return False
+    # Legacy uploads retain their original default image/upload deletion behavior.
+    try:
+        return cloudinary.uploader.destroy(document["file_id"], **options).get("result") == "ok"
+    except Exception:
+        return False
 
 
 # Render the 'index.html' template to display the main page
@@ -1033,23 +1135,11 @@ def update_medical_record(record_id):
         if 'file' in request.files:
             file = request.files['file']
             if file and allowed_file(file.filename):
-                result = cloudinary.uploader.upload(file)
-                file_url = result['secure_url']
-                file_id = result['public_id']
-                file_name = secure_filename(file.filename)
-
-                new_file = {
-                    "record_id": ObjectId(record_id),
-                    "file_id": file_id,
-                    "file_url": file_url,
-                    "file_name": file_name,
-                    "uploaded_at": datetime.utcnow()
-                }
-                mongo.db.medical_record_files.insert_one(new_file)
+                _save_confidential_file(file, "medical_record_files", record_id=ObjectId(record_id))
 
         flash('Medical record updated successfully', 'success')
     except Exception as e:
-        flash(str(e), 'danger')
+        flash('The operation could not be completed.', 'danger')
 
     return redirect(url_for('medical_record_detail', record_id=record_id))
 
@@ -1116,20 +1206,7 @@ def upload_medical_record_file(record_id):
             file = request.files['file']
             # Validate the file type
             if file and allowed_file(file.filename):
-                result = cloudinary.uploader.upload(file)
-                file_url = result['secure_url']
-                file_id = result['public_id']
-                file_name = secure_filename(file.filename)
-
-                new_file = {
-                    "record_id": ObjectId(record_id),
-                    "file_id": file_id,
-                    "file_url": file_url,
-                    "file_name": file_name,
-                    "uploaded_at": datetime.utcnow()
-                }
-                # Insert the file details into the database
-                mongo.db.medical_record_files.insert_one(new_file)
+                _save_confidential_file(file, "medical_record_files", record_id=ObjectId(record_id))
 
                 flash('File uploaded successfully', 'success')
             else:
@@ -1137,7 +1214,7 @@ def upload_medical_record_file(record_id):
         else:
             flash('No file selected', 'danger')
     except Exception as e:
-        flash(str(e), 'danger')
+        flash('The operation could not be completed.', 'danger')
 
     return redirect(url_for('edit_medical_record', record_id=record_id))
 
@@ -1278,24 +1355,13 @@ def upload_file_ajax():
 
         # Check if the file is allowed and present
         if file and allowed_file(file.filename):
-            # Upload the file to Cloudinary
-            result = cloudinary.uploader.upload(file)
-
-            # Extract file details from the upload result
-            file_url = result['secure_url']
-            file_id = result['public_id']
-            file_name = secure_filename(file.filename)
-
-            # Create a new file record to save in the database
-            new_file = {
-                "user_id": ObjectId(user_id),
-                "file_id": file_id,
-                "file_url": file_url,
-                "file_name": file_name,
-                "file_type": file_type,
-                "uploaded_at": datetime.utcnow()
-            }
-            mongo.db.user_files.insert_one(new_file)
+            try:
+                new_file = _save_confidential_file(file, "user_files", user_id=ObjectId(user_id), file_type=file_type)
+            except Exception:
+                return jsonify({"success": False, "message": "File upload failed."}), 502
+            file_id = new_file["file_id"]
+            file_name = new_file["file_name"]
+            file_url = url_for("download_confidential_file", kind="user", document_id=str(new_file["_id"]))
 
             # Return success response with file information
             return jsonify({
@@ -1411,12 +1477,8 @@ def delete_from_cloudinary(file_id):
     Returns:
         bool: True if the file was deleted successfully, False otherwise.
     """
-    try:
-        # Attempt to delete the file from Cloudinary
-        result = cloudinary.uploader.destroy(file_id)
-        return result.get("result") == "ok"
-    except Exception as error:
-        return False
+    document = mongo.db.user_files.find_one({"file_id": file_id})
+    return document is not None and _destroy_confidential_file(document)
 
 
 # Function to check if a file has an allowed extension
@@ -1517,7 +1579,7 @@ def add_medical_record():
         flash('Medical record added successfully', 'success')
         return redirect(url_for('profile', username=session.get('user')))
     except Exception as e:
-        flash(str(e), 'danger')
+        flash('The operation could not be completed.', 'danger')
         return redirect(url_for('profile', username=session.get('user')))
 
 
@@ -1552,7 +1614,8 @@ def medical_record_detail(record_id):
             record=record,
             doctor=doctor,
             patient=patient,
-            current_user=current_user
+            current_user=current_user,
+            files=list(mongo.db.medical_record_files.find({"record_id": record["_id"]}))
         )
     else:
         # Flash an error message if the record is not found
