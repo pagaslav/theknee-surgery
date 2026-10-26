@@ -2,7 +2,7 @@
 import os
 from flask import (
     Flask, flash, render_template, jsonify,
-    redirect, request, session, url_for, abort
+    redirect, request, session, url_for, abort, g
 )
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -60,16 +60,35 @@ def _id_or_404(value):
         abort(404)
     return ObjectId(str(value))
 
+def _email_accounts(email):
+    # Existing cross-collection collisions fail closed; never pick the first match.
+    query = {"email": re.compile("^" + re.escape(email) + "$", re.IGNORECASE)}
+    return [(name, actor) for name in ("users", "doctors")
+            for actor in mongo.db[name].find(query).limit(2)]
+
+def _bind_session(collection, actor):
+    session.clear()
+    session["actor_id"] = str(actor["_id"])
+    session["actor_collection"] = collection
+    session["user"] = actor["email"]  # Display/navigation only; never an authority.
+
 def _current_actor():
-    email = session.get("user")
-    if not email:
+    if hasattr(g, "actor"):
+        return g.actor
+    collection = session.get("actor_collection")
+    value = session.get("actor_id")
+    if collection not in {"users", "doctors"} or not ObjectId.is_valid(str(value)):
+        session.clear()
         abort(403)
-    actor = mongo.db.users.find_one({"email": email})
-    if actor is None:
-        actor = mongo.db.doctors.find_one({"email": email})
-    if actor is None:
+    actor = mongo.db[collection].find_one({"_id": ObjectId(value)})
+    if actor is None or actor.get("role") not in {"patient", "doctor", "admin"}:
+        session.clear()
         abort(403)
+    # A renamed/deleted email cannot transfer the session to a different account.
+    session["user"] = actor["email"]
+    g.actor = actor
     return actor
+
 
 def _can_access_medical_record(actor, record, write=False):
     if actor.get("role") == "admin":
@@ -87,6 +106,8 @@ def protect_medical_routes():
             abort(403)
 
     route = request.endpoint
+    if session.get("user") and route not in {"login", "signup", "logout", "static"}:
+        _current_actor()
     protected = {
         "profile", "medical_record_detail", "edit_medical_record",
         "update_medical_record", "upload_medical_record_file",
@@ -99,9 +120,10 @@ def protect_medical_routes():
     actor = _current_actor()
     args = request.view_args or {}
     if route == "profile":
-        target = mongo.db.users.find_one({"email": args.get("username")})
-        if target is None:
-            target = mongo.db.doctors.find_one({"email": args.get("username")})
+        matches = _email_accounts(args.get("username") or "")
+        if len(matches) > 1:
+            abort(409)
+        target = matches[0][1] if matches else None
         if target is None:
             abort(404)
         if target["_id"] != actor["_id"] and actor.get("role") != "admin":
@@ -110,6 +132,7 @@ def protect_medical_routes():
             })
             if not assigned:
                 abort(403)
+        g.profile_target = target
     elif route in {"medical_record_detail", "edit_medical_record", "update_medical_record", "upload_medical_record_file"}:
         record = mongo.db.medical_records.find_one({"_id": _id_or_404(args.get("record_id"))})
         if record is None:
@@ -181,7 +204,7 @@ def signup():
         gender = request.form.get("gender")
         dob = request.form.get("dob")  # Get date of birth
         phone = request.form.get("phone")
-        email = request.form.get("email").lower()
+        email = (request.form.get("email") or "").strip().lower()
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
 
@@ -246,8 +269,7 @@ def signup():
         flash("Registration successful!", "success")
 
         # Log the user in by adding their email to the session
-        session.clear()
-        session["user"] = email
+        _bind_session("users", new_user)
 
         return redirect(url_for("profile", username=email))
 
@@ -273,22 +295,17 @@ def login():
     """
     if request.method == "POST":
         # Get form data from the login form
-        email = request.form.get("email").lower()
+        email = (request.form.get("email") or "").strip().lower()
         password = request.form.get("password")
         remember = request.form.get("remember")
-        # Find the user by email
-        existing_user = mongo.db.users.find_one({"email": email})
-
-        if not existing_user:
-            # If not found in users, check in doctors collection
-            existing_user = mongo.db.doctors.find_one({"email": email})
+        matches = _email_accounts(email)
+        collection, existing_user = matches[0] if len(matches) == 1 else (None, None)
 
         if existing_user:
             # Check if the password matches
             if check_password_hash(existing_user["password"], password):
                 # If password matches, set the session for the user
-                session.clear()
-                session["user"] = email
+                _bind_session(collection, existing_user)
                 flash("Welcome, {}".format(existing_user["name"]), "success")
 
                 # Set session to be permanent if remember me is checked
@@ -335,9 +352,7 @@ def add_doctor():
     validating inputs, and saving the new doctor to the database.
     Only accessible by an admin user.
     """
-    if "user" in session and mongo.db.users.find_one(
-        {"email": session["user"], "role": "admin"}
-    ):
+    if "user" in session and _current_actor().get("role") == "admin":
         if request.method == "POST":
             name = request.form.get("name")
             email = (request.form.get("email") or "").strip().lower()
@@ -409,9 +424,7 @@ def reset_password_admin():
     The new password is displayed to the admin for further communication
     to the user. If the user is not found, corresponding message is displayed.
     """
-    if "user" in session and mongo.db.users.find_one(
-        {"email": session["user"], "role": "admin"}
-    ):
+    if "user" in session and _current_actor().get("role") == "admin":
         # Get the user ID from the form
         user_id = request.form.get("user_id")
         # Generate a new random password
@@ -465,9 +478,7 @@ def delete_user():
     If the logged-in user is an admin, delete the user or doctor
     specified by the user_id from the database.
     """
-    if "user" in session and mongo.db.users.find_one(
-       {"email": session["user"], "role": "admin"}
-    ):
+    if "user" in session and _current_actor().get("role") == "admin":
         # Get the user ID from the form
         user_id = request.form.get("user_id")
 
@@ -597,9 +608,7 @@ def assign_appointment():
 
     Displays appropriate messages for success or failure scenarios.
     """
-    if "user" in session and mongo.db.users.find_one(
-        {"email": session["user"], "role": "admin"}
-    ):
+    if "user" in session and _current_actor().get("role") == "admin":
         # Get form data
         appointment_id = request.form.get("appointment_id")
         doctor_id = request.form.get("doctor_id")
@@ -635,11 +644,7 @@ def accept_appointment():
     """
     if "user" in session:
         # Find the current user in the users or doctors collection
-        current_user = mongo.db.users.find_one(
-            {"email": session["user"]}
-        ) or mongo.db.doctors.find_one(
-            {"email": session["user"]}
-        )
+        current_user = _current_actor()
         # Check if the current user is a doctor or admin
         if current_user and (
             current_user["role"] == "doctor" or current_user["role"] == "admin"
@@ -695,7 +700,7 @@ def logout():
     HTTP headers.
     """
     # Remove user from session
-    session.pop("user", None)
+    session.clear()
     flash("You have been logged out.", 'info')
     response = redirect(url_for("index"))
 
@@ -774,22 +779,12 @@ def profile(username):
     """
     try:
         # Find the user by email in the users collection
-        user = mongo.db.users.find_one({"email": username})
-        # If not found, check in the doctors collection
-        if not user:
-            user = mongo.db.doctors.find_one({"email": username})
-            if not user:
-                flash("User not found", "danger")
-                return redirect(url_for("index"))
+        user = g.profile_target
 
         if user:
             # Get the current user's email from the session
             current_email = session.get("user")
-            current_user = mongo.db.users.find_one({"email": current_email})
-            if not current_user:
-                current_user = mongo.db.doctors.find_one(
-                    {"email": current_email}
-                )
+            current_user = _current_actor()
             if not current_user:
                 abort(403)
 
@@ -951,11 +946,7 @@ def edit_medical_record(record_id):
     # Get current user's email from session
     current_email = session.get("user")
     # Find the current user in the users or doctors collection
-    current_user = mongo.db.users.find_one(
-        {"email": current_email}
-    ) or mongo.db.doctors.find_one(
-        {"email": current_email}
-    )
+    current_user = _current_actor()
 
     # If no user is found or user is not a doctor/admin, return 403 error
     if not current_user or current_user["role"] not in ["doctor", "admin"]:
@@ -976,11 +967,7 @@ def edit_medical_record(record_id):
         # Get current user's email from session
         current_email = session.get("user")
         # Find the current user in the users or doctors collection
-        current_user = mongo.db.users.find_one(
-            {"email": current_email}
-        ) or mongo.db.doctors.find_one(
-            {"email": current_email}
-        )
+        current_user = _current_actor()
         if not current_user:
             abort(403)
 
@@ -1023,9 +1010,7 @@ def update_medical_record(record_id):
     """
     try:
         current_email = session.get("user")
-        current_user = mongo.db.users.find_one(
-            {"email": current_email}
-        ) or mongo.db.doctors.find_one({"email": current_email})
+        current_user = _current_actor()
         if not current_user or current_user["role"] not in ["doctor", "admin"]:
             abort(403)
 
@@ -1082,9 +1067,7 @@ def delete_patient(patient_id):
         # Get the current user's email from the session
         current_email = session["user"]
         # Find the current user in either users or doctors collections
-        current_user = mongo.db.users.find_one(
-            {"email": current_email}
-        ) or mongo.db.doctors.find_one({"email": current_email})
+        current_user = _current_actor()
 
         # Check if the current user has the appropriate role
         if current_user and current_user["role"] in [
@@ -1174,11 +1157,7 @@ def edit_user_ajax():
     """
     if "user" in session:
         current_email = session["user"]
-        current_user = mongo.db.users.find_one(
-            {"email": current_email}
-        ) or mongo.db.doctors.find_one(
-            {"email": current_email}
-        )
+        current_user = _current_actor()
         if current_user:
             user_id = request.json.get("user_id")
             user = mongo.db.users.find_one(
@@ -1208,7 +1187,7 @@ def edit_user_ajax():
                 new_email = (request.json.get("email") or "").strip().lower()
                 if not new_email:
                     abort(400)
-                # Session identity uses email: never let an edit adopt another account.
+                # Email collisions remain invalid even though sessions use immutable identity.
                 for collection in (mongo.db.users, mongo.db.doctors):
                     if collection.find_one({"email": new_email, "_id": {"$ne": user["_id"]}}):
                         abort(409)
@@ -1467,9 +1446,7 @@ def admin_users():
     Fetches user data from the database, sorts it, and renders
     the admin_users.html template.
     """
-    if "user" in session and mongo.db.users.find_one(
-        {"email": session["user"], "role": "admin"}
-    ):
+    if "user" in session and _current_actor().get("role") == "admin":
         # Fetch all users and doctors
         users = list(mongo.db.users.find())
         doctors = list(mongo.db.doctors.find())
@@ -1507,7 +1484,7 @@ def add_medical_record():
             raise Exception("Doctor email not found in session.")
 
         # Find the doctor in the database
-        doctor = mongo.db.doctors.find_one({"email": doctor_email})
+        doctor = _current_actor()
         if not doctor:
             raise Exception("Doctor not found in the database.")
 
@@ -1556,9 +1533,7 @@ def medical_record_detail(record_id):
     # Get current user's email from session
     current_email = session.get("user")
     # Find the current user in the users or doctors collection
-    current_user = mongo.db.users.find_one(
-        {"email": current_email}
-    ) or mongo.db.doctors.find_one({"email": current_email})
+    current_user = _current_actor()
 
     if not current_user:
         abort(403)
