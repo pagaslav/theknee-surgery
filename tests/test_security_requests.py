@@ -39,6 +39,9 @@ class MedicalAccessTests(unittest.TestCase):
             session.clear()
             if actor:
                 session["user"] = actor["email"]
+                if actor.get("_id"):
+                    session["actor_id"] = str(actor["_id"])
+                    session["actor_collection"] = "doctors" if actor.get("role") == "doctor" else "users"
             session["_csrf_token"] = "test-token"
 
     def post(self, url, **kwargs):
@@ -119,6 +122,71 @@ class MedicalAccessTests(unittest.TestCase):
     def test_password_change_is_bound_to_actor(self):
         self.login_as(self.other)
         self.assertEqual(self.post('/change_password', data={"user_id": str(self.patient["_id"])}).status_code, 403)
+
+    def test_real_login_binds_collection_and_id_and_rotates_csrf(self):
+        self.login_as(None)
+        result = self.post('/login', data={'email': self.patient['email'], 'password': 'TestPassword1'})
+        self.assertEqual(result.status_code, 302)
+        with self.client.session_transaction() as session:
+            self.assertEqual(session['actor_id'], str(self.patient['_id']))
+            self.assertEqual(session['actor_collection'], 'users')
+            self.assertNotIn('_csrf_token', session)
+        self.assertEqual(self.client.get(f'/medical_record/{self.record["_id"]}').status_code, 200)
+
+    def test_old_email_only_sessions_are_rejected_and_cleared(self):
+        with self.client.session_transaction() as session:
+            session['user'] = self.admin['email']
+        self.assertEqual(self.client.get('/admin/users').status_code, 403)
+        with self.client.session_transaction() as session:
+            self.assertNotIn('user', session)
+
+    def test_email_reuse_does_not_transfer_a_session(self):
+        self.login_as(self.patient)
+        self.db.users.update_one({'_id': self.patient['_id']}, {'$set': {'email': 'renamed@example.invalid'}})
+        self.db.users.update_one({'_id': self.admin['_id']}, {'$set': {'email': self.patient['email']}})
+        self.assertEqual(self.client.get('/admin/users').status_code, 302)
+        self.render.assert_not_called()
+        self.assertEqual(self.client.get(f'/medical_record/{self.record["_id"]}').status_code, 200)
+        with self.client.session_transaction() as session:
+            self.assertEqual(session['user'], 'renamed@example.invalid')
+            self.assertEqual(session['actor_id'], str(self.patient['_id']))
+
+    def test_deleted_actor_cannot_adopt_recreated_email(self):
+        self.login_as(self.patient)
+        self.db.users.delete_one({'_id': self.patient['_id']})
+        self.db.users.insert_one({'email': self.patient['email'], 'role': 'admin'})
+        self.assertEqual(self.client.get('/admin/users').status_code, 403)
+
+    def test_login_rejects_ambiguous_email_across_and_within_collections(self):
+        for collection in ('doctors', 'users'):
+            with self.subTest(collection=collection):
+                duplicate = {'email': self.patient['email'].upper(), 'role': 'admin', 'password': generate_password_hash('TestPassword1')}
+                result = self.db[collection].insert_one(duplicate)
+                self.login_as(None)
+                self.assertEqual(self.post('/login', data={'email': self.patient['email'], 'password': 'TestPassword1'}).status_code, 302)
+                with self.client.session_transaction() as session:
+                    self.assertNotIn('actor_id', session)
+                self.db[collection].delete_one({'_id': result.inserted_id})
+
+    def test_database_role_revocation_is_effective_on_next_request(self):
+        self.login_as(self.admin)
+        self.db.users.update_one({'_id': self.admin['_id']}, {'$set': {'role': 'patient'}})
+        self.assertEqual(self.client.get('/admin/users').status_code, 302)
+        self.render.assert_not_called()
+
+    def test_collection_binding_prevents_cross_collection_id_collision(self):
+        self.login_as(self.patient)
+        self.db.doctors.insert_one({'_id': self.patient['_id'], 'email': 'collision@example.invalid', 'role': 'admin'})
+        self.assertEqual(self.client.get('/admin/users').status_code, 302)
+        self.render.assert_not_called()
+
+    def test_logout_removes_immutable_binding(self):
+        self.login_as(self.patient)
+        self.assertEqual(self.client.get('/logout').status_code, 302)
+        with self.client.session_transaction() as session:
+            self.assertNotIn('actor_id', session)
+            self.assertNotIn('actor_collection', session)
+            self.assertNotIn('user', session)
 
 
 if __name__ == '__main__':
