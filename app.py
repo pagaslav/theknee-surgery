@@ -132,6 +132,7 @@ def protect_medical_routes():
             })
             if not assigned:
                 abort(403)
+        g.profile_target = target
     elif route in {"medical_record_detail", "edit_medical_record", "update_medical_record", "upload_medical_record_file"}:
         record = mongo.db.medical_records.find_one({"_id": _id_or_404(args.get("record_id"))})
         if record is None:
@@ -778,10 +779,7 @@ def profile(username):
     """
     try:
         # Find the user by email in the users collection
-        matches = _email_accounts(username)
-        if len(matches) != 1:
-            abort(404)
-        user = matches[0][1]
+        user = g.profile_target
 
         if user:
             # Get the current user's email from the session

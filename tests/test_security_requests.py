@@ -188,6 +188,19 @@ class MedicalAccessTests(unittest.TestCase):
             self.assertNotIn('actor_collection', session)
             self.assertNotIn('user', session)
 
+    def test_profile_target_is_bound_before_a_concurrent_email_reassignment(self):
+        self.login_as(self.patient)
+        original = self.module._email_accounts
+        def race(email):
+            matches = original(email)
+            self.db.users.update_one({'_id': self.patient['_id']}, {'$set': {'email': 'renamed@example.invalid'}})
+            self.db.users.update_one({'_id': self.other['_id']}, {'$set': {'email': self.patient['email']}})
+            return matches
+        with patch.object(self.module, '_email_accounts', side_effect=race):
+            response = self.client.get('/profile/' + self.patient['email'])
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.render.call_args.kwargs['user']['_id'], self.patient['_id'])
+
 
 if __name__ == '__main__':
     unittest.main()
